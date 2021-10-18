@@ -1,0 +1,76 @@
+<template>
+  <div class="layout-topbar p-d-flex p-jc-between">
+    <Menubar :model="appMenu" >
+      <template #start>
+        <a href="/">
+          <img alt="logo" src="../assets/Zalo.png" height="40" class="p-mr-2">
+        </a>
+      </template>
+      <template #end>
+        <router-link :to="{ name: 'login' }" v-if="!isLoggedIn">
+          <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" />
+        </router-link>
+
+        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-btton-warning"  v-else/>
+      </template>
+    </Menubar>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useToast } from "primevue/usetoast";
+import router from "@/router";
+
+export default {
+  props: {
+    isLoggedIn: {
+      type: Boolean,
+      required: true
+    }
+  },
+  setup(props) {
+    const store = useStore();
+    const toast = useToast();
+    const defaultMenu = [
+      {
+        label:'Zalo OA',
+        icon:'pi pi-fw pi-list',
+        url: '/login'
+      },
+    ];
+    const appMenu = computed(() => {
+        return defaultMenu;
+    });
+    const logout = () => {
+      store.dispatch('clearToken');
+      router.push({
+        name: 'login',
+      });
+      toast.add({
+        severity:'success',
+        summary: 'Đăng xuất',
+        detail:'Đã xóa thông tin đăng nhập thành công',
+        life: 1000
+      });
+    }
+
+    return {
+      appMenu,
+      logout
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.p-menubar{
+  width: 100%;
+  background: white;
+  border-radius: 0;
+}
+a{
+  text-decoration: none;
+}
+</style>

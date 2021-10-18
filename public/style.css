@@ -1,0 +1,21 @@
+.container{
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+html {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+html ::-webkit-scrollbar{
+    display: none;
+}
+
+.p-tabview-panels{
+    padding: 0 !important;
+}
+
+.p-toast-message-text{
+    text-align: left;
+}
