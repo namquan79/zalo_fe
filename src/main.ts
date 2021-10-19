@@ -35,8 +35,6 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from "primevue/confirmdialog";
 import { quillEditor, Quill } from 'vue3-quill';
 import ProcessSpinner from 'primevue/progressspinner';
-import QrcodeVue from "qrcode.vue";
-import QrReader from 'vue3-qr-reader';
 import cors from 'cors';
 
 const app = createApp(App)
@@ -44,8 +42,7 @@ const app = createApp(App)
   .use(router)
   .use(PrimeVue)
   .use(ConfirmationService)
-  .use(ToastService)
-  .use(QrReader);
+  .use(ToastService);
 
 console.log("ENV = " + process.env.NODE_ENV);
 
