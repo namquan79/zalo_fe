@@ -40,8 +40,22 @@ export default {
         url: '/login'
       },
     ];
+    const userMenu = [
+      {
+        label:'Đăng ký',
+        icon:'pi pi-fw pi-user-plus',
+        url: '/register'
+      },
+    ];
     const appMenu = computed(() => {
+      if(props.isLoggedIn)
+      {
+        return userMenu;
+      }
+      else
+      {
         return defaultMenu;
+      }
     });
     const logout = () => {
       store.dispatch('clearToken');

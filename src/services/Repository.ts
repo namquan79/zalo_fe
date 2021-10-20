@@ -15,9 +15,9 @@ instance.interceptors.request.use((request) => {
     const isLogin = request.url.startsWith('/auth/login') && request.method === 'post'
 
     if (token && !isLogin) {
-      request.headers.Authorization = `Bear ${token}`
+      request.headers['Authorization'] = `Bearer ${token}`;
     } else {
-      delete request.headers.Authorization
+      delete request.headers['Authorization'];
     }
   }
 

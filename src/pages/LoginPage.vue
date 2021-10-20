@@ -62,7 +62,10 @@ export default {
             summary: 'Đăng nhập',
             detail: 'Đăng nhập thành công vào hệ thống',
             life: 1000
-          })
+          });
+          router.push({
+            name: 'home'
+          });
         })
         .catch(() => {
           toast.add({
