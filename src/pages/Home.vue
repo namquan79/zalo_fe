@@ -1,11 +1,11 @@
 <template>
-  <RegisterPage v-if="isLoggedIn" />
+  <AddInfo v-if="isLoggedIn" />
   <LoginPage v-else />
 </template>
 
 <script lang="ts">
 import LoginPage from "@/pages/LoginPage.vue";
-import RegisterPage from "@/pages/RegisterPage.vue";
+import AddInfo from "@/pages/AddInfo.vue";
 
 import { useStore } from 'vuex'
 import { computed } from 'vue'
@@ -13,7 +13,7 @@ import { computed } from 'vue'
 export default {
   components: {
     LoginPage,
-    RegisterPage,
+    AddInfo,
   },
   setup(){
     const store = useStore();
