@@ -41,10 +41,20 @@ export default {
       },
     ];
     const userMenu = [
+      // {
+      //   label:'Đăng ký',
+      //   icon:'pi pi-fw pi-user-plus',
+      //   url: '/register'
+      // },
       {
-        label:'Đăng ký',
-        icon:'pi pi-fw pi-user-plus',
-        url: '/register'
+        label:'Thống kê',
+        icon:'pi pi-fw pi-list',
+        url: '/statistical'
+      },
+      {
+        label:'Thêm thông tin',
+        icon:'pi pi-fw pi-plus-circle',
+        url: '/addinfo'
       },
     ];
     const appMenu = computed(() => {
