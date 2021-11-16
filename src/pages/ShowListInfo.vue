@@ -7,7 +7,7 @@
               :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               :globalFilterFields="['ten','soDienThoai','diaChi','maOngTiem','thoiGian']"
-              currentPageReportTemplate="Có tất cả {totalRecords} ống tiêm"
+              currentPageReportTemplate="Có tất cả {totalRecords} người tiêm"
               v-model:filters="filters"
       >
         <template #header>
