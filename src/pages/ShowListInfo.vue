@@ -31,6 +31,15 @@
             <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
           </template>
         </Column>
+        <Column header="Tuỳ chọn">
+          <template #body="slotProps">
+            <!--            <router-link style="text-decoration: none !important;" :to="{ name: 'registerpage'}" >-->
+<!--            <div class="p-field p-col-6 p-md-8">-->
+              <Button type="button" label="Chỉnh sửa"  icon="pi pi-eye" @click="editInfo(slotProps.data.id)"></Button>
+<!--            </div>-->
+            <!--            </router-link>-->
+          </template>
+        </Column>
         <template #paginatorLeft>
         </template>
         <template #empty>
@@ -50,6 +59,7 @@
   import moment from 'moment';
   import {FilterMatchMode, FilterOperator} from "primevue/api";
   import {ThongTin} from "@/models/thongTin";
+  import router from "@/router";
 
   export default {
       props: {
@@ -81,11 +91,17 @@
           'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
         }
       };
+
+      const editInfo = (id: any) => {
+        let routeData = router.resolve({name: 'updateinfo', params: {id: id}});
+        window.open(routeData.href, '_blank');
+      };
       return {
           dsThongtin,
         formatDateTime,
         filters,
         clearFilter,
+        editInfo,
       }
     }
 
