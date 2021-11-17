@@ -94,11 +94,11 @@ export default {
             .catch();
     const store = useStore();
 
-    if(!(store.state.permission == 'mster')){
-      router.push({
-        name: 'home'
-      });
-    }
+    // if(!(store.state.permission == 'mster')){
+    //   router.push({
+    //     name: 'home'
+    //   });
+    // }
     VaccinationRepository.getProvince()
             .then((response) => {
               provinces.value = response.data;
