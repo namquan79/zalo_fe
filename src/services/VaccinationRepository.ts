@@ -7,6 +7,7 @@ import {ThongTinUpdate} from "@/models/thongTinUpdate";
 import Province from "@/models/province.models";
 import District from "@/models/district.models";
 import Ward from "@/models/Ward.models";
+import {Ongtiemshort} from "@/models/ongtiemshort";
 
 const resource = '/vaccination';
 
@@ -20,8 +21,8 @@ export default new class{
     createDonVi(donViCreate: DonViCreate): Promise<AxiosResponse<DonViCreate>>{
         return Repository.post<DonViCreate>(`${resource}/taodonvi`,donViCreate);
     }
-    createOngTiem(): Promise<AxiosResponse<Ongtiem>>{
-        return Repository.get<Ongtiem>(`${resource}/taoongtiem`);
+    createOngTiem(ongtiemshort: Ongtiemshort): Promise<AxiosResponse<Ongtiem>>{
+        return Repository.post<Ongtiem>(`${resource}/taoongtiem`, ongtiemshort);
     }
     getListDonVi(): Promise<AxiosResponse<DonViCreate[]>>{
         return Repository.get<DonViCreate[]>(`${resource}/danhsachdonvi`);
