@@ -47,4 +47,10 @@ export default new class{
     getThongTin(id: number): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/thongtincuthe/${id}`);
     }
+    getExport(): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/exportfile`);
+    }
+    downloadFile(filename: string): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/DownloadResult/${filename}`);
+    }
 }

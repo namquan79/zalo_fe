@@ -23,6 +23,14 @@
         <label>CMND/CCCD/Passport</label>
         <InputText id="cmnd" type="text" v-model="thongTinUpdate.cmnd" style="text-align: center"/>
       </div>
+      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+        <label>Mã đối tượng được lấy mẫu</label>
+        <InputText id="Objectcode" type="text" v-model="thongTinUpdate.maDoiTuong" style="text-align: center"/>
+      </div>
+      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+        <label>Ghi rõ đối tượng</label>
+        <InputText id="Objectdetail" type="text" v-model="thongTinUpdate.ghiChu" style="text-align: center"/>
+      </div>
       <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
       </div>
       <div class="p-field p-col-12 p-sm p-md-4">

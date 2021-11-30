@@ -45,6 +45,18 @@
             <label>Thêm ống tiêm</label>
             <Button type="button" icon="pi pi-plus-circle" label="Thêm ống tiêm mới" @click="addOngTiem()"/>
           </div>
+            <div class="p-field p-col-12 p-sm p-md-4">
+                <label>Xuất tập tin:</label>
+                <span class="p-input-icon-right">
+                    <Button type="button" @click="exportFile()" style="margin-right: 10px">Thực hiện</Button>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-sm p-md-4" v-if="exportFileDetail">
+                <label>Tải tập tin:</label>
+                <span class="p-input-icon-right">
+                    <Button type="button" @click="downloadFile()" style="margin-right: 10px">Tải</Button>
+                </span>
+            </div>
           <div class="p-field p-col-12 p-sm-12 p-md-12">
           </div>
             <Panel header="Thông tin ống tiêm được thêm mới" v-if="taoThanhCong">
@@ -101,6 +113,7 @@
   import {DonViCreate} from "@/models/donViCreate";
   import {Ongtiem} from "@/models/ongtiem";
   import {Ongtiemshort} from "@/models/ongtiemshort";
+  import axios from "axios";
 
   export default {
     setup() {
@@ -110,6 +123,8 @@
       const ngayTao = ref("");
       const taoThanhCong = ref(false);
       const ongtiemshort = ref({} as Ongtiemshort);
+      const fileNameExport = ref("");
+      const exportFileDetail = ref(false);
 
       const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
@@ -134,25 +149,25 @@
       };
 
       const add = () =>{
-        VaccinationRepository.createDonVi(donVi.value)
+            VaccinationRepository.createDonVi(donVi.value)
                 .then((response) => {
-                  toast.add({
-                    severity: 'success',
-                    summary: 'Thành công',
-                    detail:'Đơn vị đã được tạo thành công',
-                    life: 2500
-                  });
-                  donVi.value.ma = "";
-                  donVi.value.ten = "";
+                    toast.add({
+                        severity: 'success',
+                        summary: 'Thành công',
+                        detail:'Đơn vị đã được tạo thành công',
+                        life: 2500
+                    });
+                    donVi.value.ma = "";
+                    donVi.value.ten = "";
                 })
                 .catch(err => {
-                  toast.add({
-                    severity: 'error',
-                    summary: 'Lỗi',
-                    detail:err.response.data,
-                    life: 2500
-                  })});
-      };
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Lỗi',
+                        detail:err.response.data,
+                        life: 2500
+                    })});
+        };
       const addOngTiem = () => {
         VaccinationRepository.createOngTiem(ongtiemshort.value)
                 .then((response) => {
@@ -170,6 +185,44 @@
                   })});
       };
 
+        const exportFile = () =>{
+            VaccinationRepository.getExport()
+                .then((response) => {
+                    fileNameExport.value = response.data;
+                    exportFileDetail.value = true;
+                })
+                .catch(err => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Lỗi',
+                        detail:err.response.data,
+                        life: 2500
+                    })});
+        };
+        const downloadFile = () => {
+            axios({
+                url: 'api/vaccination/DownloadResult/'+fileNameExport.value,
+                method: 'GET',
+                responseType: 'blob',
+            }).then((response) => {
+                var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                var fileLink = document.createElement('a');
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', fileNameExport.value);
+                document.body.appendChild(fileLink);
+
+                fileLink.click();
+            })
+                .catch(err => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Lỗi',
+                        detail:err.response.data,
+                        life: 2500
+                    })});
+        };
+
       return {
         formatDateTime,
         filters,
@@ -182,6 +235,9 @@
         ngayTao,
         taoThanhCong,
         ongtiemshort,
+        exportFile,
+        downloadFile,
+        exportFileDetail,
       }
     }
 

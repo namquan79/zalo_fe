@@ -8,4 +8,6 @@ export interface ThongTinUpdate{
     phuong: number;
     quan: number;
     diaChiCuThe: string;
+    maDoiTuong: string;
+    ghiChu: string;
 }
