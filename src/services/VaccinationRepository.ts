@@ -8,6 +8,7 @@ import Province from "@/models/province.models";
 import District from "@/models/district.models";
 import Ward from "@/models/Ward.models";
 import {Ongtiemshort} from "@/models/ongtiemshort";
+import {MaDoiTuong} from "@/models/maDoiTuong";
 
 const resource = '/vaccination';
 
@@ -52,5 +53,11 @@ export default new class{
     }
     downloadFile(filename: string): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/DownloadResult/${filename}`);
+    }
+    getThongTinDoiTuong(): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/danhsachmadoituong`);
+    }
+    createMaDoiTuong(maDoiTuong: MaDoiTuong): Promise<AxiosResponse<any>>{
+        return Repository.post<any>(`${resource}/taomadoituong`, maDoiTuong);
     }
 }

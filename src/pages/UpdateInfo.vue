@@ -25,11 +25,8 @@
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Mã đối tượng được lấy mẫu</label>
-        <InputText id="Objectcode" type="text" v-model="thongTinUpdate.maDoiTuong" style="text-align: center"/>
-      </div>
-      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-        <label>Ghi rõ đối tượng</label>
-        <InputText id="Objectdetail" type="text" v-model="thongTinUpdate.ghiChu" style="text-align: center"/>
+        <Dropdown id="maDoiTuong" :filter="true" :showClear="true" v-model="thongTinUpdate.maDoiTuong" :options="thongtinDoiTuong" optionLabel="maDoiTuong" optionValue="maDoiTuong" placeholder=" - Chọn mã đối tượng -" style="text-align: center">
+        </Dropdown>
       </div>
       <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
       </div>
@@ -47,7 +44,7 @@
       </div>
     </div>
 <!--    <div class="p-field p-col-12 p-sm p-md-4">-->
-    <Button label="Cập nhật" icon="pi pi-user-edit" :disabled="valid" @click="update()" style="margin-right: 20px"/>
+    <Button label="Cập nhật" icon="pi pi-user-edit" :disabled="!valid()" @click="update()"  style="margin-right: 20px"/>
 
 
     <Button label="Xoá" class="p-button-danger"  icon="pi pi-user-minus" iconPos="left" @click="del($event)" />
@@ -70,6 +67,7 @@ import Ward from "@/models/Ward.models";
 import {ThongTinUpdate} from "@/models/thongTinUpdate";
 import VaccinationRepository from "@/services/VaccinationRepository";
 import {useConfirm} from "primevue/useconfirm";
+import {ThongTinDoiTuong} from "@/models/thongTinDoiTuong";
 
 export default {
   props: {
@@ -88,7 +86,24 @@ export default {
       {value: "Nam"},
       {value: "Nữ"},
     ]);
+    const thongtinDoiTuong = ref([] as ThongTinDoiTuong[]);
     const confirm = useConfirm();
+    const maDoiTuong = ref("");
+
+    VaccinationRepository.getThongTinDoiTuong()
+            .then(response => {
+              thongtinDoiTuong.value = response.data;
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              });
+            })
+            .finally(()=>{
+            });
 
     VaccinationRepository.getThongTin(props.id)
             .then((response) => {
@@ -117,6 +132,7 @@ export default {
       VaccinationRepository.getDistrict(province.value)
               .then((response) => {
                   districts.value = response.data;
+                  wards.value = [];
               })
               .catch();
     };
@@ -133,6 +149,12 @@ export default {
       thongTinUpdate.value.thanhPho = province.value;
       thongTinUpdate.value.quan = district.value;
       thongTinUpdate.value.phuong = ward.value;
+      thongtinDoiTuong.value.filter(x => {
+        if(x.maDoiTuong == thongTinUpdate.value.maDoiTuong){
+          thongTinUpdate.value.maDoiTuong = thongTinUpdate.value.maDoiTuong;
+          thongTinUpdate.value.ghiChu = x.ghiChu;
+        }
+      })
       VaccinationRepository.updateThongTin(thongTinUpdate.value)
                 .then(response => {
                   toast.add({
@@ -181,6 +203,18 @@ export default {
       });
     };
 
+    const valid = () => {
+        return thongTinUpdate.value.maDoiTuong&&
+                province.value&&
+                district.value&&
+                ward.value&&
+                thongTinUpdate.value.gioiTinh&&
+                thongTinUpdate.value.ten&&
+                thongTinUpdate.value.cmnd&&
+                thongTinUpdate.value.soDienThoai&&
+                thongTinUpdate.value.diaChiCuThe;
+      }
+
     return {
       thongTinUpdate,
       gioiTinh,
@@ -194,6 +228,9 @@ export default {
       selectProvince,
       update,
       del,
+      thongtinDoiTuong,
+      maDoiTuong,
+      valid,
       // nonAccentVietnamese
     }
   }

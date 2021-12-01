@@ -2,65 +2,6 @@
   <!--  </TabPanel>-->
   <Panel header="Thống kê danh sách ống tiêm">
     <div class="p-fluid">
-<!--      <div class="p-fluid p-formgrid p-grid">-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4">-->
-<!--          <label>Chọn thời gian tìm kiếm: </label>-->
-<!--          <Calendar-->
-<!--                  id="date"-->
-<!--                  v-model="date"-->
-<!--                  selectionMode="range"-->
-<!--                  dateFormat="dd/mm/yy"-->
-<!--                  :showButtonBar="true"-->
-<!--                  :showIcon="true"-->
-<!--                  :manualInput="false"-->
-<!--                  :monthNavigator="true"-->
-<!--                  :yearNavigator="true"-->
-<!--                  yearRange="2000:2100"-->
-<!--                  @date-select="selectCalendar()"-->
-<!--                  @clear-click="clearCalendar()"-->
-<!--          />-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4">-->
-<!--          <label>Tìm kiếm khai báo theo tên:</label>-->
-<!--          <Dropdown id="listname" :filter="true" :showClear="true" v-model="name" emptyMessage="Không có dữ liệu, vui lòng lựa chọn thời gian" :options="listName" optionLabel="ten" optionValue="ten" @change="searchName()">-->
-<!--          </Dropdown>-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4" v-if="masterPermission">-->
-<!--          <label>Tìm KB theo nhân viên:</label>-->
-<!--          <Dropdown id="listusername" :filter="true" :showClear="true" v-model="user" emptyMessage="Không có dữ liệu, vui lòng lựa chọn thời gian" :options="shortListUser" optionLabel="user_name" optionValue="id" @change="searchUser()">-->
-<!--          </Dropdown>-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4" v-if="checkStatus">-->
-<!--          <label>Lọc theo tình trạng:</label>-->
-<!--          <Dropdown id="statuslist" :filter="true" :showClear="true" v-model="slStatus" emptyMessage="Chưa tải được tình trạng" :options="statusList" optionLabel="label" optionValue="value" @change="selectStatus()">-->
-<!--          </Dropdown>-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4" v-if="checkStatus">-->
-<!--          <label for="gioi_tinh">Giới tính </label>-->
-<!--          <div class="p-field-radiobutton">-->
-<!--            <input type="radio" id="nam" name="sex" value="nam" v-model="gioiTinh" @change="selectSex"/>-->
-<!--            <label for="nam"> Nam</label>-->
-<!--            <div class="p-col p-md-1">-->
-<!--            </div>-->
-<!--            <input type="radio" id="nu" name="sex" value="nữ" v-model="gioiTinh" @change="selectSex"/>-->
-<!--            <label for="nu"> Nữ</label>-->
-<!--            <div class="p-col p-md-1">-->
-<!--            </div>-->
-<!--            <input type="radio" id="tatca" name="sex" value="tất cả" v-model="gioiTinh" @change="selectSex"/>-->
-<!--            <label for="tatca"> Tất cả</label>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4" v-if="checkStatus && masterPermission">-->
-<!--          <Button type="button" v-if="selectedGroup.length > 0" label="Tải danh sách" icon="pi pi-save" class="p-button-raised" @click="createPDF"/>-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4" v-if="checkStatus && masterPermission">-->
-<!--          <Button type="button" v-if="selectedGroup.length > 0" label="Biểu đồ thống kê khai báo y tế" icon="pi pi-chart-bar" class="p-button-raised" @click="groups"/>-->
-<!--        </div>-->
-<!--        <div class="p-field p-col-12 p-sm p-md-4" v-if="checkStatus && masterPermission">-->
-<!--          <Button type="button" v-if="selectedGroup.length > 0" label="Biểu đồ thống kê theo Quận/Huyện" icon="pi pi-chart-bar" class="p-button-raised" @click="districtCountGroup"/>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--        <div class="p-field p-col-12 p-sm-12 p-md-12">-->
       <DataTable
               :value="dsOngTiem" :paginator="true" stripedRows
               :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"

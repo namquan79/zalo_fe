@@ -11,7 +11,7 @@
           <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" />
         </router-link>
 
-        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-btton-warning"  v-else/>
+        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"  v-else/>
       </template>
     </Menubar>
   </div>
@@ -55,6 +55,11 @@ export default {
         label:'Thêm thông tin',
         icon:'pi pi-fw pi-plus-circle',
         url: '/addinfo'
+      },
+      {
+        label:'Xuất tập tin',
+        icon:'pi pi-fw pi-download',
+        url: '/downloadinfo'
       },
     ];
     const appMenu = computed(() => {

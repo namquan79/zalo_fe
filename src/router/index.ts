@@ -6,6 +6,7 @@ import Statistical from "@/pages/Statistical.vue";
 import ShowListInfo from "@/pages/ShowListInfo.vue";
 import AddInfo from "@/pages/AddInfo.vue";
 import UpdateInfo from "@/pages/UpdateInfo.vue";
+import DownloadInfo from "@/pages/DownloadInfo.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,6 +49,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/updateinfo/:id',
     name: 'updateinfo',
     component: UpdateInfo,
+    props: true
+  },
+  {
+    path: '/downloadinfo',
+    name: 'downloadinfo',
+    component: DownloadInfo,
     props: true
   },
 ]
