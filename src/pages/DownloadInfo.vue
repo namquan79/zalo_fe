@@ -51,6 +51,7 @@
       const loadingBar = ref(false);
         const exportFile = () =>{
             loadingBar.value = true;
+            exportFileDetail.value = false;
             VaccinationRepository.getExport()
                 .then((response) => {
                     fileNameExport.value = response.data;
