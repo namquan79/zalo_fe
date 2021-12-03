@@ -65,8 +65,23 @@
                 <InputText id="doituong" :filter="true" :showClear="true" type="text" v-model="ongtiemshort.doiTuongLayMau" placeholder="Vui lòng nhập đối tượng..." style="margin-bottom: 0.5em;text-align: center"/>
                 </span>
             </div>
+            <div class="p-field p-col-12 p-sm p-md-4">
+                <label for="dateselect">Vui lòng lựa chọn ngày:</label>
+                <Calendar
+                        id="dateselect"
+                        v-model="ngayChon"
+                        selectionMode="single"
+                        dateFormat="dd/mm/yy"
+                        :showButtonBar="true"
+                        :showIcon="true"
+                        :manualInput="false"
+                        :monthNavigator="true"
+                        :yearNavigator="true"
+                        yearRange="2000:2100"
+                />
+            </div>
           <div class="p-field p-col-12 p-sm p-md-4">
-            <label>Thêm ống tiêm</label>
+            <label>Tạo ống tiêm mới</label>
             <Button type="button" icon="pi pi-plus-circle" label="Thêm ống tiêm mới" @click="addOngTiem()"/>
           </div>
           <div class="p-field p-col-12 p-sm-12 p-md-12">
@@ -140,6 +155,7 @@
       const exportFileDetail = ref(false);
       const maDoiTuong = ref({} as MaDoiTuong);
       const loadingBar = ref(false);
+      const ngayChon = ref(new Date());
 
       const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
@@ -188,6 +204,9 @@
                     })});
         };
       const addOngTiem = () => {
+          //ongtiemshort.value.ngayChon = ngayChon.value.getTime()/1000;
+          ongtiemshort.value.ngayChon = ngayChon.value;
+          console.log("@@@@@@@@@@@@################################ ongtiemshort: " + JSON.stringify(ongtiemshort.value));
         VaccinationRepository.createOngTiem(ongtiemshort.value)
                 .then((response) => {
                     toast.add({
@@ -228,46 +247,7 @@
                   })});
       };
 
-        const exportFile = () =>{
-            loadingBar.value = true;
-            VaccinationRepository.getExport()
-                .then((response) => {
-                    fileNameExport.value = response.data;
-                    exportFileDetail.value = true;
-                    loadingBar.value = false;
-                })
-                .catch(err => {
-                    loadingBar.value = false;
-                    toast.add({
-                        severity: 'error',
-                        summary: 'Lỗi',
-                        detail:err.response.data,
-                        life: 2500
-                    })});
-        };
-        const downloadFile = () => {
-            axios({
-                url: 'api/vaccination/DownloadResult/'+fileNameExport.value,
-                method: 'GET',
-                responseType: 'blob',
-            }).then((response) => {
-                var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-                var fileLink = document.createElement('a');
 
-                fileLink.href = fileURL;
-                fileLink.setAttribute('download', fileNameExport.value);
-                document.body.appendChild(fileLink);
-
-                fileLink.click();
-            })
-                .catch(err => {
-                    toast.add({
-                        severity: 'error',
-                        summary: 'Lỗi',
-                        detail:err.response.data,
-                        life: 2500
-                    })});
-        };
 
       return {
         formatDateTime,
@@ -281,13 +261,12 @@
         ngayTao,
         taoThanhCong,
         ongtiemshort,
-        exportFile,
-        downloadFile,
         exportFileDetail,
           maDoiTuong,
           addMaDoiTuong,
           validObject,
           loadingBar,
+          ngayChon,
       }
     }
 

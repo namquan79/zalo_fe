@@ -1,6 +1,33 @@
 <template>
   <!--  </TabPanel>-->
-  <Panel header="Thống kê danh sách ống tiêm">
+    <Panel header="">
+        <div class="card">
+            <div class="p-fluid">
+                <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                    <label for="dateselect">Vui lòng lựa chọn ngày:</label>
+                    <Calendar
+                            id="dateselect"
+                            v-model="dateSelect"
+                            selectionMode="single"
+                            dateFormat="dd/mm/yy"
+                            :showButtonBar="true"
+                            :showIcon="true"
+                            :manualInput="false"
+                            :monthNavigator="true"
+                            :yearNavigator="true"
+                            yearRange="2000:2100"
+                    />
+                    </div>
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                        <label>Duyệt danh sách ống tiêm</label>
+                        <Button type="button" icon="pi pi-plus-circle" label="Tìm danh sách ống tiêm" @click="getList()"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Panel>
+  <Panel header="Thống kê danh sách ống tiêm" v-if="showTable">
     <div class="p-fluid">
       <DataTable
               :value="dsOngTiem" :paginator="true" stripedRows
@@ -61,11 +88,15 @@
   import moment from 'moment';
   import {FilterMatchMode, FilterOperator} from "primevue/api";
   import {DonViCreate} from "@/models/donViCreate";
+  import {useToast} from "primevue/usetoast";
 
   export default {
     setup() {
       const dsOngTiem = ref([] as Ongtiem[]);
       const dsDonVi = ref([] as DonViCreate[]);
+      const dateSelect = ref(new Date());
+      const showTable = ref(false);
+      const toast = useToast();
 
       VaccinationRepository.getListDonVi()
               .then((response) => {
@@ -74,19 +105,28 @@
               })
               .catch();
 
-      VaccinationRepository.getLists()
+      const getList = () => {
+          VaccinationRepository.getLists(dateSelect.value.getTime()/1000)
               .then((response) => {
-                dsOngTiem.value = response.data;
-                dsOngTiem.value.forEach(x => {
-                  dsDonVi.value.forEach(y =>{
-                    if(y.ma == x.donVi)
-                    {
-                      x.donVi = y.ten;
-                    }
+                  showTable.value = true;
+                  dsOngTiem.value = response.data;
+                  dsOngTiem.value.forEach(x => {
+                      dsDonVi.value.forEach(y =>{
+                          if(y.ma == x.donVi)
+                          {
+                              x.donVi = y.ten;
+                          }
+                      })
                   })
-                })
               })
-              .catch();
+              .catch(err => {
+                  toast.add({
+                      severity: 'error',
+                      summary: 'Lỗi',
+                      detail:err.response.data,
+                      life: 2500
+                  })});
+      }
 
       const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
@@ -121,6 +161,9 @@
         clearFilter,
         checkValue,
         thongTin,
+          dateSelect,
+          getList,
+          showTable
       }
     }
 

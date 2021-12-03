@@ -5,6 +5,21 @@
       <div class="p-fluid">
         <div class="p-fluid p-formgrid p-grid">
             <div class="p-field p-col-12 p-sm p-md-4">
+                <label for="dateselect">Vui lòng lựa chọn ngày:</label>
+                <Calendar
+                        id="dateselect"
+                        v-model="time"
+                        selectionMode="single"
+                        dateFormat="dd/mm/yy"
+                        :showButtonBar="true"
+                        :showIcon="true"
+                        :manualInput="false"
+                        :monthNavigator="true"
+                        :yearNavigator="true"
+                        yearRange="2000:2100"
+                />
+            </div>
+            <div class="p-field p-col-12 p-sm p-md-4">
                 <label>Xuất tập tin:</label>
                 <span class="p-input-icon-right">
                     <Button type="button" @click="exportFile()" style="margin-right: 10px">Thực hiện</Button>
@@ -49,10 +64,13 @@
       const fileNameExport = ref("");
       const exportFileDetail = ref(false);
       const loadingBar = ref(false);
+      const time = ref(new Date());
         const exportFile = () =>{
             loadingBar.value = true;
             exportFileDetail.value = false;
-            VaccinationRepository.getExport()
+            console.log("################## date: " + time.value);
+            console.log("################## date: " + time.value.getTime()/1000);
+            VaccinationRepository.getExport(time.value.getTime()/1000)
                 .then((response) => {
                     fileNameExport.value = response.data;
                     exportFileDetail.value = true;
@@ -96,6 +114,7 @@
         downloadFile,
         exportFileDetail,
         loadingBar,
+          time,
       }
     }
 

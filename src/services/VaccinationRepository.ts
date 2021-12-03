@@ -13,8 +13,8 @@ import {MaDoiTuong} from "@/models/maDoiTuong";
 const resource = '/vaccination';
 
 export default new class{
-    getLists(): Promise<AxiosResponse<Ongtiem[]>>{
-        return Repository.get<Ongtiem[]>(`${resource}/dsthongtinongtiem`);
+    getLists(time: number): Promise<AxiosResponse<Ongtiem[]>>{
+        return Repository.get<Ongtiem[]>(`${resource}/dsthongtinongtiem/${time}`);
     }
     getListsInfor(maOngTiem: string): Promise<AxiosResponse<ThongTin[]>>{
         return Repository.get<ThongTin[]>(`${resource}/danhsachthongtin/${maOngTiem}`);
@@ -48,8 +48,8 @@ export default new class{
     getThongTin(id: number): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/thongtincuthe/${id}`);
     }
-    getExport(): Promise<AxiosResponse<any>>{
-        return Repository.get<any>(`${resource}/exportfile`);
+    getExport(time: number): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/exportfile/${time}`);
     }
     downloadFile(filename: string): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/DownloadResult/${filename}`);
