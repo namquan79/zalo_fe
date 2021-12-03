@@ -63,6 +63,18 @@ export default {
             detail: 'Đăng nhập thành công vào hệ thống',
             life: 1000
           });
+          AuthRepository.userPermission(login.value)
+                  .then((response) => {
+                    store.dispatch('setPermission', response.data.permission);
+                  })
+                  .catch(() => {
+                    toast.add({
+                      severity: 'error',
+                      summary: 'Đăng nhập',
+                      detail: 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập',
+                      life: 1000
+                    })
+                  })
           router.push({
             name: 'home'
           });

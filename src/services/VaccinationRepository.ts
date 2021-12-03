@@ -60,4 +60,7 @@ export default new class{
     createMaDoiTuong(maDoiTuong: MaDoiTuong): Promise<AxiosResponse<any>>{
         return Repository.post<any>(`${resource}/taomadoituong`, maDoiTuong);
     }
+    getAccountPermission(): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/getlistper`);
+    }
 }

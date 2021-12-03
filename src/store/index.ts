@@ -3,7 +3,8 @@ import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
   state: {
-    token: ''
+    token: '',
+    permission: '',
   },
   getters: {
     isLoggedIn (state): boolean {
@@ -16,6 +17,12 @@ export default createStore({
     },
     clearToken (state) {
       state.token = ''
+    },
+    setPermission (state, permisson) {
+      state.permission = permisson
+    },
+    clearPermission (state) {
+      state.permission = ''
     }
   },
   actions: {
@@ -24,6 +31,12 @@ export default createStore({
     },
     clearToken ({ commit }) {
       commit('clearToken')
+    },
+    setPermission ({ commit }, permission) {
+      commit('setPermission', permission)
+    },
+    clearPermission ({ commit }) {
+      commit('clearPermission')
     }
   },
   modules: {

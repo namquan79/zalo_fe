@@ -62,10 +62,38 @@ export default {
         url: '/downloadinfo'
       },
     ];
+    const adminMenu = [
+      // {
+      //   label:'Đăng ký',
+      //   icon:'pi pi-fw pi-user-plus',
+      //   url: '/register'
+      // },
+      {
+        label:'Thống kê',
+        icon:'pi pi-fw pi-list',
+        url: '/statistical'
+      },
+      {
+        label:'Thêm thông tin',
+        icon:'pi pi-fw pi-plus-circle',
+        url: '/addinfo'
+      },
+      {
+        label:'Xuất tập tin',
+        icon:'pi pi-fw pi-download',
+        url: '/downloadinfo'
+      },
+      {
+        label:'Thêm tài khoản',
+        icon:'pi pi-fw pi-user-plus',
+        url: '/registeruser'
+      },
+    ];
     const appMenu = computed(() => {
       if(props.isLoggedIn)
       {
-        return userMenu;
+        if(store.state.permission == "admin") return adminMenu;
+        else return userMenu;
       }
       else
       {
@@ -74,6 +102,7 @@ export default {
     });
     const logout = () => {
       store.dispatch('clearToken');
+      store.dispatch('clearPermission');
       router.push({
         name: 'login',
       });

@@ -7,6 +7,7 @@ import ShowListInfo from "@/pages/ShowListInfo.vue";
 import AddInfo from "@/pages/AddInfo.vue";
 import UpdateInfo from "@/pages/UpdateInfo.vue";
 import DownloadInfo from "@/pages/DownloadInfo.vue";
+import RegisterUserPage from "@/pages/RegisterUserPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -55,6 +56,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/downloadinfo',
     name: 'downloadinfo',
     component: DownloadInfo,
+    props: true
+  },
+  {
+    path: '/registeruser',
+    name: 'registeruser',
+    component: RegisterUserPage,
     props: true
   },
 ]

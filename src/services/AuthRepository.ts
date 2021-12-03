@@ -4,6 +4,7 @@ import { Login } from '../models/login'
 import { TokenModel } from '../models/token.model'
 import {Register} from "@/models/register";
 import PasswordModel from "@/models/password.model";
+import {UserPermission} from "@/models/permission.model";
 
 const resource = '/auth'
 
@@ -17,5 +18,8 @@ export default new class {
   }
   changePassword(changePassword: PasswordModel): Promise<any>{
     return Repository.post<TokenModel>(`${resource}/password`, changePassword);
+  }
+  userPermission(login: Login): Promise<AxiosResponse<UserPermission>>{
+    return Repository.post<UserPermission>(`${resource}/getpermission`, login);
   }
 }
