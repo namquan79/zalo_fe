@@ -21,7 +21,7 @@
                     </div>
                     <div class="p-field p-col-12 p-sm p-md-4">
                         <label>Duyệt danh sách ống tiêm</label>
-                        <Button type="button" icon="pi pi-plus-circle" label="Tìm danh sách ống tiêm" @click="getList()"/>
+                        <Button type="button" icon="pi pi-plus-circle" label="Tìm danh sách ống tiêm" @click="getList()" :disabled="!valid()"/>
                     </div>
                 </div>
             </div>
@@ -97,6 +97,9 @@
       const dateSelect = ref(new Date());
       const showTable = ref(false);
       const toast = useToast();
+        const valid = () => {
+            return dateSelect.value;
+        };
 
       VaccinationRepository.getListDonVi()
               .then((response) => {
@@ -163,7 +166,8 @@
         thongTin,
           dateSelect,
           getList,
-          showTable
+          showTable,
+          valid
       }
     }
 

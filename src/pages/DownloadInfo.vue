@@ -22,7 +22,7 @@
             <div class="p-field p-col-12 p-sm p-md-4">
                 <label>Xuất tập tin:</label>
                 <span class="p-input-icon-right">
-                    <Button type="button" @click="exportFile()" style="margin-right: 10px">Thực hiện</Button>
+                    <Button type="button" @click="exportFile()" style="margin-right: 10px" :disabled="!valid()">Thực hiện</Button>
                 </span>
             </div>
             <div class="p-field p-col-12 p-sm p-md-4" v-if="exportFileDetail">
@@ -108,6 +108,9 @@
                         life: 2500
                     })});
         };
+        const valid = () => {
+            return time.value;
+        };
 
       return {
         exportFile,
@@ -115,6 +118,7 @@
         exportFileDetail,
         loadingBar,
           time,
+          valid,
       }
     }
 
