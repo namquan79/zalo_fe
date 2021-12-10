@@ -82,7 +82,7 @@
             </div>
           <div class="p-field p-col-12 p-sm p-md-4">
             <label>Tạo ống tiêm mới</label>
-            <Button type="button" icon="pi pi-plus-circle" label="Thêm ống tiêm mới" @click="addOngTiem()"/>
+            <Button type="button" icon="pi pi-plus-circle" label="Thêm ống tiêm mới" @click="addOngTiem()" :disabled="!validOngTiem()"/>
           </div>
           <div class="p-field p-col-12 p-sm-12 p-md-12">
           </div>
@@ -183,6 +183,10 @@
             return maDoiTuong.value.maDoiTuong && maDoiTuong.value.ghiChu;
         };
 
+        const validOngTiem = () => {
+            return ongtiemshort.value.diaDiemLayMau && ongtiemshort.value.doiTuongLayMau && ngayChon.value;
+        };
+
       const add = () =>{
             VaccinationRepository.createDonVi(donVi.value)
                 .then((response) => {
@@ -206,7 +210,6 @@
       const addOngTiem = () => {
           //ongtiemshort.value.ngayChon = ngayChon.value.getTime()/1000;
           ongtiemshort.value.ngayChon = ngayChon.value;
-          console.log("@@@@@@@@@@@@################################ ongtiemshort: " + JSON.stringify(ongtiemshort.value));
         VaccinationRepository.createOngTiem(ongtiemshort.value)
                 .then((response) => {
                     toast.add({
@@ -218,7 +221,6 @@
                   ongTiem.value = response.data;
                   ngayTao.value = formatDateTime(ongTiem.value.ngayTao);
                   taoThanhCong.value = true;
-                 // console.log("##########$$$$$$$$$$$$$$$ addOngTiem: " + JSON.stringify(ongTiem.value));
                 })
                 .catch(err => {
                   toast.add({
@@ -267,6 +269,7 @@
           validObject,
           loadingBar,
           ngayChon,
+          validOngTiem,
       }
     }
 
