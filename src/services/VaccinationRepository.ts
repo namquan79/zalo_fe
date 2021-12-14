@@ -65,9 +65,9 @@ export default new class{
         return Repository.get<any>(`${resource}/getlistper`);
     }
     createDiaDiem(diaDiem: DiaDiem): Promise<AxiosResponse<any>>{
-        return Repository.post<any>(`${resource}/createplace`, diaDiem);
+        return Repository.post<any>(`${resource}/taodiadiem`, diaDiem);
     }
     getListDiaDiem(time: number): Promise<AxiosResponse<any>>{
-        return Repository.get<any>(`${resource}/listplace/${time}`);
+        return Repository.get<any>(`${resource}/dsdiadiem/${time}`);
     }
 }
