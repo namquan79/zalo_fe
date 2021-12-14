@@ -9,12 +9,13 @@ import District from "@/models/district.models";
 import Ward from "@/models/Ward.models";
 import {Ongtiemshort} from "@/models/ongtiemshort";
 import {MaDoiTuong} from "@/models/maDoiTuong";
+import {DiaDiem} from "@/models/diaDiem";
 
 const resource = '/vaccination';
 
 export default new class{
-    getLists(time: number): Promise<AxiosResponse<Ongtiem[]>>{
-        return Repository.get<Ongtiem[]>(`${resource}/dsthongtinongtiem/${time}`);
+    getLists(time: number, idDiaDiem: number): Promise<AxiosResponse<Ongtiem[]>>{
+        return Repository.get<Ongtiem[]>(`${resource}/dsthongtinongtiem/${time}/${idDiaDiem}`);
     }
     getListsInfor(maOngTiem: string): Promise<AxiosResponse<ThongTin[]>>{
         return Repository.get<ThongTin[]>(`${resource}/danhsachthongtin/${maOngTiem}`);
@@ -48,8 +49,8 @@ export default new class{
     getThongTin(id: number): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/thongtincuthe/${id}`);
     }
-    getExport(time: number): Promise<AxiosResponse<any>>{
-        return Repository.get<any>(`${resource}/exportfile/${time}`);
+    getExport(time: number, idDiaDiem: number): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/exportfile/${time}/${idDiaDiem}`);
     }
     downloadFile(filename: string): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/DownloadResult/${filename}`);
@@ -62,5 +63,11 @@ export default new class{
     }
     getAccountPermission(): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/getlistper`);
+    }
+    createDiaDiem(diaDiem: DiaDiem): Promise<AxiosResponse<any>>{
+        return Repository.post<any>(`${resource}/createplace`, diaDiem);
+    }
+    getListDiaDiem(time: number): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/listplace/${time}`);
     }
 }

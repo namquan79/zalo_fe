@@ -1,5 +1,5 @@
 export interface Ongtiemshort{
     doiTuongLayMau: string;
-    diaDiemLayMau: string;
+    idDiaDiem: number;
     ngayChon: Date;
 }

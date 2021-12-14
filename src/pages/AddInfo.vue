@@ -1,6 +1,36 @@
 <template>
   <!--  </TabPanel>-->
-
+    <Panel header="Tạo địa chỉ tiêm">
+        <div class="card">
+            <div class="p-fluid">
+                <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                        <label>Nhập tên địa chỉ:</label>
+                        <InputText id="diachi" :filter="true" :showClear="true" type="text" v-model="diaDiem.diaChi" placeholder="Vui lòng nhập địa chỉ" style="margin-bottom: 0.5em;text-align: center"/>
+                    </div>
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                        <label for="dateselect">Vui lòng lựa chọn ngày:</label>
+                        <Calendar
+                                id="locationdateselect"
+                                v-model="timeLocation"
+                                selectionMode="single"
+                                dateFormat="dd/mm/yy"
+                                :showButtonBar="true"
+                                :showIcon="true"
+                                :manualInput="false"
+                                :monthNavigator="true"
+                                :yearNavigator="true"
+                                yearRange="2000:2100"
+                        />
+                    </div>
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                        <label>Thêm địa chỉ</label>
+                        <Button type="button" icon="pi pi-plus-circle" label="Thêm địa chỉ" @click="addLocation()"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Panel>
   <Panel header="Tạo đơn vị tiêm">
     <div class="card">
       <div class="p-fluid">
@@ -54,9 +84,10 @@
       <div class="p-fluid">
         <div class="p-fluid p-formgrid p-grid">
             <div class="p-field p-col-12 p-sm p-md-4">
-                <label>Nhập địa điểm lấy mẫu:</label>
+                <label>Chọn địa điểm lấy mẫu:</label>
                 <span class="p-input-icon-right">
-                <InputText id="diadiem" :filter="true" :showClear="true" type="text" v-model="ongtiemshort.diaDiemLayMau" placeholder="Vui lòng nhập địa điểm..." style="margin-bottom: 0.5em;text-align: center"/>
+                    <Dropdown id="donvi" v-model="idDiaDiem" :options="listDiaDiem" optionLabel="diaChi" optionValue="idDiaDiem" placeholder="Vui lòng chọn địa điểm">
+                    </Dropdown>
                 </span>
             </div>
             <div class="p-field p-col-12 p-sm p-md-4">
@@ -78,6 +109,7 @@
                         :monthNavigator="true"
                         :yearNavigator="true"
                         yearRange="2000:2100"
+                        @date-select="loadListDiaDiem()"
                 />
             </div>
           <div class="p-field p-col-12 p-sm p-md-4">
@@ -142,6 +174,8 @@
   import {Ongtiemshort} from "@/models/ongtiemshort";
   import axios from "axios";
   import {MaDoiTuong} from "@/models/maDoiTuong";
+  import {DiaDiem} from "@/models/diaDiem";
+  import {DiaDiemDetail} from "@/models/diaDiemDetail";
 
   export default {
     setup() {
@@ -156,6 +190,11 @@
       const maDoiTuong = ref({} as MaDoiTuong);
       const loadingBar = ref(false);
       const ngayChon = ref(new Date());
+      const diaDiem = ref({} as DiaDiem);
+      const timeLocation = ref(new Date());
+      const listDiaDiem = ref([] as DiaDiemDetail[]);
+      const idDiaDiem = ref(0);
+
 
       const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
@@ -184,7 +223,7 @@
         };
 
         const validOngTiem = () => {
-            return ongtiemshort.value.diaDiemLayMau && ongtiemshort.value.doiTuongLayMau && ngayChon.value;
+            return (idDiaDiem.value != 0) && ongtiemshort.value.doiTuongLayMau && ngayChon.value;
         };
 
       const add = () =>{
@@ -210,6 +249,7 @@
       const addOngTiem = () => {
           //ongtiemshort.value.ngayChon = ngayChon.value.getTime()/1000;
           ongtiemshort.value.ngayChon = ngayChon.value;
+          ongtiemshort.value.idDiaDiem = idDiaDiem.value;
         VaccinationRepository.createOngTiem(ongtiemshort.value)
                 .then((response) => {
                     toast.add({
@@ -249,6 +289,44 @@
                   })});
       };
 
+      const addLocation = () => {
+          diaDiem.value.thoiGian = timeLocation.value;
+          VaccinationRepository.createDiaDiem(diaDiem.value)
+              .then((response) => {
+                  toast.add({
+                      severity: 'success',
+                      summary: 'Thành công',
+                      detail:'Thông tin địa điểm đã được tạo thành công',
+                      life: 2500
+                  });
+                  loadListDiaDiem();
+              })
+              .catch(err => {
+                  toast.add({
+                      severity: 'error',
+                      summary: 'Lỗi',
+                      detail:err.response.data,
+                      life: 2500
+                  })});
+      };
+
+        const loadListDiaDiem = () => {
+            idDiaDiem.value = 0;
+            VaccinationRepository.getListDiaDiem(ngayChon.value.getTime()/1000)
+                .then((response) => {
+                    listDiaDiem.value = response.data;
+                })
+                .catch(err => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Lỗi',
+                        detail:err.response.data,
+                        life: 2500
+                    })});
+        };
+
+
+        loadListDiaDiem();
 
 
       return {
@@ -270,6 +348,12 @@
           loadingBar,
           ngayChon,
           validOngTiem,
+          diaDiem,
+          timeLocation,
+          addLocation,
+          listDiaDiem,
+          idDiaDiem,
+          loadListDiaDiem,
       }
     }
 

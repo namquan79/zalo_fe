@@ -17,7 +17,15 @@
                         :monthNavigator="true"
                         :yearNavigator="true"
                         yearRange="2000:2100"
+                        @date-select="loadListDiaDiem()"
                 />
+            </div>
+            <div class="p-field p-col-12 p-sm p-md-4">
+                <label>Chọn địa điểm lấy mẫu:</label>
+                <span class="p-input-icon-right">
+                    <Dropdown id="donvi" v-model="idDiaDiem" :options="listDiaDiem" optionLabel="diaChi" optionValue="idDiaDiem" placeholder="Vui lòng chọn địa điểm">
+                    </Dropdown>
+                </span>
             </div>
             <div class="p-field p-col-12 p-sm p-md-4">
                 <label>Xuất tập tin:</label>
@@ -57,6 +65,7 @@
   import {Ongtiemshort} from "@/models/ongtiemshort";
   import axios from "axios";
   import {MaDoiTuong} from "@/models/maDoiTuong";
+  import {DiaDiemDetail} from "@/models/diaDiemDetail";
 
   export default {
     setup() {
@@ -65,12 +74,12 @@
       const exportFileDetail = ref(false);
       const loadingBar = ref(false);
       const time = ref(new Date());
+      const idDiaDiem = ref(0);
+        const listDiaDiem = ref([] as DiaDiemDetail[]);
         const exportFile = () =>{
             loadingBar.value = true;
             exportFileDetail.value = false;
-            console.log("################## date: " + time.value);
-            console.log("################## date: " + time.value.getTime()/1000);
-            VaccinationRepository.getExport(time.value.getTime()/1000)
+            VaccinationRepository.getExport(time.value.getTime()/1000, idDiaDiem.value)
                 .then((response) => {
                     fileNameExport.value = response.data;
                     exportFileDetail.value = true;
@@ -111,6 +120,23 @@
         const valid = () => {
             return time.value;
         };
+        const loadListDiaDiem = () => {
+            idDiaDiem.value = 0;
+            VaccinationRepository.getListDiaDiem(time.value.getTime()/1000)
+                .then((response) => {
+                    listDiaDiem.value = response.data;
+                })
+                .catch(err => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Lỗi',
+                        detail:err.response.data,
+                        life: 2500
+                    })});
+        };
+
+
+        loadListDiaDiem();
 
       return {
         exportFile,
@@ -119,6 +145,9 @@
         loadingBar,
           time,
           valid,
+          idDiaDiem,
+          loadListDiaDiem,
+          listDiaDiem
       }
     }
 

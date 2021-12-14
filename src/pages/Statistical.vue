@@ -17,7 +17,15 @@
                             :monthNavigator="true"
                             :yearNavigator="true"
                             yearRange="2000:2100"
+                            @date-select="loadListDiaDiem()"
                     />
+                    </div>
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                        <label>Chọn địa điểm lấy mẫu:</label>
+                        <span class="p-input-icon-right">
+                    <Dropdown id="donvi" v-model="idDiaDiem" :options="listDiaDiem" optionLabel="diaChi" optionValue="idDiaDiem" placeholder="Vui lòng chọn địa điểm">
+                    </Dropdown>
+                </span>
                     </div>
                     <div class="p-field p-col-12 p-sm p-md-4">
                         <label>Duyệt danh sách ống tiêm</label>
@@ -89,6 +97,7 @@
   import {FilterMatchMode, FilterOperator} from "primevue/api";
   import {DonViCreate} from "@/models/donViCreate";
   import {useToast} from "primevue/usetoast";
+  import {DiaDiemDetail} from "@/models/diaDiemDetail";
 
   export default {
     setup() {
@@ -97,6 +106,8 @@
       const dateSelect = ref(new Date());
       const showTable = ref(false);
       const toast = useToast();
+        const listDiaDiem = ref([] as DiaDiemDetail[]);
+        const idDiaDiem = ref(0);
         const valid = () => {
             return dateSelect.value;
         };
@@ -109,7 +120,7 @@
               .catch();
 
       const getList = () => {
-          VaccinationRepository.getLists(dateSelect.value.getTime()/1000)
+          VaccinationRepository.getLists(dateSelect.value.getTime()/1000, idDiaDiem.value)
               .then((response) => {
                   showTable.value = true;
                   dsOngTiem.value = response.data;
@@ -129,6 +140,7 @@
                       detail:err.response.data,
                       life: 2500
                   })});
+          showTable.value = false;
       }
 
       const formatDateTime = (date) => {
@@ -156,7 +168,22 @@
 
       const checkValue = (val) => {
         return val == 0? false : true;
-      }
+      };
+        const loadListDiaDiem = () => {
+            idDiaDiem.value = 0;
+            VaccinationRepository.getListDiaDiem(dateSelect.value.getTime()/1000)
+                .then((response) => {
+                    listDiaDiem.value = response.data;
+                })
+                .catch(err => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Lỗi',
+                        detail:err.response.data,
+                        life: 2500
+                    })});
+        };
+        loadListDiaDiem();
       return {
         dsOngTiem,
         formatDateTime,
@@ -167,7 +194,10 @@
           dateSelect,
           getList,
           showTable,
-          valid
+          valid,
+          loadListDiaDiem,
+          listDiaDiem,
+          idDiaDiem,
       }
     }
 
