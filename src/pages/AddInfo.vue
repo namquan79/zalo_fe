@@ -106,7 +106,7 @@
             <div class="p-field p-col-12 p-sm p-md-4">
                 <label>Chọn địa điểm lấy mẫu:</label>
                 <span class="p-input-icon-right">
-                    <Dropdown id="donvi" v-model="idDiaDiem" :options="listDiaDiem" optionLabel="diaChi" optionValue="idDiaDiem" placeholder="Vui lòng chọn địa điểm">
+                    <Dropdown id="donvi" v-model="idDiaDiem" :options="listDiaDiem" optionLabel="diaChi" optionValue="idDiaDiem" placeholder="Vui lòng chọn địa điểm" emptyMessage="Không có dữ liệu">
                     </Dropdown>
                 </span>
             </div>
