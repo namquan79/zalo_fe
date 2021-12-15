@@ -9,6 +9,10 @@
                         <InputText id="diachi" :filter="true" :showClear="true" type="text" v-model="diaDiem.diaChi" placeholder="Vui lòng nhập địa chỉ" style="margin-bottom: 0.5em;text-align: center"/>
                     </div>
                     <div class="p-field p-col-12 p-sm p-md-4">
+                        <label>Nhập mã địa chỉ:</label>
+                        <InputText id="madiachi" :filter="true" :showClear="true" type="text" v-model="diaDiem.maDiaChi" placeholder="Vui lòng nhập mã địa chỉ" style="margin-bottom: 0.5em;text-align: center"/>
+                    </div>
+                    <div class="p-field p-col-12 p-sm p-md-4">
                         <label for="dateselect">Vui lòng lựa chọn ngày:</label>
                         <Calendar
                                 id="locationdateselect"
@@ -25,7 +29,7 @@
                     </div>
                     <div class="p-field p-col-12 p-sm p-md-4">
                         <label>Thêm địa chỉ</label>
-                        <Button type="button" icon="pi pi-plus-circle" label="Thêm địa chỉ" @click="addLocation()"/>
+                        <Button type="button" icon="pi pi-plus-circle" label="Thêm địa chỉ" @click="addLocation()" :disabled="!validDiaDiem()"/>
                     </div>
                 </div>
             </div>
@@ -68,8 +72,24 @@
                     <div class="p-field p-col-12 p-sm p-md-4">
                         <label>Ghi rõ thông tin đối tượng:</label>
                         <span class="p-input-icon-right">
-                <InputText id="ghiChu" :filter="true" :showClear="true" type="text" v-model="maDoiTuong.ghiChu" placeholder="Vui lòng ghi rõ thông tin đối tượng" style="margin-bottom: 0.5em;text-align: center"/>
-                </span>
+                            <InputText id="ghiChu" :filter="true" :showClear="true" type="text" v-model="maDoiTuong.ghiChu" placeholder="Vui lòng ghi rõ thông tin đối tượng" style="margin-bottom: 0.5em;text-align: center"/>
+                        </span>
+                    </div>
+
+                    <div class="p-field p-col-12 p-sm p-md-4">
+                        <label for="dateObject">Vui lòng lựa chọn ngày:</label>
+                        <Calendar
+                                id="objectDate"
+                                v-model="ngayChonDT"
+                                selectionMode="single"
+                                dateFormat="dd/mm/yy"
+                                :showButtonBar="true"
+                                :showIcon="true"
+                                :manualInput="false"
+                                :monthNavigator="true"
+                                :yearNavigator="true"
+                                yearRange="2000:2100"
+                        />
                     </div>
                     <div class="p-field p-col-12 p-sm p-md-4">
                         <label>Xác nhận</label>
@@ -185,11 +205,11 @@
       const ngayTao = ref("");
       const taoThanhCong = ref(false);
       const ongtiemshort = ref({} as Ongtiemshort);
-      const fileNameExport = ref("");
       const exportFileDetail = ref(false);
       const maDoiTuong = ref({} as MaDoiTuong);
       const loadingBar = ref(false);
       const ngayChon = ref(new Date());
+      const ngayChonDT = ref(new Date());
       const diaDiem = ref({} as DiaDiem);
       const timeLocation = ref(new Date());
       const listDiaDiem = ref([] as DiaDiemDetail[]);
@@ -219,11 +239,15 @@
       };
 
         const validObject = () => {
-            return maDoiTuong.value.maDoiTuong && maDoiTuong.value.ghiChu;
+            return maDoiTuong.value.maDoiTuong && maDoiTuong.value.ghiChu && ngayChonDT.value;
         };
 
         const validOngTiem = () => {
             return (idDiaDiem.value != 0) && ongtiemshort.value.doiTuongLayMau && ngayChon.value;
+        };
+
+        const validDiaDiem = () => {
+            return diaDiem.value.diaChi && diaDiem.value.maDiaChi && timeLocation.value;
         };
 
       const add = () =>{
@@ -271,6 +295,7 @@
                   })});
       };
       const addMaDoiTuong = () => {
+          maDoiTuong.value.thoiGian = ngayChonDT.value;
         VaccinationRepository.createMaDoiTuong(maDoiTuong.value)
                 .then((response) => {
                     toast.add({
@@ -354,6 +379,8 @@
           listDiaDiem,
           idDiaDiem,
           loadListDiaDiem,
+          validDiaDiem,
+          ngayChonDT,
       }
     }
 
