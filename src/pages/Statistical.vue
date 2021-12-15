@@ -109,7 +109,7 @@
         const listDiaDiem = ref([] as DiaDiemDetail[]);
         const idDiaDiem = ref(0);
         const valid = () => {
-            return dateSelect.value;
+            return dateSelect.value && idDiaDiem.value;
         };
 
       VaccinationRepository.getListDonVi()
