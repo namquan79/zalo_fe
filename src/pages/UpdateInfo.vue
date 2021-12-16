@@ -40,7 +40,7 @@
                 :manualInput="false"
                 :monthNavigator="true"
                 :yearNavigator="true"
-                yearRange="2000:2100"
+                yearRange="1900:2050"
         />
       </div>
       <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
