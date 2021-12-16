@@ -11,4 +11,5 @@ export interface ThongTinUpdate{
     maDoiTuong: string;
     ghiChu: string;
     thoiGian: Date;
+    ngaySinh: Date;
 }

@@ -28,6 +28,21 @@
         <Dropdown id="maDoiTuong" :filter="true" :showClear="true" v-model="thongTinUpdate.maDoiTuong" :options="thongtinDoiTuong" optionLabel="maDoiTuong" optionValue="maDoiTuong" placeholder=" - Chọn mã đối tượng -" style="text-align: center">
         </Dropdown>
       </div>
+      <div class="p-field p-col-12 p-sm p-md-4">
+        <label for="dateBirthday">Chọn ngày sinh:</label>
+        <Calendar
+                id="dateselect"
+                v-model="thongTinUpdate.ngaySinh"
+                selectionMode="single"
+                dateFormat="dd/mm/yy"
+                :showButtonBar="true"
+                :showIcon="true"
+                :manualInput="false"
+                :monthNavigator="true"
+                :yearNavigator="true"
+                yearRange="2000:2100"
+        />
+      </div>
       <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
       </div>
       <div class="p-field p-col-12 p-sm p-md-4">
@@ -155,14 +170,17 @@ export default {
       thongTinUpdate.value.thanhPho = province.value;
       thongTinUpdate.value.quan = district.value;
       thongTinUpdate.value.phuong = ward.value;
+      console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate ngaysinh: " + JSON.stringify(thongTinUpdate.value.ngaySinh));
       thongtinDoiTuong.value.filter(x => {
         if(x.maDoiTuong == thongTinUpdate.value.maDoiTuong){
           thongTinUpdate.value.maDoiTuong = thongTinUpdate.value.maDoiTuong;
           thongTinUpdate.value.ghiChu = x.ghiChu;
         }
-      })
+      });
+      console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate: " + JSON.stringify(thongTinUpdate.value));
       VaccinationRepository.updateThongTin(thongTinUpdate.value)
                 .then(response => {
+                  console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate 222222: " + JSON.stringify(thongTinUpdate.value));
                   toast.add({
                     severity: 'success',
                     summary: 'Thành Công',
