@@ -17,7 +17,7 @@ export default new class{
     getLists(time: number, idDiaDiem: number): Promise<AxiosResponse<Ongtiem[]>>{
         return Repository.get<Ongtiem[]>(`${resource}/dsthongtinongtiem/${time}/${idDiaDiem}`);
     }
-    getListsInfor(maOngTiem: string): Promise<AxiosResponse<ThongTin[]>>{
+    getListsInfo(maOngTiem: string): Promise<AxiosResponse<ThongTin[]>>{
         return Repository.get<ThongTin[]>(`${resource}/danhsachthongtin/${maOngTiem}`);
     }
     createDonVi(donViCreate: DonViCreate): Promise<AxiosResponse<DonViCreate>>{

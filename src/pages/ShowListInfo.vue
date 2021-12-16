@@ -23,6 +23,14 @@
         <Column field="soDienThoai" header="Số điện thoại"></Column>
         <Column field="diaChi" header="Địa chỉ" sortable></Column>
         <Column field="maOngTiem" header="Mã ống tiêm" sortable></Column>
+        <Column field="ngaySinh" dataType="date" header="Ngày sinh" sortable>
+          <template #body="{data}">
+            {{formatDateTime2(data.ngaySinh)}}
+          </template>
+          <template #filter="{filterModel}">
+            <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
+          </template>
+        </Column>
         <Column field="thoiGian" dataType="date" header="Thời gian" sortable>
           <template #body="{data}">
             {{formatDateTime(data.thoiGian)}}
@@ -68,7 +76,7 @@
     setup(props) {
       const dsThongtin = ref([] as ThongTin[]);
 
-      VaccinationRepository.getListsInfor(props.id)
+      VaccinationRepository.getListsInfo(props.id)
               .then((response) => {
                   dsThongtin.value = response.data;
               })
@@ -76,6 +84,10 @@
 
       const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
+      };
+
+      const formatDateTime2 = (date) => {
+        return moment(String(date)).format('DD/MM/YYYY');
       };
 
       const filters = ref({
@@ -102,6 +114,7 @@
         filters,
         clearFilter,
         editInfo,
+        formatDateTime2,
       }
     }
 

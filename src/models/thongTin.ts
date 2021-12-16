@@ -4,4 +4,5 @@ export interface ThongTin{
     diaChi: string;
     maOngTiem: string;
     thoiGian: Date;
+    ngaySinh: Date;
 }
