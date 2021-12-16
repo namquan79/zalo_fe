@@ -90,20 +90,11 @@ export default {
     const confirm = useConfirm();
     const maDoiTuong = ref("");
 
-    VaccinationRepository.getThongTinDoiTuong()
-            .then(response => {
-              thongtinDoiTuong.value = response.data;
-            })
-            .catch(err => {
-              toast.add({
-                severity: 'error',
-                summary: 'Lỗi',
-                detail:err.response.data,
-                life: 2500
-              });
-            })
-            .finally(()=>{
-            });
+
+    const toTimestamp = (strDate) => {
+      const dt = Date.parse(strDate);
+      return dt / 1000;
+    }
 
     VaccinationRepository.getThongTin(props.id)
             .then((response) => {
@@ -111,6 +102,21 @@ export default {
               province.value = thongTinUpdate.value.thanhPho;
               district.value = thongTinUpdate.value.quan;
               ward.value = thongTinUpdate.value.phuong;
+
+              VaccinationRepository.getThongTinDoiTuongById(thongTinUpdate.value.id)
+                      .then(response => {
+                        thongtinDoiTuong.value = response.data;
+                      })
+                      .catch(err => {
+                        toast.add({
+                          severity: 'error',
+                          summary: 'Lỗi',
+                          detail:err.response.data,
+                          life: 2500
+                        });
+                      })
+                      .finally(()=>{
+                      });
               selectProvince();
               selectDistrict();
             })

@@ -10,4 +10,5 @@ export interface ThongTinUpdate{
     diaChiCuThe: string;
     maDoiTuong: string;
     ghiChu: string;
+    thoiGian: Date;
 }

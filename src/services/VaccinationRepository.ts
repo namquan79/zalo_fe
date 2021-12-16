@@ -58,6 +58,9 @@ export default new class{
     getThongTinDoiTuong(): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/danhsachmadoituong`);
     }
+    getThongTinDoiTuongById(id: number): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/danhsachmadoituongid/${id}`);
+    }
     createMaDoiTuong(maDoiTuong: MaDoiTuong): Promise<AxiosResponse<any>>{
         return Repository.post<any>(`${resource}/taomadoituong`, maDoiTuong);
     }
