@@ -118,7 +118,7 @@
                     })});
         };
         const valid = () => {
-            return time.value;
+            return time.value&&idDiaDiem.value;
         };
         const loadListDiaDiem = () => {
             idDiaDiem.value = 0;
