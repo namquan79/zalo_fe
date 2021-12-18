@@ -28,7 +28,7 @@
         <Dropdown id="maDoiTuong" :filter="true" :showClear="true" v-model="thongTinUpdate.maDoiTuong" :options="thongtinDoiTuong" optionLabel="maDoiTuong" optionValue="maDoiTuong" placeholder=" - Chọn mã đối tượng -" style="text-align: center">
         </Dropdown>
       </div>
-      <div class="p-field p-col-12 p-sm p-md-4">
+      <div class="p-field p-col-12 p-sm p-md-6">
         <label for="dateBirthday">Chọn ngày sinh:</label>
         <Calendar
                 id="dateselect"

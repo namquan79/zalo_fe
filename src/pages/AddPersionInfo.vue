@@ -38,7 +38,7 @@
         <Dropdown id="maOngtiem" :filter="true" :showClear="true" v-model="thongTinCreate.maOngTiem" :options="listOngTiem" optionLabel="maOngTiem" optionValue="maOngTiem" placeholder=" - Chọn mã ống tiêm -" style="text-align: center">
         </Dropdown>
       </div>
-      <div class="p-field p-col-12 p-sm p-md-4">
+      <div class="p-field p-col-12 p-sm p-md-6">
         <label for="dateBirthday">Chọn ngày sinh:</label>
         <Calendar
                 id="dateselect"
