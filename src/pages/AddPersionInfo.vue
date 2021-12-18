@@ -1,38 +1,48 @@
 <template>
   <ConfirmPopup></ConfirmPopup>
-  <Panel header="Cập nhật thông tin người được xét nghiệm">
+  <Panel header="Thêm thông tin người được xét nghiệm">
     <div class="p-fluid p-formgrid p-grid">
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Họ và tên</label>
-        <InputText id="fullname" type="text" v-model="thongTinUpdate.ten" style="text-align: center"/>
+        <InputText id="fullname" type="text" v-model="thongTinCreate.ten" style="text-align: center"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Số điện thoại</label>
-        <InputText id="username" type="text" v-model="thongTinUpdate.soDienThoai" style="text-align: center"/>
+        <InputText id="username" type="text" v-model="thongTinCreate.soDienThoai" style="text-align: center"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Địa chỉ</label>
-        <InputText id="username" type="text" v-model="thongTinUpdate.diaChiCuThe" style="text-align: center"/>
+        <InputText id="username" type="text" v-model="thongTinCreate.diaChiCuThe" style="text-align: center"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Giới tính</label>
-        <Dropdown id="sex" v-model="thongTinUpdate.gioiTinh" :options="gioiTinh" optionLabel="value" optionValue="value">
+        <Dropdown id="sex" v-model="thongTinCreate.gioiTinh" :options="gioiTinh" optionLabel="value" optionValue="value">
         </Dropdown>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>CMND/CCCD/Passport</label>
-        <InputText id="cmnd" type="text" v-model="thongTinUpdate.cmnd" style="text-align: center"/>
+        <InputText id="cmnd" type="text" v-model="thongTinCreate.cmnd" style="text-align: center"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Mã đối tượng được lấy mẫu</label>
-        <Dropdown id="maDoiTuong" :filter="true" :showClear="true" v-model="thongTinUpdate.maDoiTuong" :options="thongtinDoiTuong" optionLabel="maDoiTuong" optionValue="maDoiTuong" placeholder=" - Chọn mã đối tượng -" style="text-align: center">
+        <Dropdown id="maDoiTuong" :filter="true" :showClear="true" v-model="thongTinCreate.maDoiTuong" :options="thongtinDoiTuong" optionLabel="maDoiTuong" optionValue="maDoiTuong" placeholder=" - Chọn mã đối tượng -" style="text-align: center">
+        </Dropdown>
+      </div>
+      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+        <label>Địa điểm lấy mẫu</label>
+        <Dropdown id="diadiem" :filter="true" :showClear="true" v-model="idDiaDiem" :options="listDiaDiem" optionLabel="diaChi" optionValue="idDiaDiem" @change="getListOngTiem" placeholder=" - Chọn địa chỉ lấy mẫu -" style="text-align: center">
+        </Dropdown>
+      </div>
+      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+        <label>Chọn mã ống tiêm</label>
+        <Dropdown id="maOngtiem" :filter="true" :showClear="true" v-model="thongTinCreate.maOngTiem" :options="listOngTiem" optionLabel="maOngTiem" optionValue="maOngTiem" placeholder=" - Chọn mã ống tiêm -" style="text-align: center">
         </Dropdown>
       </div>
       <div class="p-field p-col-12 p-sm p-md-4">
         <label for="dateBirthday">Chọn ngày sinh:</label>
         <Calendar
                 id="dateselect"
-                v-model="thongTinUpdate.ngaySinh"
+                v-model="timeSelect"
                 selectionMode="single"
                 dateFormat="dd/mm/yy"
                 :showButtonBar="true"
@@ -59,10 +69,8 @@
       </div>
     </div>
 <!--    <div class="p-field p-col-12 p-sm p-md-4">-->
-    <Button label="Cập nhật" icon="pi pi-user-edit" :disabled="!valid()" @click="update()"  style="margin-right: 20px"/>
+    <Button label="Thêm" icon="pi pi-user-plus" :disabled="!valid()" @click="add()"  style="margin-right: 20px"/>
 
-
-    <Button label="Xoá" class="p-button-danger"  icon="pi pi-user-minus" iconPos="left" @click="del($event)" />
 <!--    </div>-->
   </Panel>
 </template>
@@ -83,11 +91,12 @@ import {ThongTinUpdate} from "@/models/thongTinUpdate";
 import VaccinationRepository from "@/services/VaccinationRepository";
 import {useConfirm} from "primevue/useconfirm";
 import {ThongTinDoiTuong} from "@/models/thongTinDoiTuong";
+import {ThongTinCreate} from "@/models/thongTinCreate";
+import {DiaDiemDetail} from "@/models/diaDiemDetail";
+import {Ongtiem} from "@/models/ongtiem";
+import moment from 'moment';
 
 export default {
-  props: {
-    id: String,
-  },
   setup(props){
     const toast = useToast();
     const provinces = ref({} as Province[]);
@@ -96,7 +105,7 @@ export default {
     const province = ref(48);
     const district = ref(0);
     const ward = ref(0);
-    const thongTinUpdate = ref({} as ThongTinUpdate);
+    const thongTinCreate = ref({} as ThongTinCreate);
     const gioiTinh = ref([
       {value: "Nam"},
       {value: "Nữ"},
@@ -104,40 +113,61 @@ export default {
     const thongtinDoiTuong = ref([] as ThongTinDoiTuong[]);
     const confirm = useConfirm();
     const maDoiTuong = ref("");
-
+    const idDiaDiem = ref(0);
+    const listDiaDiem = ref([] as DiaDiemDetail[]);
+    const listOngTiem = ref([] as Ongtiem[]);
 
     const toTimestamp = (strDate) => {
       const dt = Date.parse(strDate);
       return dt / 1000;
     }
 
-    VaccinationRepository.getThongTin(props.id)
-            .then((response) => {
-              thongTinUpdate.value = response.data;
-              province.value = thongTinUpdate.value.thanhPho;
-              district.value = thongTinUpdate.value.quan;
-              ward.value = thongTinUpdate.value.phuong;
-
-              VaccinationRepository.getThongTinDoiTuongById(thongTinUpdate.value.id)
-                      .then(response => {
-                        thongtinDoiTuong.value = response.data;
-                      })
-                      .catch(err => {
-                        toast.add({
-                          severity: 'error',
-                          summary: 'Lỗi',
-                          detail:err.response.data,
-                          life: 2500
-                        });
-                      })
-                      .finally(()=>{
-                      });
-              selectProvince();
-              selectDistrict();
+    const formatDateTime = (date) => {
+      return moment(String(date)).format('YYYY-MM-DD');
+    };
+    const time = ref(new Date);
+    const timeSelect = ref(new Date);
+    VaccinationRepository.getThongTinDoiTuong(time.value.getTime()/1000)
+            .then(response => {
+              thongtinDoiTuong.value = response.data;
             })
-            .catch();
-    const store = useStore();
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              });
+            })
+            .finally(()=>{
+            });
 
+    VaccinationRepository.getListDiaDiem(time.value.getTime()/1000)
+            .then((response) => {
+              listDiaDiem.value = response.data;
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              })});
+
+    const getListOngTiem = () => {
+      VaccinationRepository.getListMaOngTiem(time.value.getTime()/1000, idDiaDiem.value)
+      .then((response) => {
+        listOngTiem.value = response.data;
+        console.log("###############$$$$$$$$$$$$$$$$$$$$$$ listOngTiem: " + JSON.stringify(listOngTiem.value));
+      })
+      .catch(err => {
+        toast.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail:err.response.data,
+          life: 2500
+        })});
+    }
     // if(!(store.state.permission == 'mster')){
     //   router.push({
     //     name: 'home'
@@ -157,7 +187,7 @@ export default {
               })
               .catch();
     };
-
+    selectProvince();
     const selectDistrict = () => {
 
       VaccinationRepository.getWard(district.value)
@@ -166,30 +196,31 @@ export default {
               })
               .catch();
     };
-    const update = () => {
-      thongTinUpdate.value.thanhPho = province.value;
-      thongTinUpdate.value.quan = district.value;
-      thongTinUpdate.value.phuong = ward.value;
-      console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate ngaysinh: " + JSON.stringify(thongTinUpdate.value.ngaySinh));
+    const add = () => {
+      thongTinCreate.value.thanhPho = province.value;
+      thongTinCreate.value.quan = district.value;
+      thongTinCreate.value.phuong = ward.value;
+      thongTinCreate.value.ngaySinh = formatDateTime(timeSelect.value);
+      console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate ngaysinh: " + JSON.stringify(thongTinCreate.value.ngaySinh));
       thongtinDoiTuong.value.filter(x => {
-        if(x.maDoiTuong == thongTinUpdate.value.maDoiTuong){
-          thongTinUpdate.value.maDoiTuong = x.maDoiTuong;
-          thongTinUpdate.value.ghiChu = x.ghiChu;
+        if(x.maDoiTuong == thongTinCreate.value.maDoiTuong){
+          thongTinCreate.value.maDoiTuong = x.maDoiTuong;
+          thongTinCreate.value.ghiChu = x.ghiChu;
         }
       });
-      console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate: " + JSON.stringify(thongTinUpdate.value));
-      VaccinationRepository.updateThongTin(thongTinUpdate.value)
+
+      console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate: " + JSON.stringify(thongTinCreate.value));
+      VaccinationRepository.createThongTin(thongTinCreate.value)
                 .then(response => {
-                  console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate 222222: " + JSON.stringify(thongTinUpdate.value));
+                  console.log("##################$$$$$$$$$$$$$$$$ update thongTinUpdate 222222: " + JSON.stringify(thongTinCreate.value));
                   toast.add({
                     severity: 'success',
                     summary: 'Thành Công',
                     detail: 'Cập nhật thông tin tiêm chủng thành công.',
                     life: 2500
                   });
-                  router.push({
-                    name: 'home',
-                  });
+                  const temp = ref({} as ThongTinCreate);
+                  thongTinCreate.value = temp.value;
                 })
                 .catch(err => {
                   toast.add({
@@ -202,45 +233,23 @@ export default {
                 .finally(()=>{
                 });
     };
-    const del = (event) => {
-      confirm.require({
-        target: event.currentTarget,
-        message: 'Bạn có chắc muốn xoá tài khoản này không?',
-        icon: 'pi pi-info-circle',
-        acceptClass: 'p-button-danger',
-        rejectClass: 'p-button-outlined',
-        acceptLabel: 'Đồng ý',
-        rejectLabel: 'Huỷ',
-        accept: () => {
-          VaccinationRepository.deleteThongTin(thongTinUpdate.value.id)
-                  .then(response => {
-                    toast.add({severity:'info', summary:'Confirmed', detail:'Thông tin tiêm chủng đã được xoá thành công', life: 3000});
-                    router.push({
-                      name: 'home',
-                    });
-                  })
-                  .finally(()=>{
-                  });
-        },
-        reject: () => {
-        }
-      });
-    };
 
     const valid = () => {
-        return thongTinUpdate.value.maDoiTuong&&
+        return thongTinCreate.value.maDoiTuong&&
                 province.value&&
                 district.value&&
                 ward.value&&
-                thongTinUpdate.value.gioiTinh&&
-                thongTinUpdate.value.ten&&
-                thongTinUpdate.value.cmnd&&
-                thongTinUpdate.value.soDienThoai&&
-                thongTinUpdate.value.diaChiCuThe;
+                thongTinCreate.value.gioiTinh&&
+                thongTinCreate.value.ten&&
+                thongTinCreate.value.soDienThoai&&
+                thongTinCreate.value.diaChiCuThe&&
+                thongTinCreate.value.maOngTiem&&
+                idDiaDiem.value&&
+                timeSelect.value;
       }
 
     return {
-      thongTinUpdate,
+      thongTinCreate,
       gioiTinh,
       district,
       districts,
@@ -250,11 +259,15 @@ export default {
       provinces,
       selectDistrict,
       selectProvince,
-      update,
-      del,
+      add,
       thongtinDoiTuong,
       maDoiTuong,
       valid,
+      listDiaDiem,
+      idDiaDiem,
+      getListOngTiem,
+      listOngTiem,
+      timeSelect,
       // nonAccentVietnamese
     }
   }

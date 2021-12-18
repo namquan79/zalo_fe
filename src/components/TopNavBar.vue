@@ -57,6 +57,11 @@ export default {
         url: '/addinfo'
       },
       {
+        label:'Thêm đối tượng',
+        icon:'pi pi-fw pi-user-plus',
+        url: '/addpersioninfo'
+      },
+      {
         label:'Xuất tập tin',
         icon:'pi pi-fw pi-download',
         url: '/downloadinfo'
@@ -79,13 +84,18 @@ export default {
         url: '/addinfo'
       },
       {
+        label:'Thêm đối tượng',
+        icon:'pi pi-fw pi-user-plus',
+        url: '/addpersioninfo'
+      },
+      {
         label:'Xuất tập tin',
         icon:'pi pi-fw pi-download',
         url: '/downloadinfo'
       },
       {
         label:'Thêm tài khoản',
-        icon:'pi pi-fw pi-user-plus',
+        icon:'pi pi-fw pi-users',
         url: '/registeruser'
       },
     ];

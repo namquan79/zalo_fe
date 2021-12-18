@@ -10,6 +10,7 @@ import Ward from "@/models/Ward.models";
 import {Ongtiemshort} from "@/models/ongtiemshort";
 import {MaDoiTuong} from "@/models/maDoiTuong";
 import {DiaDiem} from "@/models/diaDiem";
+import {ThongTinCreate} from "@/models/thongTinCreate";
 
 const resource = '/vaccination';
 
@@ -55,8 +56,8 @@ export default new class{
     downloadFile(filename: string): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/DownloadResult/${filename}`);
     }
-    getThongTinDoiTuong(): Promise<AxiosResponse<any>>{
-        return Repository.get<any>(`${resource}/danhsachmadoituong`);
+    getThongTinDoiTuong(time: number): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/danhsachmadoituong/${time}`);
     }
     getThongTinDoiTuongById(id: number): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/danhsachmadoituongid/${id}`);
@@ -72,5 +73,11 @@ export default new class{
     }
     getListDiaDiem(time: number): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/dsdiadiem/${time}`);
+    }
+    createThongTin(thongTinCreate: ThongTinCreate): Promise<AxiosResponse<any>>{
+        return Repository.post<any>(`${resource}/taodoituongtiemmoi`, thongTinCreate);
+    }
+    getListMaOngTiem(time: number, id: number): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/dsthongtinongtiem/${time}/${id}`);
     }
 }
