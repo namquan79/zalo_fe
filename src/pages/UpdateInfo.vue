@@ -234,7 +234,6 @@ export default {
                 ward.value&&
                 thongTinUpdate.value.gioiTinh&&
                 thongTinUpdate.value.ten&&
-                thongTinUpdate.value.cmnd&&
                 thongTinUpdate.value.soDienThoai&&
                 thongTinUpdate.value.diaChiCuThe;
       }
