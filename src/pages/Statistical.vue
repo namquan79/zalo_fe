@@ -76,6 +76,9 @@
           </template>
         </Column>
         <template #paginatorLeft>
+            <div class="p-d-flex p-jc-between p-ai-center">
+                <Button  icon="pi pi-refresh" label="Làm mới " class="p-button-outlined p-button-secondary" @click="getData()" style="width: 8em"/>
+            </div>
         </template>
         <template #empty>
           Không có thông tin ống tiêm.
@@ -119,7 +122,7 @@
               })
               .catch();
 
-      const getList = () => {
+      const getData = () => {
           VaccinationRepository.getLists(dateSelect.value.getTime()/1000, idDiaDiem.value)
               .then((response) => {
                   showTable.value = true;
@@ -140,10 +143,14 @@
                       detail:err.response.data,
                       life: 2500
                   })});
-          showTable.value = false;
-      }
+      };
 
-      const formatDateTime = (date) => {
+        const getList = () => {
+            showTable.value = false;
+            getData();
+        }
+
+        const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
       };
 
@@ -198,6 +205,7 @@
           loadListDiaDiem,
           listDiaDiem,
           idDiaDiem,
+          getData,
       }
     }
 
