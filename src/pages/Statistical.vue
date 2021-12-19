@@ -42,7 +42,7 @@
               :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               :globalFilterFields="['maOngTiem','soMauThu','donVi','ngayTao']"
-              currentPageReportTemplate="Có tất cả {totalRecords} ống tiêm"
+              currentPageReportTemplate="Có tất cả {totalRecords} ống lấy mẫu"
               v-model:filters="filters"
       >
         <template #header>
@@ -54,7 +54,7 @@
               </span>
           </div>
         </template>
-        <Column field="maOngTiem" header="Mã ống tiêm" sortable></Column>
+        <Column field="maOngTiem" header="Mã ống lấy mẫu" sortable></Column>
         <Column field="soMauThu" header="Số mẫu thử đã dùng"></Column>
         <Column field="donVi" header="Đơn vị" sortable></Column>
         <Column field="ngayTao" dataType="date" header="Thời gian" sortable>
@@ -81,7 +81,7 @@
             </div>
         </template>
         <template #empty>
-          Không có thông tin ống tiêm.
+          Không có thông tin ống lấy mẫu.
         </template>
       </DataTable>
 <!--        </div>-->
@@ -101,6 +101,7 @@
   import {DonViCreate} from "@/models/donViCreate";
   import {useToast} from "primevue/usetoast";
   import {DiaDiemDetail} from "@/models/diaDiemDetail";
+  import {useStore} from "vuex";
 
   export default {
     setup() {
@@ -109,11 +110,14 @@
       const dateSelect = ref(new Date());
       const showTable = ref(false);
       const toast = useToast();
+        const store = useStore();
         const listDiaDiem = ref([] as DiaDiemDetail[]);
         const idDiaDiem = ref(0);
+        const refreshData = ref(true);
         const valid = () => {
             return dateSelect.value && idDiaDiem.value;
         };
+
 
       VaccinationRepository.getListDonVi()
               .then((response) => {
@@ -123,6 +127,7 @@
               .catch();
 
       const getData = () => {
+          if((store.state.token != '')&&(dateSelect.value)&&(idDiaDiem.value))
           VaccinationRepository.getLists(dateSelect.value.getTime()/1000, idDiaDiem.value)
               .then((response) => {
                   showTable.value = true;
@@ -142,7 +147,12 @@
                       summary: 'Lỗi',
                       detail:err.response.data,
                       life: 2500
-                  })});
+                  })})
+              .finally(
+                  function(){
+                          console.log("######################## AAAAAAAAAAAAAAAAAAA refresh data: ");
+                          setTimeout(getData, 1 * 1000);}
+              );
       };
 
         const getList = () => {

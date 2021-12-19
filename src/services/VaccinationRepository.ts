@@ -80,4 +80,7 @@ export default new class{
     getListMaOngTiem(time: number, id: number): Promise<AxiosResponse<any>>{
         return Repository.get<any>(`${resource}/dsthongtinongtiem/${time}/${id}`);
     }
+    getOngTiemNext(maOngTiem: string): Promise<AxiosResponse<any>>{
+        return Repository.get<any>(`${resource}/ongtiemtieptheo/${maOngTiem}`);
+    }
 }

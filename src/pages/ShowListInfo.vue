@@ -1,13 +1,13 @@
 <template>
   <!--  </TabPanel>-->
-  <Panel header="Danh sách người tiêm">
+  <Panel header="Danh sách người lấy mẫu">
     <div class="p-fluid">
       <DataTable
               :value="dsThongtin" :paginator="true" stripedRows
               :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               :globalFilterFields="['ten','soDienThoai','diaChi','maOngTiem','thoiGian']"
-              currentPageReportTemplate="Có tất cả {totalRecords} người tiêm"
+              currentPageReportTemplate="Có tất cả {totalRecords} người lấy mẫu"
               v-model:filters="filters"
       >
         <template #header>
@@ -49,9 +49,12 @@
           </template>
         </Column>
         <template #paginatorLeft>
+<!--          <router-link style="text-decoration: none !important;" :to="{ name: 'showlistinfo', params: {id: ongTiemNext.maOngTiem}}" >-->
+          <Button v-if="checkNext"  type="button" icon="pi pi-chevron-circle-right" label="Ống tiếp theo" class="p-button-outlined" @click="nextOngTiem()" style="width: 10em"/>
+<!--          </router-link>-->
         </template>
         <template #empty>
-          Không có thông tin tiêm chủng.
+          Không có thông tin người lấy mẫu.
         </template>
       </DataTable>
 <!--        </div>-->
@@ -68,6 +71,9 @@
   import {FilterMatchMode, FilterOperator} from "primevue/api";
   import {ThongTin} from "@/models/thongTin";
   import router from "@/router";
+  import {useToast} from "primevue/usetoast";
+  import {useStore} from "vuex";
+  import {Ongtiem} from "@/models/ongtiem";
 
   export default {
       props: {
@@ -75,13 +81,41 @@
       },
     setup(props) {
       const dsThongtin = ref([] as ThongTin[]);
+      const toast = useToast();
+      const store = useStore();
+      const checkNext = ref(false);
+      const ongTiemNext = ref({} as Ongtiem);
 
-      VaccinationRepository.getListsInfo(props.id)
-              .then((response) => {
+      const loadData = () => {
+        if(store.state.token != '')
+        VaccinationRepository.getListsInfo(props.id)
+                .then((response) => {
                   dsThongtin.value = response.data;
-              })
-              .catch();
+                  console.log("@@@@@@@@####################### dsThongtin.lenght: " + dsThongtin.value.length );
+                  if(dsThongtin.value.length == 10)
+                  {
+                    checkNext.value = true;
+                    //nextOngTiem();
+                  }
+                  else
+                  {
+                    checkNext.value = false;
+                  }
+                })
+                .catch(err => {
+                  toast.add({
+                    severity: 'error',
+                    summary: 'Lỗi',
+                    detail:err.response.data,
+                    life: 2500
+                  })})
+                .finally(
+                        function(){
+                          setTimeout(loadData, 1 * 1000);}
+                );
+      };
 
+      loadData();
       const formatDateTime = (date) => {
         return moment(String(date)).format('DD/MM/YYYY HH:mm');
       };
@@ -108,6 +142,38 @@
         let routeData = router.resolve({name: 'updateinfo', params: {id: id}});
         window.open(routeData.href, '_blank');
       };
+
+      const detailReport = (id: any) => {
+        let routeData = router.resolve({name: 'searchreport', params: {id: id}});
+
+        console.log("##############@@@@@@@@@@@@@@@@@@@########## detailReport id: "+id);
+        console.log("##############@@@@@@@@@@@@@@@@@@@########## detailReport routeData: "+ JSON.stringify(routeData));
+        // <router-link style="text-decoration: none !important;" :to="{ name: 'searchreport', params: {id: slotProps.data.id_report}}" >
+        window.open(routeData.href, '_blank');
+      };
+
+      const nextOngTiem = () => {
+        VaccinationRepository.getOngTiemNext(props.id)
+                .then((response) => {
+                  ongTiemNext.value = response.data;
+                  router.push({
+                    name: 'showlistinfo',
+                    params: {
+                      id: ongTiemNext.value.maOngTiem
+                    }
+                  });
+                  props.id = ongTiemNext.value.maOngTiem;
+                  //router.go();
+                })
+                .catch(err => {
+                  toast.add({
+                    severity: 'error',
+                    summary: 'Lỗi',
+                    detail:err.response.data,
+                    life: 2500
+                  })});
+      }
+
       return {
           dsThongtin,
         formatDateTime,
@@ -115,6 +181,9 @@
         clearFilter,
         editInfo,
         formatDateTime2,
+        checkNext,
+        nextOngTiem,
+        ongTiemNext,
       }
     }
 
