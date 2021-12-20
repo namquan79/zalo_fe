@@ -113,10 +113,11 @@
         const store = useStore();
         const listDiaDiem = ref([] as DiaDiemDetail[]);
         const idDiaDiem = ref(0);
-        const refreshData = ref(true);
         const valid = () => {
             return dateSelect.value && idDiaDiem.value;
         };
+        const id = ref(0);
+        //const changeDiaDiem
 
 
       VaccinationRepository.getListDonVi()
@@ -127,8 +128,10 @@
               .catch();
 
       const getData = () => {
-          if((store.state.token != '')&&(dateSelect.value)&&(idDiaDiem.value))
-          VaccinationRepository.getLists(dateSelect.value.getTime()/1000, idDiaDiem.value)
+          const checkDataRefresh = ref(true);
+          console.log("######################## AAAAAAAAAAAAAAAAAAA getData checkDataRefresh111111: " + checkDataRefresh.value);
+          if((store.state.token != '')&&(dateSelect.value)&&(id.value))
+          VaccinationRepository.getLists(dateSelect.value.getTime()/1000, id.value)
               .then((response) => {
                   showTable.value = true;
                   dsOngTiem.value = response.data;
@@ -142,6 +145,8 @@
                   })
               })
               .catch(err => {
+                  checkDataRefresh.value = false;
+                  console.log("######################## AAAAAAAAAAAAAAAAAAA checkDataRefresh 2222: " + checkDataRefresh.value);
                   toast.add({
                       severity: 'error',
                       summary: 'Lỗi',
@@ -150,13 +155,18 @@
                   })})
               .finally(
                   function(){
+                      console.log("######################## AAAAAAAAAAAAAAAAAAA checkDataRefresh 3333: " + checkDataRefresh.value);
+                      if(checkDataRefresh.value)
+                      {
                           console.log("######################## AAAAAAAAAAAAAAAAAAA refresh data: ");
                           setTimeout(getData, 1 * 1000);}
+                      }
               );
       };
 
         const getList = () => {
             showTable.value = false;
+            id.value = idDiaDiem.value;
             getData();
         }
 
