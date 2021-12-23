@@ -80,6 +80,8 @@
           id: String,
       },
     setup(props) {
+      console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ open source: " );
+      console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ props.id: " + props.id);
       const dsThongtin = ref([] as ThongTin[]);
       const toast = useToast();
       const store = useStore();
