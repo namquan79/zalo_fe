@@ -76,9 +76,9 @@
   import {Ongtiem} from "@/models/ongtiem";
 
   export default {
-      props: {
-          id: String,
-      },
+      // props: {
+      //     id: String,
+      // },
     setup(props) {
       console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ open source: " );
       console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ props.id: " + props.id);
