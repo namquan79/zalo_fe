@@ -77,7 +77,7 @@
 
   export default {
       props: {
-          id: Number,
+          id: String,
       },
     setup(props) {
       const dsThongtin = ref([] as ThongTin[]);
@@ -91,7 +91,6 @@
         VaccinationRepository.getListsInfo(props.id)
                 .then((response) => {
                   dsThongtin.value = response.data;
-                  console.log("@@@@@@@@####################### dsThongtin.lenght: " + dsThongtin.value.length );
                   if(dsThongtin.value.length == 10)
                   {
                     checkNext.value = true;
@@ -143,15 +142,6 @@
         window.open(routeData.href, '_blank');
       };
 
-      const detailReport = (id: any) => {
-        let routeData = router.resolve({name: 'searchreport', params: {id: id}});
-
-        console.log("##############@@@@@@@@@@@@@@@@@@@########## detailReport id: "+id);
-        console.log("##############@@@@@@@@@@@@@@@@@@@########## detailReport routeData: "+ JSON.stringify(routeData));
-        // <router-link style="text-decoration: none !important;" :to="{ name: 'searchreport', params: {id: slotProps.data.id_report}}" >
-        window.open(routeData.href, '_blank');
-      };
-
       const nextOngTiem = () => {
         VaccinationRepository.getOngTiemNext(props.id)
                 .then((response) => {
@@ -163,7 +153,6 @@
                     }
                   });
                   props.id = ongTiemNext.value.maOngTiem;
-                  //router.go();
                 })
                 .catch(err => {
                   toast.add({

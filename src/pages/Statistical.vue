@@ -129,7 +129,6 @@
 
       const getData = () => {
           const checkDataRefresh = ref(true);
-          console.log("######################## AAAAAAAAAAAAAAAAAAA getData checkDataRefresh111111: " + checkDataRefresh.value);
           if((store.state.token != '')&&(dateSelect.value)&&(id.value))
           VaccinationRepository.getLists(dateSelect.value.getTime()/1000, id.value)
               .then((response) => {
@@ -146,7 +145,6 @@
               })
               .catch(err => {
                   checkDataRefresh.value = false;
-                  console.log("######################## AAAAAAAAAAAAAAAAAAA checkDataRefresh 2222: " + checkDataRefresh.value);
                   toast.add({
                       severity: 'error',
                       summary: 'Lỗi',
@@ -155,10 +153,8 @@
                   })})
               .finally(
                   function(){
-                      console.log("######################## AAAAAAAAAAAAAAAAAAA checkDataRefresh 3333: " + checkDataRefresh.value);
                       if(checkDataRefresh.value)
                       {
-                          console.log("######################## AAAAAAAAAAAAAAAAAAA refresh data: ");
                           setTimeout(getData, 1 * 1000);}
                       }
               );

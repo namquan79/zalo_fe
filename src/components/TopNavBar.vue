@@ -3,7 +3,7 @@
     <Menubar :model="appMenu" >
       <template #start>
         <a href="/">
-          <img alt="logo" src="../assets/Zalo.png" height="40" class="p-mr-2">
+          <img alt="logo" src="../assets/Icon.jpg" height="40" class="p-mr-2">
         </a>
       </template>
       <template #end>
@@ -35,7 +35,7 @@ export default {
     const toast = useToast();
     const defaultMenu = [
       {
-        label:'Zalo OA',
+        label:'Quản lý xét nghiệm cộng đồng Đà Nẵng',
         icon:'pi pi-fw pi-list',
         url: '/login'
       },
