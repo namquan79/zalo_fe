@@ -76,12 +76,10 @@
   import {Ongtiem} from "@/models/ongtiem";
 
   export default {
-      // props: {
-      //     id: String,
-      // },
+      props: {
+          id: {type : String},
+      },
     setup(props) {
-      console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ open source: " );
-      console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ props.id: " + props.id);
       const dsThongtin = ref([] as ThongTin[]);
       const toast = useToast();
       const store = useStore();
@@ -89,11 +87,8 @@
       const ongTiemNext = ref({} as Ongtiem);
 
       const loadData = () => {
-        const decode = decodeURI(props.id);
-        console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ props.id: " + props.id);
-        console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ decode: " + decode);
         if(store.state.token != '')
-        VaccinationRepository.getListsInfo(decode)
+        VaccinationRepository.getListsInfo(props.id)
                 .then((response) => {
                   dsThongtin.value = response.data;
                   if(dsThongtin.value.length == 10)
