@@ -77,7 +77,7 @@
 
   export default {
       props: {
-          id: {type : String},
+          id: String,
       },
     setup(props) {
       const dsThongtin = ref([] as ThongTin[]);
