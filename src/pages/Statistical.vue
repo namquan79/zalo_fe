@@ -69,7 +69,12 @@
           <template #body="slotProps">
 <!--            <router-link style="text-decoration: none !important;" :to="{ name: 'registerpage'}" >-->
             <div class="p-field p-col-6 p-md-8">
-              <Button v-if="checkValue(slotProps.data.soMauThu)" type="button" label="Xem chi tiết"  icon="pi pi-eye" @click="thongTin(slotProps.data.maOngTiem)"></Button>
+
+                        <router-link v-if="checkValue(slotProps.data.soMauThu)" :to="{ name: 'showlistinfo', params: { id: slotProps.data.maOngTiem }}" target="_blank">
+                            <Button  type="button" label="Xem chi tiết"  icon="pi pi-eye">
+                            </Button>
+                        </router-link>
+
               <Button  v-else type="button" label="Chưa có ds" disabled icon="pi pi-eye" class="p-button-secondary"></Button>
             </div>
 <!--            </router-link>-->
@@ -184,8 +189,12 @@
         }
       };
 
+
       const thongTin = (id: any) => {
-        let routeData = router.resolve({name: 'showlistinfo', params: {id: id}});
+          const encoded = encodeURIComponent(id);
+          console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ id: " + id);
+          console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ encoded: " + encoded);
+        let routeData = router.resolve({name: 'showlistinfo', params: {id: encoded}});
         window.open(routeData.href, '_blank');
       };
 

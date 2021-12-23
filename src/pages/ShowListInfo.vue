@@ -87,8 +87,11 @@
       const ongTiemNext = ref({} as Ongtiem);
 
       const loadData = () => {
+        const decode = decodeURI(props.id);
+        console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ props.id: " + props.id);
+        console.log("##########$$$$$$$$$$$$$$$$$$$$$$$ decode: " + decode);
         if(store.state.token != '')
-        VaccinationRepository.getListsInfo(props.id)
+        VaccinationRepository.getListsInfo(decode)
                 .then((response) => {
                   dsThongtin.value = response.data;
                   if(dsThongtin.value.length == 10)
