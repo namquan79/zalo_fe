@@ -1,5 +1,5 @@
 <template>
-        <Panel header="Đăng ký tài khoản nhân viên">
+<Panel header="Đăng ký tài khoản nhân viên">
       <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
           <label>Tên đăng nhập</label>

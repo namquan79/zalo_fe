@@ -1,7 +1,7 @@
 <template>
   <Card>
     <template #header>
-      <img alt="user header" src="../assets/Zaloicon.jpeg">
+      <img alt="user header" src="../assets/bg.jpeg">
     </template>
     <template #title>
       Đăng nhập

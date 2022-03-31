@@ -7,11 +7,11 @@
         </a>
       </template>
       <template #end>
-        <router-link :to="{ name: 'login' }" v-if="!isLoggedIn">
-          <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" />
-        </router-link>
+<!--        <router-link :to="{ name: 'login' }" v-if="!isLoggedIn">-->
+<!--          <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" />-->
+<!--        </router-link>-->
 
-        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"  v-else/>
+<!--        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"  v-else/>-->
       </template>
     </Menubar>
   </div>
@@ -35,9 +35,9 @@ export default {
     const toast = useToast();
     const defaultMenu = [
       {
-        label:'Quản lý xét nghiệm cộng đồng Đà Nẵng',
+        label:'Hệ thống nhắn tin Zalo OA KCL',
         icon:'pi pi-fw pi-list',
-        url: '/login'
+        url: '/sendmessage'
       },
     ];
     const userMenu = [

@@ -1,6 +1,6 @@
 <template>
   <!--  </TabPanel>-->
-    <Panel header="Tạo địa chỉ tiêm">
+    <Panel header="Tạo địa chỉ xét nghiệm">
         <div class="card">
             <div class="p-fluid">
                 <div class="p-fluid p-formgrid p-grid">
@@ -35,7 +35,7 @@
             </div>
         </div>
     </Panel>
-  <Panel header="Tạo đơn vị tiêm">
+  <Panel header="Tạo đơn vị xét nghiệm">
     <div class="card">
       <div class="p-fluid">
         <div class="p-fluid p-formgrid p-grid">
@@ -99,7 +99,7 @@
             </div>
         </div>
     </Panel>
-  <Panel header="Thêm ống tiêm">
+  <Panel header="Thêm ống lấy mẫu">
     <div class="card">
       <div class="p-fluid">
         <div class="p-fluid p-formgrid p-grid">

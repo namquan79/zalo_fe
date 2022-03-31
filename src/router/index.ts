@@ -9,6 +9,7 @@ import UpdateInfo from "@/pages/UpdateInfo.vue";
 import DownloadInfo from "@/pages/DownloadInfo.vue";
 import RegisterUserPage from "@/pages/RegisterUserPage.vue";
 import AddPersionInfo from "@/pages/AddPersionInfo.vue";
+import SendMessagePage from "@/pages/SendMessagePage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -69,6 +70,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/addpersioninfo',
     name: 'addpersioninfo',
     component: AddPersionInfo,
+    props: true
+  },
+  {
+    path: '/sendmessage',
+    name: 'sendmessage',
+    component: SendMessagePage,
     props: true
   },
 ]

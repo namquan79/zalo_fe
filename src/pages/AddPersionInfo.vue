@@ -12,7 +12,7 @@
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Địa chỉ</label>
-        <InputText id="username" type="text" v-model="thongTinCreate.diaChiCuThe" style="text-align: center"/>
+        <InputText id="address" type="text" v-model="thongTinCreate.diaChiCuThe" style="text-align: center"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Giới tính</label>

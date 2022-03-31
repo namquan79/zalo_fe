@@ -36,6 +36,9 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { quillEditor, Quill } from 'vue3-quill';
 import ProcessSpinner from 'primevue/progressspinner';
 import ProgressBar from 'primevue/progressbar';
+import InputMask from "primevue/inputmask";
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
 import cors from 'cors';
 
 const app = createApp(App)
@@ -113,6 +116,9 @@ app.component('ConfirmPopup', ConfirmPopup);
 app.component('ConfirmDialog', ConfirmDialog);
 app.component('ProcessSpinner', ProcessSpinner);
 app.component('ProgressBar', ProgressBar);
+app.component('InputMask', InputMask);
+app.component('Accordion', Accordion);
+app.component('AccordionTab', AccordionTab);
 app.use(quillEditor)
 app.mount('#app');
 
