@@ -2,8 +2,8 @@
   <div class="layout-topbar p-d-flex p-jc-between">
     <Menubar :model="appMenu" >
       <template #start>
-        <a href="/">
-          <img alt="logo" src="../assets/Icon.jpg" height="40" class="p-mr-2">
+        <a href="/sendmessage">
+          <img alt="logo" src="../assets/Zalo.png" height="40" class="p-mr-2">
         </a>
       </template>
       <template #end>
@@ -35,7 +35,7 @@ export default {
     const toast = useToast();
     const defaultMenu = [
       {
-        label:'Hệ thống nhắn tin Zalo OA KCL',
+        label:'Hệ thống nhắn tin Zalo OA',
         icon:'pi pi-fw pi-list',
         url: '/sendmessage'
       },
@@ -100,12 +100,12 @@ export default {
       },
     ];
     const appMenu = computed(() => {
-      if(props.isLoggedIn)
-      {
-        if(store.state.permission == "admin") return adminMenu;
-        else return userMenu;
-      }
-      else
+      // if(props.isLoggedIn)
+      // {
+      //   if(store.state.permission == "admin") return adminMenu;
+      //   else return userMenu;
+      // }
+      // else
       {
         return defaultMenu;
       }

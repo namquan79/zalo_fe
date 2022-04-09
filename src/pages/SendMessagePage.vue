@@ -4,9 +4,11 @@
 <!--      <Panel header="Gởi tin nhắn thông thường cho người sử dụng">-->
           <div class="p-fluid p-formgrid p-grid">
             <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-              <label>Id người muốn gởi</label>
-              <Textarea id="id" type="text" v-model="message.userid" style="height: 100px"/>
-              <small id="id-note" class="p-error">* Có thể gởi nhiều id cùng 1 lúc(mỗi id cách nhau bằng dấu ","), vd: 000000001,000000002.</small>
+<!--              listIdMessage-->
+              <label>Chọn khách hàng gởi</label>
+              <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
+              </MultiSelect>
+              <small id="id-note1" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
             </div>
             <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
               <label>Nội dung tin nhắn</label>
@@ -19,10 +21,20 @@
     <AccordionTab header="Gởi tin nhắn theo mẫu đính kèm">
 <!--        <Panel header="Gởi tin nhắn theo mẫu đính kèm cho người sử dụng">-->
           <div class="p-fluid p-formgrid p-grid">
+<!--            <div class="p-field p-col p-col-12 p-md-6 p-lg-6">-->
+<!--              <label>Id người muốn gởi</label>-->
+<!--              <Textarea id="iduser" type="text" v-model="messageWithAttachment.userid" style="height: 100px"/>-->
+<!--              <small id="id-note2" class="p-error">* Có thể gởi nhiều id cùng 1 lúc(mỗi id cách nhau bằng dấu ","), vd: 000000001,000000002.</small>-->
+<!--            </div>-->
             <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-              <label>Id người muốn gởi</label>
-              <Textarea id="iduser" type="text" v-model="messageWithAttachment.userid" style="height: 100px"/>
-              <small id="id-note2" class="p-error">* Có thể gởi nhiều id cùng 1 lúc(mỗi id cách nhau bằng dấu ","), vd: 000000001,000000002.</small>
+              <label>Chọn khách hàng gởi</label>
+<!--              <Textarea id="iduser" type="text" v-model="messageWithAttachment.userid" style="height: 100px"/>-->
+              <MultiSelect v-model="listId" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
+<!--                <template #value="slotProps">-->
+<!--                  <div>{{slotProps.id}}</div>-->
+<!--                </template>-->
+              </MultiSelect>
+              <small id="id-note2" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
             </div>
           </div>
           <Panel header="Thiết kế khung chính của tinh nhắn">
@@ -206,6 +218,7 @@ import {Team} from "@/models/team.models";
 import {Message} from "@/models/message";
 import {MessageWithAttachment} from "@/models/messageWithAttachment";
 import {ElementParamater} from "@/models/elementParamater";
+import { ListCustomer } from '@/models/listCustomer';
 
 export default {
 
@@ -222,7 +235,15 @@ export default {
     const element3 = ref({} as ElementParamater);
     const element4 = ref({} as ElementParamater);
     const element5 = ref({} as ElementParamater);
+    const listId = ref([] as ListCustomer[]);
+    const listIdMessage = ref([] as ListCustomer[]);
     const loadingBar = ref(false);
+    const lsAction = ref([
+        {label: 'Gởi tin nhắn cho tất cả khách hàng', value: 'all'},
+        {label: 'Gởi tin nhắn theo giới tính', value: 'gender'},
+        {label: 'Gởi tin nhắn theo độ tuổi', value: 'age'},
+        {label: 'Gởi tin nhắn theo khu vực', value: 'location'},
+    ])
     const list = ref([
       { label: 'mở 1 link', value: 'oa.open.url' , param: 1},
       { label: 'gởi 1 tin nhắn đến OA', value: 'oa.query.show', param: 2},
@@ -237,6 +258,7 @@ export default {
     const payload2 = ref({content: "", phone_code: ""});
     const payload3 = ref({content: "", phone_code: ""});
     const payload4 = ref({content: "", phone_code: ""});
+    const listCustomer = ref([] as ListCustomer[]);
 
     const valid = computed(()=> register.value.password && register.value.username && register.value.team && register.value.fullname && register.value.address);
     element1.value.type = '1';
@@ -246,95 +268,137 @@ export default {
       value.value = list.value.filter(x => x.param == st);
       return value.value.value;
     }
+    ZaloRepository.getListCustomer()
+        .then((response) => {
+          listCustomer.value = response.data;
+        })
+        .catch(err => {
+          toast.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail:'Lỗi khi tải danh sách khách hàng',
+            life: 2000
+          });
+        });
     const doSendMessage = () => {
-      loadingBar.value = true;
-      ZaloRepository.sendMessage(message.value)
-                .then((response) => {
-                  const temp = ref({} as Message);
-                  message.value = temp.value;
-                  toast.add({
-                    severity: 'success',
-                    summary: 'Đăng ký',
-                    detail: 'Gởi tin nhắn thành công',
-                    life: 2000
-                  });
-                  loadingBar.value = false;
-                })
-                .catch(err => {
-                  loadingBar.value = false;
-                  toast.add({
-                    severity: 'error',
-                    summary: 'Lỗi',
-                    detail:err.response.data,
-                    life: 2000
-                  });
-                });
+      if(listIdMessage.value.length < 1)
+      {
+        toast.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail:'Vui lòng chọn danh sách khách hàng cần gởi',
+          life: 3000
+        });
+      }
+      else
+      {
+        message.value.userid = "";
+        listIdMessage.value.forEach(x => {
+          message.value.userid = message.value.userid + x.id + ",";
+        });
+        loadingBar.value = true;
+        ZaloRepository.sendMessage(message.value)
+            .then((response) => {
+              const temp = ref({} as Message);
+              message.value = temp.value;
+              toast.add({
+                severity: 'success',
+                summary: 'Đăng ký',
+                detail: 'Gởi tin nhắn thành công',
+                life: 2000
+              });
+              loadingBar.value = false;
+            })
+            .catch(err => {
+              loadingBar.value = false;
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2000
+              });
+            });
+      }
       };
 
     const doSendMessageWithAttachment = () => {
-      loadingBar.value = true;
-      const elements = ref([] as ElementParamater[]);
-      if((element2.value.type == "4")||(element2.value.type == "5")) element2.value.payload = payload1.value;
-      if((element3.value.type == "4")||(element3.value.type == "5")) element3.value.payload = payload2.value;
-      if((element4.value.type == "4")||(element4.value.type == "5")) element4.value.payload = payload3.value;
-      if((element5.value.type == "4")||(element5.value.type == "5")) element5.value.payload = payload4.value;
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment element1: " + JSON.stringify(element1.value));
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment element2: " + JSON.stringify(element2.value));
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment element3: " + JSON.stringify(element3.value));
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment element4: " + JSON.stringify(element4.value));
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment element5: " + JSON.stringify(element5.value));
-      if(element1.value.type != null)
-      elements.value.push(element1.value);
-      if(element2.value.type != null)
-      elements.value.push(element2.value);
-      if(element3.value.type != null)
-      elements.value.push(element3.value);
-      if(element4.value.type != null)
-      elements.value.push(element4.value);
-      if(element5.value.type != null)
-      elements.value.push(element5.value);
-      const elementstemp = ref([] as ElementParamater[]);
-      elements.value.forEach(x => {
-        elementstemp.value.push(
-            {
-              title: x.title,
-              subtitle: x.subtitle,
-              image_url: x.image_url,
-              type: x.type,
-              url: x.url,
-              payload: x.payload
-            }
-        )
-      })
-      elementstemp.value.forEach(x => {
-        list.value.filter(y => {if(y.param.toString() == x.type) x.type = y.value});
-      });
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment elementstemp: " + JSON.stringify(elementstemp.value));
-      messageWithAttachment.value.elements = elementstemp.value;
-      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachment: " + JSON.stringify(messageWithAttachment.value));
-      ZaloRepository.sendMessageWithAttachmentList(messageWithAttachment.value)
-          .then((response) => {
-            loadingBar.value = false;
-            const temp = ref({} as MessageWithAttachment);
-            messageWithAttachment.value = temp.value;
-            toast.add({
-              severity: 'success',
-              summary: 'Đăng ký',
-              detail: 'Gởi tin nhắn thành công',
-              life: 2000
+      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment listId lenght: " + listId.value.length);
+      console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment listId: " + JSON.stringify(listId.value));
+      if(listId.value.length < 1)
+      {
+        toast.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail:'Vui lòng chọn danh sách khách hàng cần gởi',
+          life: 3000
+        });
+      }
+      else
+      {
+        messageWithAttachment.value.userid = "";
+        listId.value.forEach(x => {
+          messageWithAttachment.value.userid = messageWithAttachment.value.userid + x.id + ",";
+        });
+        loadingBar.value = true;
+        const elements = ref([] as ElementParamater[]);
+        if((element2.value.type == "4")||(element2.value.type == "5")) element2.value.payload = payload1.value;
+        if((element3.value.type == "4")||(element3.value.type == "5")) element3.value.payload = payload2.value;
+        if((element4.value.type == "4")||(element4.value.type == "5")) element4.value.payload = payload3.value;
+        if((element5.value.type == "4")||(element5.value.type == "5")) element5.value.payload = payload4.value;
+        if(element1.value.type != null)
+          elements.value.push(element1.value);
+        if(element2.value.type != null)
+          elements.value.push(element2.value);
+        if(element3.value.type != null)
+          elements.value.push(element3.value);
+        if(element4.value.type != null)
+          elements.value.push(element4.value);
+        if(element5.value.type != null)
+          elements.value.push(element5.value);
+        const elementstemp = ref([] as ElementParamater[]);
+        elements.value.forEach(x => {
+          elementstemp.value.push(
+              {
+                title: x.title,
+                subtitle: x.subtitle,
+                image_url: x.image_url,
+                type: x.type,
+                url: x.url,
+                payload: x.payload
+              }
+          )
+        })
+        elementstemp.value.forEach(x => {
+          list.value.filter(y => {if(y.param.toString() == x.type) x.type = y.value});
+        });
+        console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment elementstemp: " + JSON.stringify(elementstemp.value));
+        messageWithAttachment.value.elements = elementstemp.value;
+        console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachment: " + JSON.stringify(messageWithAttachment.value));
+        ZaloRepository.sendMessageWithAttachmentList(messageWithAttachment.value)
+            .then((response) => {
+              loadingBar.value = false;
+              const temp = ref({} as MessageWithAttachment);
+              messageWithAttachment.value = temp.value;
+              toast.add({
+                severity: 'success',
+                summary: 'Đăng ký',
+                detail: 'Gởi tin nhắn thành công',
+                life: 2000
+              });
+              console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentaaaaaa: " + JSON.stringify(messageWithAttachment.value));
+            })
+            .catch(err => {
+              loadingBar.value = false;
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2000
+              });
+              console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentbbbbbb: " + JSON.stringify(messageWithAttachment.value));
             });
-            console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentaaaaaa: " + JSON.stringify(messageWithAttachment.value));
-          })
-          .catch(err => {
-            loadingBar.value = false;
-            toast.add({
-              severity: 'error',
-              summary: 'Lỗi',
-              detail:err.response.data,
-              life: 2000
-            });
-            console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentbbbbbb: " + JSON.stringify(messageWithAttachment.value));
-          });
+      }
+
     };
 
     return {
@@ -355,6 +419,9 @@ export default {
       payload4,
       listdefault,
       loadingBar,
+      listCustomer,
+      listId,
+      listIdMessage,
     }
   }
 }

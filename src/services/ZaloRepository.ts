@@ -12,4 +12,7 @@ export default new class {
   sendMessageWithAttachmentList(mess: MessageWithAttachment): Promise<AxiosResponse<any>>{
     return Repository.post<any>(`${resource}/SendMessageWithAttachment`, mess);
   }
+  getListCustomer(): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/listCustomer`);
+  }
 }

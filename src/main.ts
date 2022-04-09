@@ -39,6 +39,7 @@ import ProgressBar from 'primevue/progressbar';
 import InputMask from "primevue/inputmask";
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
+import MultiSelect from 'primevue/multiselect';
 import cors from 'cors';
 
 const app = createApp(App)
@@ -119,6 +120,7 @@ app.component('ProgressBar', ProgressBar);
 app.component('InputMask', InputMask);
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
+app.component('MultiSelect', MultiSelect);
 app.use(quillEditor)
 app.mount('#app');
 
