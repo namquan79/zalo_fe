@@ -3,38 +3,79 @@
     <AccordionTab header="Gởi tin nhắn thông thường">
 <!--      <Panel header="Gởi tin nhắn thông thường cho người sử dụng">-->
           <div class="p-fluid p-formgrid p-grid">
-            <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+            <div class="p-field p-col-12 p-sm-4 p-md-4">
+              <label>Lựa chọn phạm vi gởi tin nhắn</label>
+              <Dropdown id="kind" v-model="action" :options="lsAction" optionLabel="label" optionValue="value">
+              </Dropdown>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action == 'location'">
+              <label>Lựa chọn khu vực gởi tin</label>
+              <Dropdown id="location" v-model="province" :options="listProvince" optionLabel="provinceName" optionValue="provinceCode" :filter="true" :showClear="true">
+              </Dropdown>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4"  style="text-align: center" v-if="action == 'gender'">
+              <label>A3. Giới tính </label>
+              <div class="p-field p-col-12 p-sm-12 p-md-12">
+                <input type="radio" id="nam" name="sex" value="Nam" v-model="gender"/>
+                <label for="nam" style="margin-right: 60px">&ensp;Nam</label>
+                <input type="radio" id="nu" name="sex" value="Nữ" v-model="gender"/>
+                <label for="nu">&ensp;Nữ</label>
+              </div>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action == 'customer'">
 <!--              listIdMessage-->
               <label>Chọn khách hàng gởi</label>
               <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
               </MultiSelect>
               <small id="id-note1" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
             </div>
-            <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action == 'age'">
+<!--              listIdMessage-->
+              <label>Chọn phạm vi độ tuổi: {{age}}</label>
+              <h5></h5>
+              <Slider v-model="age" :range="true" />
+            </div>
+            <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
               <label>Nội dung tin nhắn</label>
               <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>
             </div>
           </div>
-          <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" />
+          <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>
 <!--      </Panel>-->
     </AccordionTab>
     <AccordionTab header="Gởi tin nhắn theo mẫu đính kèm">
 <!--        <Panel header="Gởi tin nhắn theo mẫu đính kèm cho người sử dụng">-->
           <div class="p-fluid p-formgrid p-grid">
-<!--            <div class="p-field p-col p-col-12 p-md-6 p-lg-6">-->
-<!--              <label>Id người muốn gởi</label>-->
-<!--              <Textarea id="iduser" type="text" v-model="messageWithAttachment.userid" style="height: 100px"/>-->
-<!--              <small id="id-note2" class="p-error">* Có thể gởi nhiều id cùng 1 lúc(mỗi id cách nhau bằng dấu ","), vd: 000000001,000000002.</small>-->
-<!--            </div>-->
-            <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-              <label>Chọn khách hàng gởi</label>
-<!--              <Textarea id="iduser" type="text" v-model="messageWithAttachment.userid" style="height: 100px"/>-->
-              <MultiSelect v-model="listId" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
-<!--                <template #value="slotProps">-->
-<!--                  <div>{{slotProps.id}}</div>-->
-<!--                </template>-->
-              </MultiSelect>
-              <small id="id-note2" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
+            <div class="p-field p-col-12 p-sm-4 p-md-4">
+              <label>Lựa chọn phạm vi gởi tin nhắn</label>
+              <Dropdown id="kind2" v-model="action2" :options="lsAction" optionLabel="label" optionValue="value">
+              </Dropdown>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action2 == 'location'">
+              <label>Lựa chọn khu vực gởi tin</label>
+              <Dropdown id="location2" v-model="province2" :options="listProvince" optionLabel="provinceName" optionValue="provinceCode" :filter="true" :showClear="true">
+              </Dropdown>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4"  style="text-align: center" v-if="action2 == 'gender'">
+              <label>A3. Giới tính </label>
+              <div class="p-field p-col-12 p-sm-12 p-md-12">
+                <input type="radio" id="nam2" name="sex" value="Nam" v-model="gender2"/>
+                <label for="nam" style="margin-right: 60px">&ensp;Nam</label>
+                <input type="radio" id="nu2" name="sex" value="Nữ" v-model="gender2"/>
+                <label for="nu">&ensp;Nữ</label>
+              </div>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action2 == 'customer'">
+                <label>Chọn khách hàng gởi</label>
+                <MultiSelect v-model="listId" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
+                </MultiSelect>
+                <small id="id-note2" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
+            </div>
+            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action2 == 'age'">
+              <!--              listIdMessage-->
+              <label>Chọn phạm vi độ tuổi: {{age2}}</label>
+              <h5></h5>
+              <Slider v-model="age2" :range="true" />
             </div>
           </div>
           <Panel header="Thiết kế khung chính của tinh nhắn">
@@ -219,6 +260,7 @@ import {Message} from "@/models/message";
 import {MessageWithAttachment} from "@/models/messageWithAttachment";
 import {ElementParamater} from "@/models/elementParamater";
 import { ListCustomer } from '@/models/listCustomer';
+import Province from "@/models/province.models";
 
 export default {
 
@@ -238,7 +280,14 @@ export default {
     const listId = ref([] as ListCustomer[]);
     const listIdMessage = ref([] as ListCustomer[]);
     const loadingBar = ref(false);
+    const action = ref("");
+    const gender = ref("");
+    const age = ref([10,100]);
+    const action2 = ref("");
+    const gender2 = ref("");
+    const age2 = ref([10,100]);
     const lsAction = ref([
+        {label: 'Gởi tin nhắn cho từng khách hàng', value: 'customer'},
         {label: 'Gởi tin nhắn cho tất cả khách hàng', value: 'all'},
         {label: 'Gởi tin nhắn theo giới tính', value: 'gender'},
         {label: 'Gởi tin nhắn theo độ tuổi', value: 'age'},
@@ -259,15 +308,33 @@ export default {
     const payload3 = ref({content: "", phone_code: ""});
     const payload4 = ref({content: "", phone_code: ""});
     const listCustomer = ref([] as ListCustomer[]);
+    const listProvince = ref([] as Province[]);
+    const province = ref();
+    const province2 = ref();
 
-    const valid = computed(()=> register.value.password && register.value.username && register.value.team && register.value.fullname && register.value.address);
+    // const valid = computed(()=> action.value && message.value.mess);
+    const valid = () => {
+      return action.value && message.value.mess;
+    };
     element1.value.type = '1';
 
-    const returnValue = (st: any) => {
-      const value = ref();
-      value.value = list.value.filter(x => x.param == st);
-      return value.value.value;
-    }
+    // const returnValue = (st: any) => {
+    //   const value = ref();
+    //   value.value = list.value.filter(x => x.param == st);
+    //   return value.value.value;
+    // }
+    ZaloRepository.getProvince()
+        .then((response) => {
+          listProvince.value = response.data;
+        })
+        .catch(err => {
+          toast.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail:'Lỗi khi tải danh sách khách hàng',
+            life: 2000
+          });
+        });
     ZaloRepository.getListCustomer()
         .then((response) => {
           listCustomer.value = response.data;
@@ -281,7 +348,7 @@ export default {
           });
         });
     const doSendMessage = () => {
-      if(listIdMessage.value.length < 1)
+      if((listIdMessage.value.length < 1) && (action.value == "customer"))
       {
         toast.add({
           severity: 'error',
@@ -296,6 +363,30 @@ export default {
         listIdMessage.value.forEach(x => {
           message.value.userid = message.value.userid + x.id + ",";
         });
+        if(action.value == "all")
+        {
+          message.value.userid = "all";
+        }
+        else if(action.value == "gender")
+        {
+          message.value.userid = "gender,";
+          if(gender.value == "Nam") {
+            message.value.userid = message.value.userid + "1";
+          }
+          else {
+            message.value.userid = message.value.userid + "0";
+          }
+        }
+        else if(action.value == "age")
+        {
+          message.value.userid = "age,";
+          message.value.userid = message.value.userid + age.value[0]+",";
+          message.value.userid = message.value.userid + age.value[1];
+        }
+        else if(action.value == "location")
+        {
+          message.value.userid = "location," + province.value;
+        }
         loadingBar.value = true;
         ZaloRepository.sendMessage(message.value)
             .then((response) => {
@@ -324,7 +415,7 @@ export default {
     const doSendMessageWithAttachment = () => {
       console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment listId lenght: " + listId.value.length);
       console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment listId: " + JSON.stringify(listId.value));
-      if(listId.value.length < 1)
+      if((listId.value.length < 1) && (action2.value == "customer"))
       {
         toast.add({
           severity: 'error',
@@ -339,6 +430,30 @@ export default {
         listId.value.forEach(x => {
           messageWithAttachment.value.userid = messageWithAttachment.value.userid + x.id + ",";
         });
+        if(action2.value == "all")
+        {
+          messageWithAttachment.value.userid = "all";
+        }
+        else if(action2.value == "gender")
+        {
+          messageWithAttachment.value.userid = "gender,";
+          if(gender2.value == "Nam") {
+            messageWithAttachment.value.userid = messageWithAttachment.value.userid + "1";
+          }
+          else {
+            messageWithAttachment.value.userid = messageWithAttachment.value.userid + "0";
+          }
+        }
+        else if(action2.value == "age")
+        {
+          messageWithAttachment.value.userid = "age,";
+          messageWithAttachment.value.userid = messageWithAttachment.value.userid + age2.value[0]+",";
+          messageWithAttachment.value.userid = messageWithAttachment.value.userid + age2.value[1];
+        }
+        else if(action2.value == "location")
+        {
+          messageWithAttachment.value.userid = "location," + province2.value;
+        }
         loadingBar.value = true;
         const elements = ref([] as ElementParamater[]);
         if((element2.value.type == "4")||(element2.value.type == "5")) element2.value.payload = payload1.value;
@@ -422,6 +537,16 @@ export default {
       listCustomer,
       listId,
       listIdMessage,
+      lsAction,
+      action,
+      gender,
+      age,
+      listProvince,
+      province,
+      province2,
+      action2,
+      gender2,
+      age2,
     }
   }
 }

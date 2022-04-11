@@ -40,6 +40,7 @@ import InputMask from "primevue/inputmask";
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import MultiSelect from 'primevue/multiselect';
+import Slider from 'primevue/slider';
 import cors from 'cors';
 
 const app = createApp(App)
@@ -121,6 +122,7 @@ app.component('InputMask', InputMask);
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('MultiSelect', MultiSelect);
+app.component('Slider', Slider);
 app.use(quillEditor)
 app.mount('#app');
 

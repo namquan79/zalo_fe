@@ -2,6 +2,7 @@ import Repository from './Repository'
 import { AxiosResponse } from 'axios';
 import {Message} from "@/models/message";
 import {MessageWithAttachment} from "@/models/messageWithAttachment";
+import Province from "@/models/province.models";
 
 const resource = '/webhook'
 
@@ -14,5 +15,8 @@ export default new class {
   }
   getListCustomer(): Promise<AxiosResponse<any>>{
     return Repository.get<any>(`${resource}/listCustomer`);
+  }
+  getProvince(): Promise<AxiosResponse<Province[]>>{
+    return Repository.get<Province[]>(`${resource}/listProvince`);
   }
 }
