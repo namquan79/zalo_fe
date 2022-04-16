@@ -37,7 +37,17 @@ export default {
       {
         label:'Hệ thống nhắn tin Zalo OA',
         icon:'pi pi-fw pi-list',
+        url: '/home'
+      },
+      {
+        label:'Gởi tin nhắn',
+        icon:'pi pi-fw pi-send',
         url: '/sendmessage'
+      },
+      {
+        label:'Đăng hình ảnh',
+        icon:'pi pi-fw pi-upload',
+        url: '/uploadImage'
       },
     ];
     const userMenu = [

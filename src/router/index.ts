@@ -10,6 +10,7 @@ import DownloadInfo from "@/pages/DownloadInfo.vue";
 import RegisterUserPage from "@/pages/RegisterUserPage.vue";
 import AddPersionInfo from "@/pages/AddPersionInfo.vue";
 import SendMessagePage from "@/pages/SendMessagePage.vue";
+import UploadImage from "@/pages/UploadImage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -76,6 +77,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sendmessage',
     name: 'sendmessage',
     component: SendMessagePage,
+    props: true
+  },
+  {
+    path: '/uploadImage',
+    name: 'uploadImage',
+    component: UploadImage,
     props: true
   },
 ]

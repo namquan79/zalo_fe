@@ -41,6 +41,9 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import MultiSelect from 'primevue/multiselect';
 import Slider from 'primevue/slider';
+import DataView from 'primevue/dataview';
+import Badge from 'primevue/badge';
+import Galleria from 'primevue/galleria';
 import cors from 'cors';
 
 const app = createApp(App)
@@ -123,6 +126,9 @@ app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('MultiSelect', MultiSelect);
 app.component('Slider', Slider);
+app.component('DataView', DataView);
+app.component('Badge', Badge);
+app.component('Galleria', Galleria);
 app.use(quillEditor)
 app.mount('#app');
 
