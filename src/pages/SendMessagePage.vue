@@ -564,12 +564,12 @@ export default {
             products.value = response.data;
           })
           .catch(err => {
-            toast.add({
-              severity: 'error',
-              summary: 'Lỗi',
-              detail:'Lỗi không tìm thấy hình ảnh',
-              life: 2000
-            });
+            // toast.add({
+            //   severity: 'error',
+            //   summary: 'Lỗi',
+            //   detail:'Lỗi không tìm thấy hình ảnh',
+            //   life: 2000
+            // });
           });
     }
 
