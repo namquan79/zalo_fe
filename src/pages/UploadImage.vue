@@ -41,6 +41,8 @@
   import {useToast} from "primevue/usetoast";
   import axios from "axios";
   import {FileDetail} from "@/models/fileDetail.models";
+  import {useStore} from "vuex";
+  import {useRouter} from "vue-router";
 
   export default {
       props: {
@@ -51,19 +53,26 @@
       const layout = ref('grid');
       const toast = useToast();
       const show = ref(false);
+      const store = useStore();
+      const router = useRouter();
 
+      if(!(!!store.state.token)){
+        router.push({
+          name: 'home'
+        });
+      }
       const getListImage = () => {
         ZaloRepository.getListImage()
             .then((response) => {
               products.value = response.data;
             })
             .catch(err => {
-              toast.add({
-                severity: 'error',
-                summary: 'Lỗi',
-                detail:'Lỗi khi tải địa điểm',
-                life: 2000
-              });
+              // toast.add({
+              //   severity: 'error',
+              //   summary: 'Lỗi',
+              //   detail:'Lỗi khi tải địa điểm',
+              //   life: 2000
+              // });
             });
       }
       const deleteFile = (name: string) =>

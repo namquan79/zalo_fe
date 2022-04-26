@@ -23,7 +23,7 @@ export default new class {
   }
   userPermission(login: Login): Promise<AxiosResponse<UserPermission>>{
     return Repository.post<UserPermission>(`${resource}/getpermission`, login);
-  }
+  }d
   sendMessage(mess: Message): Promise<AxiosResponse<any>>{
     return Repository.post<any>(`${resource}/SendMessage`, mess);
   }

@@ -78,7 +78,7 @@
               <Slider v-model="age2" :range="true" />
             </div>
           </div>
-          <Panel header="Thiết kế khung chính của tinh nhắn">
+          <Panel header="Thiết kế khung chính của tin nhắn">
             <div class="p-fluid p-formgrid p-grid">
               <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                 <label>Tiêu đề của khung chính</label>
@@ -263,22 +263,49 @@
     </Dialog>
     <ConfirmDialog></ConfirmDialog>
   </div>
+  <div class="p-field p-col-10 p-sm-10 p-md-10">
   <div class="card">
-    <Dialog header="Tập tin lưu trên máy chủ" v-model:visible="show" >
-      <DataView :value="products" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+    <div class="p-field p-col-10 p-sm-10 p-md-10">
+    <Dialog header="Tập tin lưu trên máy chủ" v-model:visible="show">
+      <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
+        <InputText id="find" type="text" v-model="find" @input="search($event)" placeholder="Tìm kiếm"/>
+      </div>
+      <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
+        <Button label="Xóa hình" @click="deleteImage" icon="pi pi-plus-circle" style="margin-right: 5vw" :disabled="!validImageSelect()"/>
+      </div>
+      <div class="p-field p-col p-col-12 p-md-3 p-lg-3">
+          <Button class="p-button-outlined" label="Đính kèm tập tin" onclick="document.getElementById('myFile').click()" icon="pi pi-paperclip" style="margin-right: 5vw"/>
+      </div>
+        <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
+          <Button label="Đăng hình" @click="upload()" icon="pi pi-plus-circle" style="margin-right: 5vw"/>
+      </div>
+        <div class="p-field p-col-4 p-sm-4 p-md-3">
+          <form enctype="multipart/form-data">
+            <input id="myFile" type="file" style="display: none;" accept=".jpeg,.png,.jpg" name="files" multiple="multiple" v-on:change="fileChange($event.target.files)" :disabled="loadingBar" />
+          </form>
+        </div>
+      </div>
+      <DataView :value="listImageFull" :layout="layout" :paginator="true" :rows="20" :sortOrder="sortOrder" :sortField="sortField">
         <template #grid="slotProps">
-          <div class="col-6">
-            <div class="product-list-item"  badge="8">
-              <Card style="width: 170px; height: 170px;">
+          <div class="col-12 md:col-4">
+            <div class="product-grid-item card">
+              <div class="product-grid-item-content" style="margin: 10px">
+               <Card>
                 <template #content>
-                  <img :src=slotProps.data.link style="max-width: 150px" @click="imageClick(slotProps.data.link)"/>
+                  <img class="imageupload" :src=slotProps.data.link @click="imageClick(slotProps.data.link)"  />
+                  <div class="product-name" style="font-size: 10px">{{slotProps.data.fileName}}</div>
+                  <Checkbox v-model="slotProps.data.delete" :binary="true"/>
                 </template>
-              </Card>
+               </Card>
+            </div>
             </div>
           </div>
         </template>
       </DataView>
     </Dialog>
+  </div>
+  </div>
   </div>
 </template>
 
@@ -298,6 +325,7 @@ import {ElementParamater} from "@/models/elementParamater";
 import { ListCustomer } from '@/models/listCustomer';
 import Province from "@/models/province.models";
 import {ListImage} from "@/models/listImage";
+import {ListImageFull} from "@/models/listImageFull";
 
 export default {
 
@@ -323,6 +351,7 @@ export default {
     const action2 = ref("");
     const gender2 = ref("");
     const age2 = ref([10,100]);
+    const find = ref("");
     const lsAction = ref([
         {label: 'Gởi tin nhắn cho từng khách hàng', value: 'customer'},
         {label: 'Gởi tin nhắn cho tất cả khách hàng', value: 'all'},
@@ -348,7 +377,15 @@ export default {
     const listProvince = ref([] as Province[]);
     const province = ref();
     const province2 = ref();
+    const listImageFull = ref([] as ListImageFull[]);
+    const listImageFullTemp = ref([] as ListImageFull[]);
 
+    if(!(!!store.state.token)){
+      console.log("@@@@@@@@@@@@@@@@#################### send message: ");
+      router.push({
+        name: 'home'
+      });
+    }
     // const valid = computed(()=> action.value && message.value.mess);
     const valid = () => {
       return action.value && message.value.mess;
@@ -562,6 +599,18 @@ export default {
       ZaloRepository.getListImage()
           .then((response) => {
             products.value = response.data;
+            products.value.forEach(x => {
+              listImageFull.value.push({
+                link: x.link,
+                fileName: x.link.split("\\")[1],
+                //fileName: x.link,
+                delete: false
+              })
+            });
+            listImageFullTemp.value = listImageFull.value;
+            products.value.forEach(x => {
+              x.link = "https://localhost:5001/" + x.link;
+            })
           })
           .catch(err => {
             // toast.add({
@@ -582,6 +631,7 @@ export default {
       link = link.replace("\\" , "/");
       console.log("############$$$$$$$$$$$$$$$$$$$$$ imageClick22222: " + link);
       link = "https://zalooa.kclvn.com/" + link;
+      link = link.replaceAll(" ","%20");
       if(index.value == 2)
       {
         element2.value.image_url = link
@@ -607,6 +657,51 @@ export default {
       show.value = true;
       index.value = i;
     }
+    const search = (event) => {
+      listImageFull.value = listImageFullTemp.value.filter(x => x.fileName.includes((find.value)));
+      console.log("$$$$$$$$$$$$$$$ search listImageFull: " + JSON.stringify(listImageFull.value.filter(x => x.delete == true)));
+    }
+
+    const deleteImage = () => {
+      console.log("$$$$$$$$$$$$$$$ search event delectImage: ");
+      const listDelect = ref([] as ListImage[]);
+      listImageFull.value.forEach(x => {
+        if(x.delete)
+          listDelect.value.push({link: x.fileName});
+      });
+      ZaloRepository.deleteImageFile(listDelect.value)
+          .then((response) => {
+            toast.add({
+              severity: 'success',
+              summary: 'Xóa',
+              detail:'Xóa thành công hình ảnh',
+              life: 2000
+            });
+            listImageFullTemp.value = listImageFull.value.filter(x => x.delete == false);
+            listImageFull.value = listImageFullTemp.value;
+          })
+          .catch(err => {
+            toast.add({
+              severity: 'error',
+              summary: 'Lỗi',
+              detail:'Lỗi xóa hình ảnh không thành công',
+              life: 2000
+            });
+          });
+    }
+    const validImageSelect = () => {
+      console.log("$$$$$$$$$$$$$$$ search event validImageSelect: ");
+      if(listImageFull.value.filter(x => x.delete == true).length > 0)
+      {
+        console.log("$$$$$$$$$$$$$$$ search event validImageSelect true: ");
+        return true;
+      }
+      else
+      {
+        console.log("$$$$$$$$$$$$$$$ search event validImageSelect false: ");
+        return false;
+      }
+    };
 
     return {
       doSendMessage,
@@ -645,8 +740,24 @@ export default {
       showListImage,
       imageClick,
       show,
+      listImageFull,
+      find,
+      search,
+      validImageSelect,
+      deleteImage
     }
   }
 }
 
 </script>
+<style lang="scss">
+.right{
+  width: 100%;
+  /*height: fit-content;*/
+  resize: both;
+}
+.imageupload{
+  max-width:100px;
+  max-height:100px;
+}
+</style>

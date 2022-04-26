@@ -2,23 +2,23 @@
   <div class="layout-topbar p-d-flex p-jc-between">
     <Menubar :model="appMenu" >
       <template #start>
-        <a href="/sendmessage">
+        <a href="/">
           <img alt="logo" src="../assets/Zalo.png" height="40" class="p-mr-2">
         </a>
       </template>
       <template #end>
-<!--        <router-link :to="{ name: 'login' }" v-if="!isLoggedIn">-->
-<!--          <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" />-->
-<!--        </router-link>-->
+        <div v-if="!isLoggedIn">
+          <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" @click="gotoLoginPage"/>
+        </div>
 
-<!--        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"  v-else/>-->
+        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"  v-else/>
       </template>
     </Menubar>
   </div>
 </template>
 
 <script lang="ts">
-import { computed } from 'vue'
+import {computed, ref} from 'vue'
 import { useStore } from 'vuex'
 import { useToast } from "primevue/usetoast";
 import router from "@/router";
@@ -33,23 +33,43 @@ export default {
   setup(props) {
     const store = useStore();
     const toast = useToast();
-    const defaultMenu = [
-      {
-        label:'Hệ thống nhắn tin Zalo OA',
-        icon:'pi pi-fw pi-list',
-        url: '/home'
-      },
-      {
-        label:'Gởi tin nhắn',
-        icon:'pi pi-fw pi-send',
-        url: '/sendmessage'
-      },
-      {
-        label:'Đăng hình ảnh',
-        icon:'pi pi-fw pi-upload',
-        url: '/uploadImage'
-      },
-    ];
+    // const defaultMenu = [
+    //   {
+    //     label:'Hệ thống nhắn tin Zalo OA',
+    //     icon:'pi pi-fw pi-list',
+    //     url: '/home'
+    //   },
+    //   {
+    //     label:'Gởi tin nhắn',
+    //     icon:'pi pi-fw pi-send',
+    //     url: '/sendmessage'
+    //   },
+    //   {
+    //     label:'Đăng hình ảnh',
+    //     icon:'pi pi-fw pi-upload',
+    //     url: '/uploadImage'
+    //   },
+    // ];
+    const homeMenu = computed(() => {
+      const menu = ref([
+          {
+            label:'Hệ thống nhắn tin Zalo OA',
+            icon:'pi pi-fw pi-list',
+            url: '/home'
+          },
+          {
+            label:'Gởi tin nhắn',
+            icon:'pi pi-fw pi-send',
+            url: '/sendmessage'
+          },
+          {
+            label:'Đăng hình ảnh',
+            icon:'pi pi-fw pi-upload',
+            url: '/uploadImage'
+          },
+      ]);
+      return menu.value;
+    })
     const userMenu = [
       // {
       //   label:'Đăng ký',
@@ -110,15 +130,29 @@ export default {
       },
     ];
     const appMenu = computed(() => {
-      // if(props.isLoggedIn)
-      // {
-      //   if(store.state.permission == "admin") return adminMenu;
-      //   else return userMenu;
-      // }
-      // else
-      {
-        return defaultMenu;
-      }
+      const menu = ref([
+        {
+          label:'Gởi tin nhắn',
+          icon:'pi pi-fw pi-send',
+          url: '/sendmessage'
+        },
+        {
+          label:'Đăng hình ảnh',
+          icon:'pi pi-fw pi-upload',
+          url: '/uploadImage'
+        },
+        {
+          label:'Danh sách bệnh nhân đăng ký khám bệnh',
+          icon:'pi pi-fw pi-list',
+          url: '/listRegisterService'
+        },
+      ]);
+      const menuDefault = ref([
+      ]);
+      if(!!store.state.token)
+        return menu.value;
+      else
+        return menuDefault.value;
     });
     const logout = () => {
       store.dispatch('clearToken');
@@ -133,10 +167,16 @@ export default {
         life: 1000
       });
     }
+    const gotoLoginPage = () => {
+      router.push({
+        name: 'login',
+      });
+    }
 
     return {
       appMenu,
-      logout
+      logout,
+      gotoLoginPage
     }
   }
 }

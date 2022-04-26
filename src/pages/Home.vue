@@ -1,12 +1,10 @@
 <template>
-<!--  <AddInfo v-if="isLoggedIn" />-->
-<!--  <LoginPage v-else />-->
-  <SendMessagePage/>
+  <SendMessagePage v-if="isLoggedIn" />
+  <LoginPage v-else />
 </template>
 
 <script lang="ts">
-// import LoginPage from "@/pages/LoginPage.vue";
-// import AddInfo from "@/pages/AddInfo.vue";
+import LoginPage from "@/pages/LoginPage.vue";
 import SendMessagePage from "@/pages/SendMessagePage.vue";
 
 import { useStore } from 'vuex'
@@ -15,8 +13,7 @@ import {useRouter} from "vue-router";
 
 export default {
   components: {
-    // LoginPage,
-    // AddInfo,
+    LoginPage,
     SendMessagePage
   },
   setup(){
@@ -24,6 +21,7 @@ export default {
     const isLoggedIn = computed(() => !!store.state.token);
     const router = useRouter();
 
+    console.log("isLoggedIn: " + isLoggedIn);
     // router.push({
     //   name: 'sendmessage'
     // });
