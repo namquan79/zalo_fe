@@ -2,6 +2,9 @@
 
   <panel>
     <div class="p-field p-col-12 p-sm-12 p-md-12">
+      <label style="font-weight: bolder; color: red">*Chú ý: kích thước khung ảnh chính(360 x 232 pixel), kích thước hình ảnh thành phần(50 x 50 pixel)</label>
+    </div>
+    <div class="p-field p-col-12 p-sm-12 p-md-12">
       <Button class="p-button-outlined" label="Đính kèm tập tin" onclick="document.getElementById('myFile').click()" icon="pi pi-paperclip" style="margin-right: 5vw"/>
       <Button label="Đăng hình" @click="upload()" icon="pi pi-plus-circle" style="margin-right: 5vw"/>
     </div>

@@ -5,6 +5,8 @@ import SendMessagePage from "@/pages/SendMessagePage.vue";
 import UploadImage from "@/pages/UploadImage.vue";
 import ShowListRegisterService from "@/pages/ShowListRegisterService.vue";
 import UpdateRegisterService from "@/pages/UpdateRegisterService.vue";
+import RegisterUserPage from "@/pages/RegisterUserPage.vue";
+import UpdateInfo from "@/pages/UpdateInfo.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -43,24 +45,24 @@ const routes: Array<RouteRecordRaw> = [
   //   component: AddInfo,
   //   props: true
   // },
-  // {
-  //   path: '/updateinfo/:id',
-  //   name: 'updateinfo',
-  //   component: UpdateInfo,
-  //   props: true
-  // },
+  {
+    path: '/updateinfo/:id',
+    name: 'updateinfo',
+    component: UpdateInfo,
+    props: true
+  },
   // {
   //   path: '/downloadinfo',
   //   name: 'downloadinfo',
   //   component: DownloadInfo,
   //   props: true
   // },
-  // {
-  //   path: '/registeruser',
-  //   name: 'registeruser',
-  //   component: RegisterUserPage,
-  //   props: true
-  // },
+  {
+    path: '/registeruser',
+    name: 'registeruser',
+    component: RegisterUserPage,
+    props: true
+  },
   // {
   //   path: '/addpersioninfo',
   //   name: 'addpersioninfo',

@@ -96,7 +96,7 @@
                 </div>
               </div>
               <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                <label>Link khung chính</label>
+                <label>Đường dẫn khung chính</label>
                 <Textarea id="defaultUrl" type="text" v-model="element1.url" />
               </div>
             </div>
@@ -123,7 +123,7 @@
                       <Dropdown v-model="element2.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element2.type == 1">
-                      <label>Link của tham số 1</label>
+                      <label>Đường dẫn của tham số 1</label>
                       <InputText id="defaultUrl1" type="text" v-model="element2.url" />
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 2)||(element2.type == 3)">
@@ -159,7 +159,7 @@
                       <Dropdown v-model="element3.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element3.type == 1">
-                      <label>Link của tham số 2</label>
+                      <label>Đường dẫn của tham số 2</label>
                       <InputText id="defaultUrl2" type="text" v-model="element3.url" />
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 2)||(element3.type == 3)">
@@ -194,7 +194,7 @@
                       <Dropdown v-model="element4.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element4.type == 1">
-                      <label>Link của tham số 3</label>
+                      <label>Đường dẫn của tham số 3</label>
                       <InputText id="defaultUrl3" type="text" v-model="element4.url" />
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 2)||(element4.type == 3)">
@@ -229,7 +229,7 @@
                       <Dropdown v-model="element5.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element5.type == 1">
-                      <label>Link của tham số 4</label>
+                      <label>Đường dẫn của tham số 4</label>
                       <InputText id="defaultUrl4" type="text" v-model="element5.url" />
                     </div>
                     <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 2)||(element5.type == 3)">
@@ -272,14 +272,14 @@
         <InputText id="find" type="text" v-model="find" @input="search($event)" placeholder="Tìm kiếm"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
-        <Button label="Xóa hình" @click="deleteImage" icon="pi pi-plus-circle" style="margin-right: 5vw" :disabled="!validImageSelect()"/>
+        <Button label="Xóa hình" @click="deleteImage" icon="pi pi-trash" style="margin-right: 5vw" :disabled="!validImageSelect()"/>
       </div>
-      <div class="p-field p-col p-col-12 p-md-3 p-lg-3">
-          <Button class="p-button-outlined" label="Đính kèm tập tin" onclick="document.getElementById('myFile').click()" icon="pi pi-paperclip" style="margin-right: 5vw"/>
-      </div>
-        <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
-          <Button label="Đăng hình" @click="upload()" icon="pi pi-plus-circle" style="margin-right: 5vw"/>
-      </div>
+<!--      <div class="p-field p-col p-col-12 p-md-3 p-lg-3">-->
+<!--          <Button class="p-button-outlined" label="Đính kèm tập tin" onclick="document.getElementById('myFile').click()" icon="pi pi-paperclip" style="margin-right: 5vw"/>-->
+<!--      </div>-->
+<!--        <div class="p-field p-col p-col-12 p-md-2 p-lg-2">-->
+<!--          <Button label="Đăng hình" @click="upload()" icon="pi pi-plus-circle" style="margin-right: 5vw"/>-->
+<!--      </div>-->
         <div class="p-field p-col-4 p-sm-4 p-md-3">
           <form enctype="multipart/form-data">
             <input id="myFile" type="file" style="display: none;" accept=".jpeg,.png,.jpg" name="files" multiple="multiple" v-on:change="fileChange($event.target.files)" :disabled="loadingBar" />
@@ -360,14 +360,14 @@ export default {
         {label: 'Gởi tin nhắn theo khu vực', value: 'location'},
     ])
     const list = ref([
-      { label: 'mở 1 link', value: 'oa.open.url' , param: 1},
+      { label: 'mở 1 đường dẫn', value: 'oa.open.url' , param: 1},
       { label: 'gởi 1 tin nhắn đến OA', value: 'oa.query.show', param: 2},
       { label: 'gởi 1 tin nhắn ẩn đến OA', value: 'oa.query.hide', param: 3},
       { label: 'mở ứng dụng gởi sms với nội dung và sdt cho sẵn', value: 'oa.open.sms', param: 4},
       { label: 'mở ứng dụng gọi điện thoại với số cho sẵn', value: 'oa.open.phone', param: 5},
     ]);
     const listdefault = ref([
-      { label: 'mở 1 link', value: 'oa.open.url' , param: 1},
+      { label: 'mở 1 đường dẫn', value: 'oa.open.url' , param: 1},
     ]);
     const payload1 = ref({content: "", phone_code: ""});
     const payload2 = ref({content: "", phone_code: ""});
@@ -607,6 +607,9 @@ export default {
                 delete: false
               })
             });
+            // listImageFull.value.forEach(x =>{
+            //   x.link = x.link.replace("wwwroot/UploadFolder\\", "UploadFolder/");
+            // });
             listImageFullTemp.value = listImageFull.value;
             products.value.forEach(x => {
               x.link = "https://localhost:5001/" + x.link;

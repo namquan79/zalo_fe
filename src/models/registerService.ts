@@ -11,4 +11,5 @@ export interface RegisterService{
     timeContact?: Date;
     timeBooking?: Date;
     timeConfirm?: Date;
+    year: string;
 }

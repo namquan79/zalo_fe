@@ -44,14 +44,15 @@
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               :globalFilterFields="['customerName','serviceName']"
               currentPageReportTemplate="Có tất cả {totalRecords} người đăng ký"
-              v-model:filters="filters">
+              v-model:filters="filters" style="font-size: 13px">
         <Column field="customerName" header="Họ và tên" sortable></Column>
         <Column field="serviceName" header="Tên dịch vụ" sortable></Column>
         <Column field="address" header="Địa chỉ"></Column>
+        <Column field="year" header="Năm sinh"></Column>
         <Column field="message" header="Yêu cầu"></Column>
         <Column field="phoneNumber" header="Số điện thoại"></Column>
         <Column field="userConfirm" header="Người xác nhận"></Column>
-        <Column field="time" dataType="date" header="Ngày liên hệ" sortable>
+        <Column field="time" dataType="date" header="Thời gian liên hệ" sortable>
           <template #body="{data}">
             {{formatDateTime(data.timeContact)}}
           </template>
@@ -59,7 +60,7 @@
             <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
           </template>
         </Column>
-        <Column field="time" dataType="date" header="Ngày đặt lịch" sortable>
+        <Column field="time" dataType="date" header="Thời gian đặt lịch" sortable>
           <template #body="{data}">
             {{formatDateTime(data.timeBooking)}}
           </template>
@@ -164,7 +165,7 @@
           return "chưa có thông tin"
         }
         else
-        return moment(String(date)).format('DD/MM/YYYY');
+        return moment(String(date)).format(' HH:mm DD/MM/YYYY');
       };
 
       const getFilter = () => {
@@ -202,3 +203,5 @@
 
   }
 </script>
+<style lang="scss">
+</style>

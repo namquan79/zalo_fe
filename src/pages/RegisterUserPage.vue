@@ -13,15 +13,15 @@
           <label>Họ và tên</label>
           <InputText id="fullname" type="text" v-model="register.fullname" />
         </div>
-        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-          <label>Chọn đơn vị</label>
-          <Dropdown id="donvi" v-model="register.companyCode" :options="donVi" optionLabel="ten" optionValue="ma" placeholder="Vui lòng chọn đơn vị">
-          </Dropdown>
-<!--          <InputText id="fullname" type="text" v-model="register.companyCode" />-->
-        </div>
+<!--        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">-->
+<!--          <label>Chọn đơn vị</label>-->
+<!--          <Dropdown id="donvi" v-model="register.companyCode" :options="donVi" optionLabel="ten" optionValue="ma" placeholder="Vui lòng chọn đơn vị">-->
+<!--          </Dropdown>-->
+<!--&lt;!&ndash;          <InputText id="fullname" type="text" v-model="register.companyCode" />&ndash;&gt;-->
+<!--        </div>-->
         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
           <label>Chọn quyền hạn</label>
-          <Dropdown id="permission" v-model="register.permission" :options="accPermission" optionLabel="name" optionValue="permission" placeholder="Vui lòng chọn quyền hạn của tài khoản ...">
+          <Dropdown id="permission" v-model="register.permission" :options="accPermission" optionLabel="label" optionValue="value" placeholder="Vui lòng chọn quyền hạn của tài khoản ...">
           </Dropdown>
         </div>
       </div>
@@ -64,20 +64,14 @@ export default {
     }
     const teams = ref({} as Team[]);
 
-    const accPermission = ref([] as AccountPermission[]);
+    const accPermission = ref([{
+      label: "Quản lý" , value: "admin"
+    },
+      {
+        label: "Nhân viên" , value: "user"
+      }]);
 
-    const donVi = ref([] as DonViCreate[]);
 
-    VaccinationRepository.getAccountPermission()
-            .then((response) => {
-              accPermission.value = response.data;
-            })
-            .catch();
-    VaccinationRepository.getListDonVi()
-            .then((response) => {
-              donVi.value = response.data;
-            })
-            .catch();
     TeamRepository.getTeams()
             .then((response) => {
               teams.value = response.data;
@@ -125,7 +119,7 @@ export default {
       teams,
       accPermission,
       error,
-      donVi,
+      // donVi,
     }
   }
 }

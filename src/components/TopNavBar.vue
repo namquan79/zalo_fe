@@ -33,118 +33,22 @@ export default {
   setup(props) {
     const store = useStore();
     const toast = useToast();
-    // const defaultMenu = [
-    //   {
-    //     label:'Hệ thống nhắn tin Zalo OA',
-    //     icon:'pi pi-fw pi-list',
-    //     url: '/home'
-    //   },
-    //   {
-    //     label:'Gởi tin nhắn',
-    //     icon:'pi pi-fw pi-send',
-    //     url: '/sendmessage'
-    //   },
-    //   {
-    //     label:'Đăng hình ảnh',
-    //     icon:'pi pi-fw pi-upload',
-    //     url: '/uploadImage'
-    //   },
-    // ];
-    const homeMenu = computed(() => {
-      const menu = ref([
-          {
-            label:'Hệ thống nhắn tin Zalo OA',
-            icon:'pi pi-fw pi-list',
-            url: '/home'
-          },
-          {
-            label:'Gởi tin nhắn',
-            icon:'pi pi-fw pi-send',
-            url: '/sendmessage'
-          },
-          {
-            label:'Đăng hình ảnh',
-            icon:'pi pi-fw pi-upload',
-            url: '/uploadImage'
-          },
-      ]);
-      return menu.value;
-    })
-    const userMenu = [
-      // {
-      //   label:'Đăng ký',
-      //   icon:'pi pi-fw pi-user-plus',
-      //   url: '/register'
-      // },
-      {
-        label:'Thống kê',
-        icon:'pi pi-fw pi-list',
-        url: '/statistical'
-      },
-      {
-        label:'Thêm thông tin',
-        icon:'pi pi-fw pi-plus-circle',
-        url: '/addinfo'
-      },
-      {
-        label:'Thêm đối tượng',
-        icon:'pi pi-fw pi-user-plus',
-        url: '/addpersioninfo'
-      },
-      {
-        label:'Xuất tập tin',
-        icon:'pi pi-fw pi-download',
-        url: '/downloadinfo'
-      },
-    ];
-    const adminMenu = [
-      // {
-      //   label:'Đăng ký',
-      //   icon:'pi pi-fw pi-user-plus',
-      //   url: '/register'
-      // },
-      {
-        label:'Thống kê',
-        icon:'pi pi-fw pi-list',
-        url: '/statistical'
-      },
-      {
-        label:'Thêm thông tin',
-        icon:'pi pi-fw pi-plus-circle',
-        url: '/addinfo'
-      },
-      {
-        label:'Thêm đối tượng',
-        icon:'pi pi-fw pi-user-plus',
-        url: '/addpersioninfo'
-      },
-      {
-        label:'Xuất tập tin',
-        icon:'pi pi-fw pi-download',
-        url: '/downloadinfo'
-      },
-      {
-        label:'Thêm tài khoản',
-        icon:'pi pi-fw pi-users',
-        url: '/registeruser'
-      },
-    ];
     const appMenu = computed(() => {
       const menu = ref([
         {
           label:'Gởi tin nhắn',
           icon:'pi pi-fw pi-send',
-          url: '/sendmessage'
+          to: '/sendmessage'
         },
         {
           label:'Đăng hình ảnh',
           icon:'pi pi-fw pi-upload',
-          url: '/uploadImage'
+          to: '/uploadImage'
         },
         {
           label:'Danh sách bệnh nhân đăng ký khám bệnh',
           icon:'pi pi-fw pi-list',
-          url: '/listRegisterService'
+          to: '/listRegisterService'
         },
       ]);
       const menuDefault = ref([

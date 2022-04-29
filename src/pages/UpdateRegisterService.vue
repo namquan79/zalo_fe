@@ -18,6 +18,10 @@
         <label>Dịch vụ</label>
         <InputText id="service" type="text" v-model="registerServiceUpdate.serviceName" style="text-align: center"/>
       </div>
+      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+        <label>Yêu cầu</label>
+        <InputText id="message" type="text" v-model="registerServiceUpdate.message" style="text-align: center"/>
+      </div>
       <div class="p-field p-col-12 p-sm p-md-6">
         <label for="dateselect">Chọn ngày khám:</label>
         <Calendar
@@ -32,7 +36,12 @@
                 :yearNavigator="true"
                 yearRange="1900:2050"
                 :minDate="minDate"
-        />
+                :showTime="true"
+        >
+<!--          <template #date="slotProps">-->
+<!--            {{formatDateTime(slotProps.timeBooking)}}-->
+<!--          </template>-->
+        </Calendar>
       </div>
     <div class="p-field p-col-12 p-sm-12 p-md-12">
 <!--      <div class="p-field p-col-12 p-sm p-md-4">-->
@@ -47,18 +56,7 @@
 
 import {ref} from 'vue'
 import {useToast} from "primevue/usetoast";
-import AuthRepository from "@/services/AuthRepository";
-import {useStore} from "vuex";
-import router from "@/router";
-import {Team} from "@/models/team.models";
-import {FilterMatchMode} from "primevue/api";
-import Province from "@/models/province.models";
-import District from "@/models/district.models";
-import Ward from "@/models/Ward.models";
-import {ThongTinUpdate} from "@/models/thongTinUpdate";
-import VaccinationRepository from "@/services/VaccinationRepository";
-import {useConfirm} from "primevue/useconfirm";
-import {ThongTinDoiTuong} from "@/models/thongTinDoiTuong";
+import moment from "moment";
 import {RegisterServiceUpdate} from "@/models/registerServiceUpdate";
 import ZaloRepository from "@/services/ZaloRepository";
 
@@ -75,23 +73,26 @@ export default {
       const dt = Date.parse(strDate);
       return dt / 1000;
     }
-    ZaloRepository.registerServiceById(props.id)
-        .then((response) => {
-          registerServiceUpdate.value = response.data;
-        })
-        .catch(err => {
-          toast.add({
-            severity: 'error',
-            summary: 'Lỗi',
-            detail:err.response.data,
-            life: 2500
-          })});
-
-    const update = () => {
-      registerServiceUpdate.value.timeBooking?.setHours(registerServiceUpdate.value.timeBooking?.getHours() + 7);
-      ZaloRepository.updateRegisterService(registerServiceUpdate.value)
+    const loadData = () => {
+      ZaloRepository.registerServiceById(props.id)
           .then((response) => {
             registerServiceUpdate.value = response.data;
+          })
+          .catch(err => {
+            toast.add({
+              severity: 'error',
+              summary: 'Lỗi',
+              detail:err.response.data,
+              life: 2500
+            })});
+    }
+
+    loadData();
+
+    const update = () => {
+      console.log("#######$$$$$$$$$$$$$$$$$ update: ");
+      ZaloRepository.updateRegisterService(registerServiceUpdate.value)
+          .then((response) => {
             toast.add({
               severity: 'success',
               summary: 'Thành công',
@@ -110,12 +111,17 @@ export default {
     const valid = () => {
       return registerServiceUpdate.value.timeBooking;
     }
+    const formatDateTime = (date) => {
+      console.log("########################## formatDateTime: " + moment(String(date)).format('DD/MM/YYYY'));
+      return moment(String(date)).format('DD/MM/YYYY');
+    };
 
     return {
       registerServiceUpdate,
       update,
       valid,
       minDate,
+      formatDateTime,
       // nonAccentVietnamese
     }
   }
