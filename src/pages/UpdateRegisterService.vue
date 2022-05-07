@@ -15,6 +15,11 @@
         <InputText id="address" type="text" v-model="registerServiceUpdate.address" style="text-align: center"/>
       </div>
       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+<!--        <Column field="antecedent" header="Tiền sử bệnh"></Column>-->
+        <label>Tiền sử bệnh</label>
+        <InputText id="antecedent" type="text" v-model="registerServiceUpdate.antecedent" style="text-align: center"/>
+      </div>
+      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
         <label>Dịch vụ</label>
         <InputText id="service" type="text" v-model="registerServiceUpdate.serviceName" style="text-align: center"/>
       </div>
@@ -91,6 +96,9 @@ export default {
 
     const update = () => {
       console.log("#######$$$$$$$$$$$$$$$$$ update: ");
+      console.log("#######$$$$$$$$$$$$$$$$$ update registerServiceUpdate.value.timeBooking: " + registerServiceUpdate.value.timeBooking);
+      console.log("#######$$$$$$$$$$$$$$$$$ update registerServiceUpdate.value.timeBooking formatDate: " + formatDate(registerServiceUpdate.value.timeBooking));
+      registerServiceUpdate.value.timeBooking = formatDate(registerServiceUpdate.value.timeBooking);
       ZaloRepository.updateRegisterService(registerServiceUpdate.value)
           .then((response) => {
             toast.add({
@@ -114,6 +122,9 @@ export default {
     const formatDateTime = (date) => {
       console.log("########################## formatDateTime: " + moment(String(date)).format('DD/MM/YYYY'));
       return moment(String(date)).format('DD/MM/YYYY');
+    };
+    const formatDate = (date) => {
+      return moment(String(date)).format('YYYY-MM-DDTHH:mm:ss');
     };
 
     return {

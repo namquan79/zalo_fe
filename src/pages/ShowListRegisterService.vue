@@ -49,6 +49,7 @@
         <Column field="serviceName" header="Tên dịch vụ" sortable></Column>
         <Column field="address" header="Địa chỉ"></Column>
         <Column field="year" header="Năm sinh"></Column>
+        <Column field="antecedent" header="Tiền sử bệnh"></Column>
         <Column field="message" header="Yêu cầu"></Column>
         <Column field="phoneNumber" header="Số điện thoại"></Column>
         <Column field="userConfirm" header="Người xác nhận"></Column>
@@ -70,10 +71,10 @@
         </Column>
         <Column header="Tuỳ chọn">
           <template #body="slotProps">
-            <router-link style="text-decoration: none !important;" :to="{ name: 'updateregisterservice', params: {id: slotProps.data.id}}"  v-if="!validDate(slotProps.data)">
-              <Button type="button" label="Đặt lịch"  icon="pi pi-eye" @click="editInfo(slotProps.data.id)"></Button>
+            <router-link style="text-decoration: none !important;" :to="{ name: 'updateregisterservice', params: {id: slotProps.data.id}}">
+              <Button type="button" label="Đặt lịch"  icon="pi pi-eye" @click="editInfo(slotProps.data.id)" v-if="!validDate(slotProps.data)"></Button>
+              <Button type="button" label="Đổi lịch" class="p-button-secondary" icon="pi pi-check-circle" v-else></Button>
             </router-link>
-            <Button type="button" label="Đã đặt lịch" class="p-button-secondary" icon="pi pi-check-circle" v-else></Button>
           </template>
         </Column>
         <template #empty>
@@ -178,7 +179,7 @@
         }
       }
       const validDate = (registerService: RegisterService) => {
-        return registerService.timeBooking;
+        return registerService.timeConfirm;
       }
 
       const clearDate = () => {

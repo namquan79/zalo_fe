@@ -11,5 +11,6 @@ export interface RegisterService{
     timeContact?: Date;
     timeBooking?: Date;
     timeConfirm?: Date;
+    antecedent?: string;
     year: string;
 }

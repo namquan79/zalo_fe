@@ -31,7 +31,7 @@ export default new class {
     return Repository.post<any>(`${resource}/deleteImage`, list);
   }
   updateRegisterService(registerServiceUpdate: RegisterServiceUpdate): Promise<AxiosResponse<any>>{
-    return Repository.put<any>(`${resource}/updateRegisterService`, registerServiceUpdate);
+    return Repository.post<any>(`${resource}/updateRegisterService`, registerServiceUpdate);
   }
   registerServiceById(id: number): Promise<AxiosResponse<any>>{
     return Repository.get<any>(`${resource}/registerService/${id}`);

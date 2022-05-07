@@ -6,8 +6,9 @@ export interface RegisterServiceUpdate{
     zaloId: string;
     message?: string;
     timeContact?: Date;
-    timeBooking: Date;
+    timeBooking: any;
     timeConfirm?: Date;
     phoneNumber: string;
+    antecedent?: string;
     address: string;
 }
