@@ -48,11 +48,15 @@
 <!--          </template>-->
         </Calendar>
       </div>
-    <div class="p-field p-col-12 p-sm-12 p-md-12">
-<!--      <div class="p-field p-col-12 p-sm p-md-4">-->
-        <Button label="Cập nhật" icon="pi pi-user-edit" :disabled="!valid()" @click="update()"  style="margin-right: 20px; width: 20vw"/>
-<!--      </div>-->
-    </div>
+      <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+      </div>
+      <div class="card p-col p-col-12 p-md-12 p-lg-12">
+        <div class="p-grid">
+          <div class="p-offset-4 p-col-4 p-sm-4 p-md-4">
+            <Button label="Cập nhật" icon="pi pi-check" :disabled="!valid()" @click="update()"/>
+          </div>
+        </div>
+      </div>
     </div>
   </Panel>
 </template>

@@ -48,31 +48,31 @@
         <Column field="customerName" header="Họ và tên" sortable></Column>
         <Column field="serviceName" header="Tên dịch vụ" sortable></Column>
         <Column field="address" header="Địa chỉ"></Column>
-        <Column field="year" header="Năm sinh"></Column>
+        <Column field="year" header="Năm sinh" sortable></Column>
         <Column field="antecedent" header="Tiền sử bệnh"></Column>
         <Column field="message" header="Yêu cầu"></Column>
         <Column field="phoneNumber" header="Số điện thoại"></Column>
-        <Column field="userConfirm" header="Người xác nhận"></Column>
-        <Column field="time" dataType="date" header="Thời gian liên hệ" sortable>
+        <Column field="userConfirm" header="Người xác nhận" sortable></Column>
+        <Column field="timeContact" dataType="date" header="Thời gian liên hệ" sortable>
           <template #body="{data}">
             {{formatDateTime(data.timeContact)}}
           </template>
-          <template #filter="{filterModel}">
-            <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
-          </template>
+<!--          <template #filter="{filterModel}">-->
+<!--            <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />-->
+<!--          </template>-->
         </Column>
-        <Column field="time" dataType="date" header="Thời gian đặt lịch" sortable>
+        <Column field="timeBooking" dataType="date" header="Thời gian đặt lịch" sortable>
           <template #body="{data}">
             {{formatDateTime(data.timeBooking)}}
           </template>
-          <template #filter="{filterModel}">
-            <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />
-          </template>
+<!--          <template #filter="{filterModel}">-->
+<!--            <Calendar v-model="filterModel.value" dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" />-->
+<!--          </template>-->
         </Column>
         <Column header="Tuỳ chọn">
           <template #body="slotProps">
             <router-link style="text-decoration: none !important;" :to="{ name: 'updateregisterservice', params: {id: slotProps.data.id}}">
-              <Button type="button" label="Đặt lịch"  icon="pi pi-eye" @click="editInfo(slotProps.data.id)" v-if="!validDate(slotProps.data)"></Button>
+              <Button type="button" label="Đặt lịch"  icon="pi pi-circle" @click="editInfo(slotProps.data.id)" v-if="!validDate(slotProps.data)"></Button>
               <Button type="button" label="Đổi lịch" class="p-button-secondary" icon="pi pi-check-circle" v-else></Button>
             </router-link>
           </template>
