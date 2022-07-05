@@ -3,7 +3,7 @@
     <Menubar :model="appMenu" >
       <template #start>
         <a href="/">
-          <img alt="logo" src="../assets/Zalo.png" height="40" class="p-mr-2">
+          <img alt="logo" src="../assets/logoUB.png" height="40" class="p-mr-2">
         </a>
       </template>
       <template #end>

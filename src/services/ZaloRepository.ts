@@ -36,4 +36,7 @@ export default new class {
   registerServiceById(id: number): Promise<AxiosResponse<any>>{
     return Repository.get<any>(`${resource}/registerService/${id}`);
   }
+  getListSubclinicalResult(svv: string, dt: string): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/getListSubclinicalResult/${svv}/${dt}`);
+  }
 }

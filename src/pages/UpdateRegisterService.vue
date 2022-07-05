@@ -28,7 +28,7 @@
         <InputText id="message" type="text" v-model="registerServiceUpdate.message" style="text-align: center"/>
       </div>
       <div class="p-field p-col-12 p-sm p-md-6">
-        <label for="dateselect">Chọn ngày khám:</label>
+        <label for="dateselect">Chọn thời gian khám:</label>
         <Calendar
                 id="dateselect"
                 v-model="registerServiceUpdate.timeBooking"
@@ -43,9 +43,9 @@
                 :minDate="minDate"
                 :showTime="true"
         >
-<!--          <template #date="slotProps">-->
-<!--            {{formatDateTime(slotProps.timeBooking)}}-->
-<!--          </template>-->
+          <template #body="{data}">
+            {{formatDateTime(data.timeBooking)}}
+          </template>
         </Calendar>
       </div>
       <div class="p-field p-col p-col-12 p-md-12 p-lg-12">

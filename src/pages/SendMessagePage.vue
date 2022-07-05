@@ -268,10 +268,10 @@
     <div class="p-field p-col-10 p-sm-10 p-md-10">
     <Dialog header="Tập tin lưu trên máy chủ" v-model:visible="show">
       <div class="p-fluid p-formgrid p-grid">
-      <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
+      <div class="p-field p-col p-col-12 p-md-4 p-lg-4">
         <InputText id="find" type="text" v-model="find" @input="search($event)" placeholder="Tìm kiếm"/>
       </div>
-      <div class="p-field p-col p-col-12 p-md-2 p-lg-2">
+      <div class="p-field p-col p-col-12 p-md-4 p-lg-4">
         <Button label="Xóa hình" @click="deleteImage" icon="pi pi-trash" style="margin-right: 5vw" :disabled="!validImageSelect()"/>
       </div>
 <!--      <div class="p-field p-col p-col-12 p-md-3 p-lg-3">-->

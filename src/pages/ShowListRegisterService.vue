@@ -72,7 +72,7 @@
         <Column header="Tuỳ chọn">
           <template #body="slotProps">
             <router-link style="text-decoration: none !important;" :to="{ name: 'updateregisterservice', params: {id: slotProps.data.id}}">
-              <Button type="button" label="Đặt lịch"  icon="pi pi-circle" @click="editInfo(slotProps.data.id)" v-if="!validDate(slotProps.data)"></Button>
+              <Button type="button" label="Đặt lịch"  icon="pi pi-spinner" v-if="!validDate(slotProps.data)"></Button>
               <Button type="button" label="Đổi lịch" class="p-button-secondary" icon="pi pi-check-circle" v-else></Button>
             </router-link>
           </template>
@@ -108,7 +108,7 @@
       const store = useStore();
       const list = ref([] as RegisterService[]);
       const listTemp = ref([] as RegisterService[]);
-      const date = ref(new Date());
+      const date = ref();
       const listService = ref([] as ListService[]);
       const service = ref("");
       const router = useRouter();
@@ -184,7 +184,8 @@
 
       const clearDate = () => {
         console.log("@@@@@@@@@################ clearDate");
-        date.value = new Date();
+        var temp = ref();
+        date.value = temp.value;
       }
 
       return {
