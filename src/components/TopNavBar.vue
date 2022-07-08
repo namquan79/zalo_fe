@@ -50,6 +50,16 @@ export default {
           icon:'pi pi-fw pi-list',
           to: '/listRegisterService'
         },
+        {
+          label:'Thêm nhân viên hỗ trợ',
+          icon:'pi pi-fw pi-user-plus',
+          to: '/addemployee'
+        },
+        {
+          label:'Danh sách nhân viên',
+          icon:'pi pi-fw pi-users',
+          to: '/showlistemployee'
+        },
       ]);
       const menuDefault = ref([
       ]);

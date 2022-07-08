@@ -5,6 +5,8 @@ import {MessageWithAttachment} from "@/models/messageWithAttachment";
 import Province from "@/models/province.models";
 import {ListImage} from "@/models/listImage";
 import {RegisterServiceUpdate} from "@/models/registerServiceUpdate";
+import {EmployeeCreate} from "@/models/employeeCreate";
+import {EmployeeUpdate} from "@/models/employeeUpdate";
 
 const resource = '/webhook'
 
@@ -38,5 +40,23 @@ export default new class {
   }
   getListSubclinicalResult(svv: string, dt: string): Promise<AxiosResponse<any>>{
     return Repository.get<any>(`${resource}/getListSubclinicalResult/${svv}/${dt}`);
+  }
+  createEmployee(employeeCreate: EmployeeCreate): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/createemployee`, employeeCreate);
+  }
+  updateEmployee(employeeUpdate: EmployeeUpdate): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/updateemployee`, employeeUpdate);
+  }
+  deleteEmployee(id: number): Promise<AxiosResponse<any>>{
+    return Repository.delete<any>(`${resource}/deleteemployee/${id}`);
+  }
+  getListEmployee(): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/getlistemployee`);
+  }
+  employeeById(id: number): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/getemployeebyid/${id}`);
+  }
+  getListCustomerWithOutEmployee(): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/listCustomerWithOutEmployee`);
   }
 }

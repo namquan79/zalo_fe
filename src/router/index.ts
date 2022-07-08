@@ -7,6 +7,10 @@ import ShowListRegisterService from "@/pages/ShowListRegisterService.vue";
 import UpdateRegisterService from "@/pages/UpdateRegisterService.vue";
 import RegisterUserPage from "@/pages/RegisterUserPage.vue";
 import UpdateInfo from "@/pages/UpdateInfo.vue";
+import ketQuaCLS from "@/pages/KetQuaCLS.vue";
+import AddEmployeePage from "@/pages/AddEmployeePage.vue";
+import showListEmployee from "@/pages/ShowListEmployee.vue";
+import updateEmployeePage from "@/pages/UpdateEmployeePage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,24 +31,6 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     props: true
   },
-  // {
-  //   path: '/statistical',
-  //   name: 'statistical',
-  //   component: Statistical,
-  //   props: true
-  // },
-  // {
-  //   path: '/showlistinfo/:id',
-  //   name: 'showlistinfo',
-  //   component: ShowListInfo,
-  //   props: true
-  // },
-  // {
-  //   path: '/addinfo',
-  //   name: 'addinfo',
-  //   component: AddInfo,
-  //   props: true
-  // },
   {
     path: '/updateinfo/:id',
     name: 'updateinfo',
@@ -61,6 +47,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/registeruser',
     name: 'registeruser',
     component: RegisterUserPage,
+    props: true
+  },
+  {
+    path: '/ketQuaCLS/:svv/:sdt',
+    name: 'ketQuaCLS',
+    component: ketQuaCLS,
     props: true
   },
   // {
@@ -91,6 +83,24 @@ const routes: Array<RouteRecordRaw> = [
     path: '/updateregisterservice/:id',
     name: 'updateregisterservice',
     component: UpdateRegisterService,
+    props: true
+  },
+  {
+    path: '/addemployee',
+    name: 'addemployee',
+    component: AddEmployeePage,
+    props: true
+  },
+  {
+    path: '/showlistemployee',
+    name: 'showlistemployee',
+    component: showListEmployee,
+    props: true
+  },
+  {
+    path: '/updateemployee/:id',
+    name: 'updateemployee',
+    component: updateEmployeePage,
     props: true
   },
 ]
