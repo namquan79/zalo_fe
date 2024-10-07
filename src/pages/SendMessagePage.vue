@@ -612,7 +612,7 @@ export default {
             // });
             listImageFullTemp.value = listImageFull.value;
             products.value.forEach(x => {
-              x.link = "https://localhost:5001/" + x.link;
+              x.link = window.location.href.split(window.location.pathname)[0] + "/" + x.link.replace("\\", "/");
             })
           })
           .catch(err => {
@@ -633,7 +633,7 @@ export default {
       show.value = false;
       link = link.replace("\\" , "/");
       console.log("############$$$$$$$$$$$$$$$$$$$$$ imageClick22222: " + link);
-      link = "https://zalooa.kclvn.com/" + link;
+      link = window.location.href.split(window.location.pathname)[0] + "/" + link.replace("\\", "/");
       link = link.replaceAll(" ","%20");
       if(index.value == 2)
       {

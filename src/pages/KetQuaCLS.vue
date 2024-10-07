@@ -34,7 +34,9 @@
             </div>
             <div class="p-field p-col-12 p-md-3 p-lg-3">
               <label>Ngày yêu cầu</label>
-              <InputText id="dodienthoai" type="text" v-model="subclinicalResults.ngayYeuCau" style="text-align: center"/>
+              <InputText id="dodienthoai" type="text" v-model="date" style="text-align: center">
+<!--                <label>{{formatDateTime(subclinicalResults.ngayYeuCau)}}</label>-->
+              </InputText>
             </div>
             <div class="p-field p-col-12 p-md-3 p-lg-3">
               <label>Số phiếu yêu cầu</label>
@@ -42,9 +44,9 @@
             </div>
           </div>
     <!--    <Panel header="">-->
-          <div class="p-fluid p-formgrid p-grid">
+<!--          <div class="p-fluid p-formgrid p-grid">-->
             <div class="p-field p-col-12 p-md-12 p-lg-12">
-            </div>
+
             <lv v-for="sub of listSubclinicalResults">
               <Panel>
               <div class="p-field p-col-12 p-md-12 p-lg-12">
@@ -80,6 +82,7 @@ import {Register} from "../models/register";
 import {useStore} from "vuex";
 import {SubclinicalResults} from "@/models/subclinicalResults";
 import zaloRepository from "@/services/ZaloRepository";
+import moment from "moment";
 
 export default {
   props: {
@@ -94,13 +97,19 @@ export default {
     const error = ref(null);
     const listSubclinicalResults = ref([] as SubclinicalResults[]);
     const subclinicalResults = ref({} as SubclinicalResults);
+    const date = ref("");
 
+
+    const formatDateTime = (date) => {
+      console.log("########################## formatDateTime: " + moment(String(date)).format('DD/MM/YYYY'));
+      return moment(String(date)).format('DD/MM/YYYY');
+    };
       zaloRepository.getListSubclinicalResult(props.svv,props.sdt)
           .then((response) => {
             listSubclinicalResults.value = response.data;
             // console.log("############$$$$$$$$$$$$$$$$$$$ listSubclinicalResults: " + JSON.stringify(listSubclinicalResults.value));
             subclinicalResults.value = listSubclinicalResults.value[0];
-
+            date.value = formatDateTime(subclinicalResults.value.ngayYeuCau);
             // console.log("############$$$$$$$$$$$$$$$$$$$ subclinicalResults: " + JSON.stringify(subclinicalResults.value));
           })
           .catch(err => {
@@ -112,9 +121,12 @@ export default {
             });
           });
 
+
     return {
       subclinicalResults,
-      listSubclinicalResults
+      listSubclinicalResults,
+      formatDateTime,
+      date
     }
   }
 }

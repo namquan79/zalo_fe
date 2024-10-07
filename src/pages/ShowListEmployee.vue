@@ -61,26 +61,24 @@
       const listEmployee = ref([] as Employee[]);
       const teams = ref([] as Team[]);
 
-      TeamRepository.getTeams()
-          .then((response) => {
-            teams.value = response.data;
-          })
-          .catch();
-
-
       const loadData = () => {
-        ZaloRepository.getListEmployee()
-                .then((response) => {
-                  listEmployee.value = response.data;
-                  listEmployee.value.forEach(x => {teams.value.forEach(y => {if(y.code == x.teamCode) x.teamCode = y.name})});
-                })
-                .catch(err => {
-                  toast.add({
-                    severity: 'error',
-                    summary: 'Lỗi',
-                    detail:err.response.data,
-                    life: 2500
-                  })});
+        TeamRepository.getTeams()
+            .then((response) => {
+              teams.value = response.data;
+              ZaloRepository.getListEmployee()
+                  .then((response) => {
+                    listEmployee.value = response.data;
+                    listEmployee.value.forEach(x => {teams.value.forEach(y => {if(y.code == x.teamCode) x.teamCode = y.name})});
+                  })
+                  .catch(err => {
+                    toast.add({
+                      severity: 'error',
+                      summary: 'Lỗi',
+                      detail:err.response.data,
+                      life: 2500
+                    })});
+            })
+            .catch();
       };
 
       const deleteEmployee = (id: number) => {
