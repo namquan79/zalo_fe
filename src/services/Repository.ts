@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '../store'
 import router from '../router'
 
-const baseDomain = ''
+const baseDomain = 'https://zalooaub.chuyendoisoquocgia.net'
 const baseAPI = `${baseDomain}/api`
 
 const instance = axios.create({

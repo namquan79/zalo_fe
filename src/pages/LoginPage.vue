@@ -1,48 +1,31 @@
 <template>
-<!--  <Card>-->
-<!--    <template #header>-->
-<!--      <img alt="user header" src="../assets/bg.jpeg">-->
-<!--    </template>-->
-<!--    <template #title>-->
-<!--      Đăng nhập-->
-<!--    </template>-->
-<!--    <template #content>-->
-<!--      <div class="p-fluid p-formgrid p-grid">-->
-<!--        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">-->
-<!--          <label for="firstname">Tên đăng nhập</label>-->
-<!--          <InputText id="firstname" type="text" v-model="userName" />-->
-<!--        </div>-->
-<!--        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">-->
-<!--          <label for="lastname">Mật khẩu</label>-->
-<!--          <InputText id="lastname" type="password" v-model="password" />-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </template>-->
-<!--    <template #footer>-->
-<!--      <Button v-if="valid" label="Đăng nhập" icon="pi pi-sign-in" iconPos="left" @click="doLogin()" />-->
-<!--      <Button v-else label="Đăng nhập" icon="pi pi-sign-in" iconPos="left" disabled="disabled" />-->
-<!--    </template>-->
-<!--  </Card>-->
-  <body>
-  <section class="login">
-    <div class="login_box">
-      <div class="left">
-        <div class="contact">
-          <form action="">
-            <h3>Đăng nhập</h3>
-            <InputText id="firstname" type="text" v-model="userName" placeholder="Tên đăng nhập"/>
-            <InputText id="lastname" type="password" v-model="password" v-on:keyup.enter="doLogin()" placeholder="Mật khẩu"/>
-            <Button v-if="valid" label="Đăng nhập" icon="pi pi-sign-in" iconPos="left" @click="doLogin()" />
-            <Button v-else label="Đăng nhập" icon="pi pi-sign-in" iconPos="left" disabled="disabled" />
-          </form>
+
+
+  <div id="login_page">
+    <div class="wraplogin">
+        <div class="main_login">
+            <div class="img_lg">
+              <img src="../assets/logoUB.png" width="70" class="img_l" alt="logo cong ty">
+              <img src="../assets/logo_kcl.jpg" width="70" class="img_r" alt="logo don vi">
+            </div>    
+              <h4>Bệnh Viện Ung Bướu Đà Nẵng</h4>
+              <h5>Đăng nhập hệ thống</h5>
+              <div class="it_lg">
+                <InputText id="firstname" type="text" v-model="userName" placeholder="Tên đăng nhập"/>
+              </div>
+              <div class="it_lg">
+                <InputText id="lastname" type="password" v-model="password" v-on:keyup.enter="doLogin()" placeholder="Mật khẩu"/>
+              </div>
+              <div class="it_lg it_lgbt">
+                <Button v-if="valid" label="Đăng nhập" icon="pi pi-sign-in" iconPos="left" @click="doLogin()" />
+                <Button v-else label="Đăng nhập" icon="pi pi-sign-in" iconPos="left" disabled="disabled" />
+              </div>
+          
         </div>
-      </div>
-      <div class="right">
-        <img class="background" alt="user header" src="../assets/bg.jpeg">
-      </div>
     </div>
-  </section>
-  </body>
+    
+  </div>
+
 </template>
 
 <script lang="ts">

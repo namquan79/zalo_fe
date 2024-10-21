@@ -1,19 +1,27 @@
 <template>
-  <div class="layout-topbar p-d-flex p-jc-between">
-    <Menubar :model="appMenu" >
-      <template #start>
-        <a href="/">
-          <img alt="logo" src="../assets/logoUB.png" height="40" class="p-mr-2">
-        </a>
-      </template>
-      <template #end>
-        <div v-if="!isLoggedIn">
-          <Button label="Đăng nhập" icon="pi pi-sign-in" iconPos="right" @click="gotoLoginPage"/>
-        </div>
 
-        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"  v-else/>
-      </template>
-    </Menubar>
+  <div v-if="isLoggedIn" id="header">
+    
+    <div class="wrap_header">
+      <div class="menubar">
+          <ul>
+            <li><RouterLink to ='/sendmessage'><span class="p-menuitem-icon pi pi-fw pi-send" data-pc-section="icon"></span>Gởi tin nhắn</RouterLink></li>
+            <li><RouterLink to ='/uploadImage'><span class="p-menuitem-icon pi pi-fw pi-upload" data-pc-section="icon"></span>Đăng hình ảnh</RouterLink></li>
+            <li><RouterLink to ='/listRegisterService'><span class="p-menuitem-icon pi pi-fw pi-list" data-pc-section="icon"></span>Danh sách đăng ký</RouterLink></li>
+            <li><RouterLink to ='/addemployee'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Thêm nhân viên</RouterLink></li>
+            <li><RouterLink to ='/showlistemployee'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Danh sách nhân viên</RouterLink></li>
+          </ul>
+      </div>
+      <div class="logouts">
+        <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"/>
+      </div>
+    </div>
+  </div>
+  <div v-if="isLoggedIn" id="fotter">
+    
+    <div class="wrap_header">
+      <p class="coppyi">© Copyright 2024 - Bệnh viện Ung Bướu Đà Nẵng- Designed by KCL Group</p>
+    </div>
   </div>
 </template>
 
@@ -36,9 +44,9 @@ export default {
     const appMenu = computed(() => {
       const menu = ref([
         {
-          label:'Gởi tin nhắn',
+          label:'Gởii tin nhắn',
           icon:'pi pi-fw pi-send',
-          to: '/sendmessage'
+          href: '/sendmessage'
         },
         {
           label:'Đăng hình ảnh',

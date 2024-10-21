@@ -1,259 +1,287 @@
 <template>
-  <Accordion :activeIndex="0">
-    <AccordionTab header="Gởi tin nhắn thông thường">
-<!--      <Panel header="Gởi tin nhắn thông thường cho người sử dụng">-->
-          <div class="p-fluid p-formgrid p-grid">
-            <div class="p-field p-col-12 p-sm-4 p-md-4">
+  <TabView>
+    <TabPanel header="Gởi tin nhắn thông thường">
+        <div id="tabs_tn1" class="tabs_tn">
+          <div class="wrap_tn">
+            <div class="on_tn on_choose">
+            <div class="it_3">
               <label>Lựa chọn phạm vi gởi tin nhắn</label>
               <Dropdown id="kind" v-model="action" :options="lsAction" optionLabel="label" optionValue="value">
-              </Dropdown>
-            </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action == 'location'">
+              </Dropdown> 
+            </div> 
+            <div class="it_3 it_ccc" v-if="action == 'location'">
               <label>Lựa chọn khu vực gởi tin</label>
               <Dropdown id="location" v-model="province" :options="listProvince" optionLabel="provinceName" optionValue="provinceCode" :filter="true" :showClear="true">
               </Dropdown>
             </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4"  style="text-align: center" v-if="action == 'gender'">
+            <div class="it_3 it_ccc" v-if="action == 'gender'">
               <label>A3. Giới tính </label>
-              <div class="p-field p-col-12 p-sm-12 p-md-12">
+              <div class="ps">
                 <input type="radio" id="nam" name="sex" value="Nam" v-model="gender"/>
                 <label for="nam" style="margin-right: 60px">&ensp;Nam</label>
                 <input type="radio" id="nu" name="sex" value="Nữ" v-model="gender"/>
                 <label for="nu">&ensp;Nữ</label>
               </div>
             </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action == 'customer'">
-<!--              listIdMessage-->
+            <div class="it_3 it_ccc" v-if="action == 'customer'">
               <label>Chọn khách hàng gởi</label>
               <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
               </MultiSelect>
               <small id="id-note1" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
-            </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action == 'age'">
-<!--              listIdMessage-->
+            </div> 
+            <div class="it_3 it_ccc" v-if="action == 'age'">
               <label>Chọn phạm vi độ tuổi: {{age}}</label>
               <h5></h5>
-              <Slider v-model="age" :range="true" />
-            </div>
-            <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+              <Slider v-model="age" :range="true" />    
+            </div> 
+            <div class="it_full">
               <label>Nội dung tin nhắn</label>
-              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>
+              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>  
+            </div>
+            <div class="it_bt">
+              <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>
+            </div>
             </div>
           </div>
-          <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>
-<!--      </Panel>-->
-    </AccordionTab>
-    <AccordionTab header="Gởi tin nhắn theo mẫu đính kèm">
-<!--        <Panel header="Gởi tin nhắn theo mẫu đính kèm cho người sử dụng">-->
-          <div class="p-fluid p-formgrid p-grid">
-            <div class="p-field p-col-12 p-sm-4 p-md-4">
+        </div>
+    </TabPanel>
+    <TabPanel header="Gởi tin nhắn theo mẫu đính kèm">
+      <div id="tabs_tn2" class="tabs_tn">
+          <div class="wrap_tn">
+            <div class="on_tn on_choose">
+            <div class="it_3">
               <label>Lựa chọn phạm vi gởi tin nhắn</label>
               <Dropdown id="kind2" v-model="action2" :options="lsAction" optionLabel="label" optionValue="value">
-              </Dropdown>
-            </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action2 == 'location'">
+              </Dropdown> 
+            </div> 
+            <div class="it_3 it_ccc" v-if="action == 'location'">
               <label>Lựa chọn khu vực gởi tin</label>
               <Dropdown id="location2" v-model="province2" :options="listProvince" optionLabel="provinceName" optionValue="provinceCode" :filter="true" :showClear="true">
               </Dropdown>
             </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4"  style="text-align: center" v-if="action2 == 'gender'">
+            <div class="it_3 it_ccc" v-if="action2 == 'gender'">
               <label>A3. Giới tính </label>
-              <div class="p-field p-col-12 p-sm-12 p-md-12">
+              <div class="ps">
                 <input type="radio" id="nam2" name="sex" value="Nam" v-model="gender2"/>
                 <label for="nam" style="margin-right: 60px">&ensp;Nam</label>
                 <input type="radio" id="nu2" name="sex" value="Nữ" v-model="gender2"/>
                 <label for="nu">&ensp;Nữ</label>
               </div>
             </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action2 == 'customer'">
-                <label>Chọn khách hàng gởi</label>
+            <div class="it_3 it_ccc" v-if="action2 == 'customer'">
+              <label>Chọn khách hàng gởi</label>
                 <MultiSelect v-model="listId" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
                 </MultiSelect>
                 <small id="id-note2" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
-            </div>
-            <div class="p-field p-col-12 p-sm-4 p-md-4" v-if="action2 == 'age'">
-              <!--              listIdMessage-->
+            </div> 
+            <div class="it_3 it_ccc" v-if="action2 == 'age'">
               <label>Chọn phạm vi độ tuổi: {{age2}}</label>
               <h5></h5>
-              <Slider v-model="age2" :range="true" />
+              <Slider v-model="age2" :range="true" />   
+            </div> 
+            <div class="it_full">
+              <label>Nội dung tin nhắn</label>
+              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>  
+            </div>
+            <div class="it_bt">
+              <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>
+            </div>
+            </div>
+            <div class="pannel_tk">
+              <Panel header="Thiết kế khung chính của tin nhắn">
+                <div class="p-fluid p-formgrid p-grid">
+                  <div class="it_6">
+                    <label>Tiêu đề của khung chính</label>
+                    <div class="on_it6">
+                      <Textarea id="titleMain" type="text" v-model="element1.title" />
+                    </div>
+                  </div>
+                  <div class="it_6">
+                    <label>Nội dung khung chính</label>
+                    <div class="on_it6">
+                      <Textarea id="subtitleMain" type="text" v-model="element1.subtitle" />
+                    </div>
+                    
+                  </div>
+                  <div class="it_6">
+                    <label>Đường dẫn hình ảnh chính</label>
+                    <div class="on_it6 ">
+                      <div class="p-on_it6s">
+                      <Textarea id="imageUrlMain" type="text" v-model="element1.image_url" />
+                      <Button label="chọn hình" @click="showListImage(1)"/>
+                    </div>
+                    </div>
+                    
+                  </div>
+                  <div class="it_6">
+                    <label>Đường dẫn khung chính</label>
+                    <div class="on_it6">
+                      <Textarea id="defaultUrl" type="text" v-model="element1.url" />
+                    </div>
+                    
+                  </div>
+                </div>
+              </Panel>
+              <Panel header="Thiết kế thành phần">
+                <div class="p-fluid p-formgrid p-grid">
+                  <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+                  <Accordion :multiple="true" :activeIndex="[0,1]">
+                    <AccordionTab header="Tham số 1">
+                      <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Tiêu đề của tham số 1</label>
+                          <InputText id="title1" type="text" v-model="element2.title" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Đường dẫn hình ảnh của tham số 1</label>
+                          <div class="p-inputgroup">
+                            <InputText id="imageUrl1" type="text" v-model="element2.image_url" />
+                            <Button label="chọn hình" @click="showListImage(2)"/>
+                          </div>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Loại hành động tham số 1</label>
+                          <Dropdown v-model="element2.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element2.type == 1">
+                          <label>Đường dẫn của tham số 1</label>
+                          <InputText id="defaultUrl1" type="text" v-model="element2.url" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 2)||(element2.type == 3)">
+                          <label>Nội dung tin nhắn của tham số 1</label>
+                          <InputText id="automessage" type="text" v-model="element2.payload" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element2.type == 4">
+                          <label>Nội dung tin nhắn sms 1</label>
+                          <InputText id="smscontent" type="text" v-model="payload1.content" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 4)||(element2.type == 5)">
+                          <label>Thông tin số điện thoại 1</label>
+            <!--              <InputNumber id="phonenumber" type="text" v-model="payload1.phone_code" mode="decimal" :useGrouping="false"/>-->
+                          <InputMask mask="(9999)999999" v-model="payload1.phone_code" placeholder="" />
+                        </div>
+                      </div>
+                    </AccordionTab>
+                    <AccordionTab header="Tham số 2">
+                      <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Tiêu đề của tham số 2</label>
+                          <InputText id="title2" type="text" v-model="element3.title" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Đường dẫn hình ảnh của tham số 2</label>
+                          <div class="p-inputgroup">
+                            <InputText id="imageUrl2" type="text" v-model="element3.image_url" />
+                            <Button label="chọn hình" @click="showListImage(3)"/>
+                          </div>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Loại hành động tham số 2</label>
+                          <Dropdown v-model="element3.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element3.type == 1">
+                          <label>Đường dẫn của tham số 2</label>
+                          <InputText id="defaultUrl2" type="text" v-model="element3.url" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 2)||(element3.type == 3)">
+                          <label>Nội dung tin nhắn của tham số 2</label>
+                          <InputText id="automessage2" type="text" v-model="element3.payload" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element3.type == 4">
+                          <label>Nội dung tin nhắn sms 2</label>
+                          <InputText id="smscontent2" type="text" v-model="payload2.content" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 4)||(element3.type == 5)">
+                          <label>Thông tin số điện thoại 2</label>
+                          <InputMask mask="(9999)999999" v-model="payload2.phone_code" placeholder="" />
+                        </div>
+                      </div>
+                    </AccordionTab>
+                    <AccordionTab header="Tham số 3">
+                      <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Tiêu đề của tham số 3</label>
+                          <InputText id="title3" type="text" v-model="element4.title" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Đường dẫn hình ảnh của tham số 3</label>
+                          <div class="p-inputgroup">
+                            <InputText id="imageUrl3" type="text" v-model="element4.image_url" />
+                            <Button label="chọn hình" @click="showListImage(4)"/>
+                          </div>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Loại hành động tham số 3</label>
+                          <Dropdown v-model="element4.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element4.type == 1">
+                          <label>Đường dẫn của tham số 3</label>
+                          <InputText id="defaultUrl3" type="text" v-model="element4.url" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 2)||(element4.type == 3)">
+                          <label>Nội dung tin nhắn của tham số 3</label>
+                          <InputText id="automessage3" type="text" v-model="element4.payload" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element4.type == 4">
+                          <label>Nội dung tin nhắn sms 3</label>
+                          <InputText id="smscontent3" type="text" v-model="payload3.content" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 4)||(element4.type == 5)">
+                          <label>Thông tin số điện thoại 3</label>
+                          <InputMask mask="(9999)999999" v-model="payload3.phone_code" placeholder="" />
+                        </div>
+                      </div>
+                    </AccordionTab>
+                    <AccordionTab header="Tham số 4">
+                      <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Tiêu đề của tham số 4</label>
+                          <InputText id="title4" type="text" v-model="element5.title" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Đường dẫn hình ảnh của tham số 4</label>
+                          <div class="p-inputgroup">
+                            <InputText id="imageUrl4" type="text" v-model="element5.image_url" />
+                            <Button label="chọn hình" @click="showListImage(5)"/>
+                          </div>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                          <label>Loại hành động tham số 4</label>
+                          <Dropdown v-model="element5.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element5.type == 1">
+                          <label>Đường dẫn của tham số 4</label>
+                          <InputText id="defaultUrl4" type="text" v-model="element5.url" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 2)||(element5.type == 3)">
+                          <label>Nội dung tin nhắn của tham số 4</label>
+                          <InputText id="automessage4" type="text" v-model="element5.payload" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element5.type == 4">
+                          <label>Nội dung tin nhắn sms 4</label>
+                          <InputText id="smscontent4" type="text" v-model="payload4.content" />
+                        </div>
+                        <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 4)||(element5.type == 5)">
+                          <label>Thông tin số điện thoại 4</label>
+                          <InputMask mask="(9999)999999" v-model="payload4.phone_code" placeholder="" />
+                        </div>
+                      </div>
+                    </AccordionTab>
+                  </Accordion>
+                </div>
+                </div>
+              </Panel>
+              <div class="bt_gtn">
+                <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessageWithAttachment()" :disabled="!valid2()"/>
+              </div>
             </div>
           </div>
-          <Panel header="Thiết kế khung chính của tin nhắn">
-            <div class="p-fluid p-formgrid p-grid">
-              <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                <label>Tiêu đề của khung chính</label>
-                <Textarea id="titleMain" type="text" v-model="element1.title" />
-              </div>
-              <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                <label>Nội dung khung chính</label>
-                <Textarea id="subtitleMain" type="text" v-model="element1.subtitle" />
-              </div>
-              <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                <label>Đường dẫn hình ảnh chính</label>
-                <div class="p-inputgroup">
-                  <Textarea id="imageUrlMain" type="text" v-model="element1.image_url" />
-                  <Button label="chọn hình" @click="showListImage(1)"/>
-                </div>
-              </div>
-              <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                <label>Đường dẫn khung chính</label>
-                <Textarea id="defaultUrl" type="text" v-model="element1.url" />
-              </div>
-            </div>
-          </Panel>
-          <Panel header="Thiết kế thành phần">
-            <div class="p-fluid p-formgrid p-grid">
-              <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
-              <Accordion :multiple="true" :activeIndex="[0,1]">
-                <AccordionTab header="Tham số 1">
-                  <div class="p-fluid p-formgrid p-grid">
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Tiêu đề của tham số 1</label>
-                      <InputText id="title1" type="text" v-model="element2.title" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Đường dẫn hình ảnh của tham số 1</label>
-                      <div class="p-inputgroup">
-                        <InputText id="imageUrl1" type="text" v-model="element2.image_url" />
-                        <Button label="chọn hình" @click="showListImage(2)"/>
-                      </div>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Loại hành động tham số 1</label>
-                      <Dropdown v-model="element2.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element2.type == 1">
-                      <label>Đường dẫn của tham số 1</label>
-                      <InputText id="defaultUrl1" type="text" v-model="element2.url" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 2)||(element2.type == 3)">
-                      <label>Nội dung tin nhắn của tham số 1</label>
-                      <InputText id="automessage" type="text" v-model="element2.payload" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element2.type == 4">
-                      <label>Nội dung tin nhắn sms 1</label>
-                      <InputText id="smscontent" type="text" v-model="payload1.content" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 4)||(element2.type == 5)">
-                      <label>Thông tin số điện thoại 1</label>
-        <!--              <InputNumber id="phonenumber" type="text" v-model="payload1.phone_code" mode="decimal" :useGrouping="false"/>-->
-                      <InputMask mask="(9999)999999" v-model="payload1.phone_code" placeholder="" />
-                    </div>
-                  </div>
-                </AccordionTab>
-                <AccordionTab header="Tham số 2">
-                  <div class="p-fluid p-formgrid p-grid">
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Tiêu đề của tham số 2</label>
-                      <InputText id="title2" type="text" v-model="element3.title" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Đường dẫn hình ảnh của tham số 2</label>
-                      <div class="p-inputgroup">
-                        <InputText id="imageUrl2" type="text" v-model="element3.image_url" />
-                        <Button label="chọn hình" @click="showListImage(3)"/>
-                      </div>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Loại hành động tham số 2</label>
-                      <Dropdown v-model="element3.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element3.type == 1">
-                      <label>Đường dẫn của tham số 2</label>
-                      <InputText id="defaultUrl2" type="text" v-model="element3.url" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 2)||(element3.type == 3)">
-                      <label>Nội dung tin nhắn của tham số 2</label>
-                      <InputText id="automessage2" type="text" v-model="element3.payload" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element3.type == 4">
-                      <label>Nội dung tin nhắn sms 2</label>
-                      <InputText id="smscontent2" type="text" v-model="payload2.content" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 4)||(element3.type == 5)">
-                      <label>Thông tin số điện thoại 2</label>
-                      <InputMask mask="(9999)999999" v-model="payload2.phone_code" placeholder="" />
-                    </div>
-                  </div>
-                </AccordionTab>
-                <AccordionTab header="Tham số 3">
-                  <div class="p-fluid p-formgrid p-grid">
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Tiêu đề của tham số 3</label>
-                      <InputText id="title3" type="text" v-model="element4.title" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Đường dẫn hình ảnh của tham số 3</label>
-                      <div class="p-inputgroup">
-                        <InputText id="imageUrl3" type="text" v-model="element4.image_url" />
-                        <Button label="chọn hình" @click="showListImage(4)"/>
-                      </div>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Loại hành động tham số 3</label>
-                      <Dropdown v-model="element4.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element4.type == 1">
-                      <label>Đường dẫn của tham số 3</label>
-                      <InputText id="defaultUrl3" type="text" v-model="element4.url" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 2)||(element4.type == 3)">
-                      <label>Nội dung tin nhắn của tham số 3</label>
-                      <InputText id="automessage3" type="text" v-model="element4.payload" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element4.type == 4">
-                      <label>Nội dung tin nhắn sms 3</label>
-                      <InputText id="smscontent3" type="text" v-model="payload3.content" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 4)||(element4.type == 5)">
-                      <label>Thông tin số điện thoại 3</label>
-                      <InputMask mask="(9999)999999" v-model="payload3.phone_code" placeholder="" />
-                    </div>
-                  </div>
-                </AccordionTab>
-                <AccordionTab header="Tham số 4">
-                  <div class="p-fluid p-formgrid p-grid">
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Tiêu đề của tham số 4</label>
-                      <InputText id="title4" type="text" v-model="element5.title" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Đường dẫn hình ảnh của tham số 4</label>
-                      <div class="p-inputgroup">
-                        <InputText id="imageUrl4" type="text" v-model="element5.image_url" />
-                        <Button label="chọn hình" @click="showListImage(5)"/>
-                      </div>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Loại hành động tham số 4</label>
-                      <Dropdown v-model="element5.type" :options="list" optionLabel="label" optionValue="param" showClear="true"></Dropdown>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element5.type == 1">
-                      <label>Đường dẫn của tham số 4</label>
-                      <InputText id="defaultUrl4" type="text" v-model="element5.url" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 2)||(element5.type == 3)">
-                      <label>Nội dung tin nhắn của tham số 4</label>
-                      <InputText id="automessage4" type="text" v-model="element5.payload" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element5.type == 4">
-                      <label>Nội dung tin nhắn sms 4</label>
-                      <InputText id="smscontent4" type="text" v-model="payload4.content" />
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 4)||(element5.type == 5)">
-                      <label>Thông tin số điện thoại 4</label>
-                      <InputMask mask="(9999)999999" v-model="payload4.phone_code" placeholder="" />
-                    </div>
-                  </div>
-                </AccordionTab>
-              </Accordion>
-            </div>
-            </div>
-          </Panel>
-          <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessageWithAttachment()" :disabled="!valid2()"/>
-      <!--  </Panel>-->
-    </AccordionTab>
-  </Accordion>
+        </div>
+    </TabPanel>
+
+</TabView>
+
+<div class="tum_lunm">
   <div class="p-field p-col-12 p-sm-12 p-md-12">
     <Dialog header="Gởi tin nhắn" v-model:visible="loadingBar" >
       <div id="loading">
@@ -307,6 +335,7 @@
   </div>
   </div>
   </div>
+</div>
 </template>
 
 <script lang="ts">

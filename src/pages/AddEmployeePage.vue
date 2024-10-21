@@ -1,22 +1,32 @@
 <template>
-<Panel header="Thêm tài khoản nhân viên vào khoa phòng">
-  <div class="p-fluid p-formgrid p-grid">
-        <div class="p-field p-col p-col-12 p-md-3 p-lg-3">
-          <label>Chọn tài khoản</label>
-          <Dropdown v-model="customer" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true">
-          </Dropdown>
-        </div>
-        <div class="p-field p-col p-col-12 p-md-3 p-lg-3">
-          <label>Chọn khoa/phòng</label>
+  <div class="on_pn">
+    <h2 class="tt_page"><span>Thêm tài khoản nhân viên</span></h2>  
+    <div class="on_dskb">
+      <div class="wrap">
+        <div class="on_choose">
+          <div class="on_it">
+            <div class="it_3">
+            <label>Chọn tài khoản:</label>
+            <Dropdown v-model="customer" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true">
+            </Dropdown>
+          </div>
+          <div class="it_3 it_ccc">
+            <label>Chọn khoa/phòng</label>
           <Dropdown v-model="teamId" :options="teams" optionLabel="name" optionValue="code" placeholder="Chọn khoa/ phòng" :filter="true">
           </Dropdown>
-        </div>
-        <div class="p-field p-col p-col-12 p-md-3 p-lg-3">
-          <label>Đăng ký</label>
+          </div>
+          <div class="it_3 it_bk">
           <Button label="Đăng ký" icon="pi pi-plus-circle" iconPos="left" @click="doRegister()" />
+          </div>
+
+          </div>
         </div>
+        
       </div>
-        </Panel>
+      
+    </div>
+  </div> 
+
 </template>
 
 <script lang="ts">
@@ -98,7 +108,7 @@ const getList = () => {
                     life: 2000
                   });
                   router.push({
-                    name: 'home'
+                    name: 'showlistemployee'
                   });
                 })
                 .catch(err => {

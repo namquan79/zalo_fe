@@ -1,7 +1,9 @@
 <template>
 
-  <panel>
-    <div class="p-field p-col-12 p-sm-12 p-md-12">
+  <div class="on_pn">
+    <h2 class="tt_page"><span>Tải hình ảnh</span></h2>  
+    <div class="on_taihinh">
+      <div class="on_red p-field p-col-12 p-sm-12 p-md-12">
       <label style="font-weight: bolder; color: red">*Chú ý: kích thước khung ảnh chính(360 x 232 pixel), kích thước hình ảnh thành phần(50 x 50 pixel)</label>
     </div>
     <div class="p-field p-col-12 p-sm-12 p-md-12">
@@ -24,7 +26,9 @@
         </Column>
       </DataTable>
     </div>
-  </panel>
+
+    </div>
+  </div>
   <div class="p-field p-col-12 p-sm-12 p-md-12">
     <Dialog header="Tải hình" v-model:visible="loadingBar" >
       <div id="loading">

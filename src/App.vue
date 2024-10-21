@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="on_page">
     <Toast />
      <TopNavBar :isLoggedIn="isLoggedIn"/>
-    <div class="app-content">
+    <div class="main-content">
       <router-view/>
     </div>
   </div>

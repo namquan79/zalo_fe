@@ -1,20 +1,25 @@
 <template>
-  <!--  </TabPanel>-->
-  <Panel header="Danh sách người đăng ký khám bệnh">
-    <div class="p-fluid">
-      <div class="p-fluid p-formgrid p-grid">
-        <div class="p-field p-col-12 p-md-5">
-          <label>Chọn loại thời gian:</label>
-          <div class="field-radiobutton">
+   <div class="on_pn">
+    <h2 class="tt_page"><span>Danh sách người đăng ký khám bệnh</span></h2>  
+    <div class="on_dskb">
+      <div class="wrap">
+        <div class="on_choose">
+          <div class="on_it">
+            <div class="it_3">
+            <label>Chọn loại thời gian:</label>
+            <div class="field-radiobutton">
             <RadioButton id="city1" name="city" value="2" v-model="kind" style="margin-right: 5px" @change="clearDate"/>
             <label for="city1" style="margin-right: 20px">Thời gian theo ngày đặt lịch</label>
+         </div>
+          <div class="field-radiobutton">
             <RadioButton id="city2" name="city" value="1" v-model="kind" style="margin-right: 5px" @change="clearDate"/>
             <label for="city2">Thời gian theo ngày liên hệ</label>
           </div>
-        </div>
-        <div class="p-field p-col-12 p-md-4" v-if="kind > 0">
-          <label>Chọn thời gian tìm kiếm: </label>
-          <Calendar
+          </div>
+          <div class="it_3 it_ccc">
+            <label>Chọn thời gian tìm kiếm: </label>
+            <div class="on_cals" v-if="kind > 0">
+              <Calendar
               id="date"
               v-model="date"
               selectionMode="range"
@@ -28,16 +33,22 @@
               @date-select="selectCalendar()"
               @clear-click="clearCalendar()"
           />
+            </div>
+          </div>
+          <div class="it_3">
+            <label>Chọn loại dịch vụ:</label>
+            <span class="p-input-icon-right">
+                <Dropdown id="dichvu" v-model="service" :options="listService" optionLabel="serviceName" optionValue="serviceCode" placeholder="Vui lòng chọn dịch vụ"
+                          emptyMessage="Không có dữ liệu" @change="getFilter" showClear="true">
+                </Dropdown>
+            </span>
+          </div>
+
+          </div>
         </div>
-        <div class="p-field p-col-12 p-md-3">
-          <label>Chọn loại dịch vụ:</label>
-          <span class="p-input-icon-right">
-              <Dropdown id="dichvu" v-model="service" :options="listService" optionLabel="serviceName" optionValue="serviceCode" placeholder="Vui lòng chọn dịch vụ"
-                        emptyMessage="Không có dữ liệu" @change="getFilter" showClear="true">
-              </Dropdown>
-          </span>
-        </div>
-      </div>
+        <div class="on_tables">
+          <div class="p-fluid">
+      
       <DataTable
               :value="list" :paginator="true" stripedRows
               :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
@@ -82,8 +93,13 @@
         </template>
       </DataTable>
     </div>
-<!--    </div>-->
-  </Panel>
+        </div>
+      </div>
+      
+    </div>
+  </div>  
+  <!--  </TabPanel>-->
+
 </template>
 
 <script lang="ts">

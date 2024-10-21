@@ -6,7 +6,7 @@ module.exports = {
     },
     proxy: {
       "^/api": {
-        target: "https://localhost:5001/",
+        target: "https://zalooaub.chuyendoisoquocgia.net/",
         ws: true,
         changeOrigin: true,
       },

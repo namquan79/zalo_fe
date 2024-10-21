@@ -1,6 +1,8 @@
 <template>
   <!--  </TabPanel>-->
-  <Panel header="Danh sách nhân viên hỗ trợ">
+<div class="on_pn">
+  <h2 class="tt_page"><span>Danh sách nhân viên hỗ trợ</span></h2>  
+  <div class="on_dsnv">
     <div class="p-fluid">
       <DataTable
               :value="listEmployee" :paginator="true" stripedRows
@@ -35,8 +37,8 @@
       </DataTable>
 <!--        </div>-->
     </div>
-<!--    </div>-->
-  </Panel>
+  </div>
+</div>
 </template>
 
 <script lang="ts">
