@@ -7,8 +7,15 @@
           <div class="on_it">
             <div class="it_3">
             <label>Chọn tài khoản:</label>
-            <Dropdown v-model="customer" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true">
-            </Dropdown>
+              <Dropdown v-model="customer" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true" style="height: 35px" >
+
+                <template #option="slotProps">
+                  <div class="flex align-items-center" style="width: 40px; alignment: center">
+                    <img v-if="slotProps.option.imageUrl" :src=slotProps.option.imageUrl style="width: 40px; margin-right: 3px" />
+                    <label style="width: 40px; alignment: top">{{ slotProps.option.name }}</label>
+                  </div>
+                </template>
+              </Dropdown>
           </div>
           <div class="it_3 it_ccc">
             <label>Chọn khoa/phòng</label>

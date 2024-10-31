@@ -82,16 +82,88 @@
         </Column>
         <Column header="Tuỳ chọn">
           <template #body="slotProps">
-            <router-link style="text-decoration: none !important;" :to="{ name: 'updateregisterservice', params: {id: slotProps.data.id}}">
-              <Button type="button" label="Đặt lịch"  icon="pi pi-spinner" v-if="!validDate(slotProps.data)"></Button>
-              <Button type="button" label="Đổi lịch" class="p-button-secondary" icon="pi pi-check-circle" v-else></Button>
-            </router-link>
+<!--            <router-link style="text-decoration: none !important;" :to="{ name: 'updateregisterservice', params: {id: slotProps.data.id}}">-->
+              <Button type="button" label="Đặt lịch"  icon="pi pi-spinner" v-if="!validDate(slotProps.data)" @click="loadData(slotProps.data.id)"></Button>
+              <Button type="button" label="Đổi lịch" class="p-button-secondary" icon="pi pi-check-circle" v-else @click="loadData(slotProps.data.id)"></Button>
+<!--            </router-link>-->
           </template>
         </Column>
         <template #empty>
           Không có thông tin người bệnh.
         </template>
       </DataTable>
+            <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+              <Dialog v-model:visible="updateReg" :style="{ width: '90vw'}" :breakpoints="{ '1500px': '70vw', '1150px': '80vw' }">
+                <Panel header="Xác nhận lịch khám bệnh">
+                  <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <label>Họ và tên</label>
+                      <InputText id="fullname" type="text" v-model="registerServiceUpdate.customerName" style="text-align: center"/>
+                    </div>
+                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <label>Số điện thoại</label>
+                      <InputText id="phoneNumber" type="text" v-model="registerServiceUpdate.phoneNumber" style="text-align: center"/>
+                    </div>
+                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <label>Địa chỉ</label>
+                      <InputText id="address" type="text" v-model="registerServiceUpdate.address" style="text-align: center"/>
+                    </div>
+                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <!--        <Column field="antecedent" header="Tiền sử bệnh"></Column>-->
+                      <label>Tiền sử bệnh</label>
+                      <InputText id="antecedent" type="text" v-model="registerServiceUpdate.antecedent" style="text-align: center"/>
+                    </div>
+                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <label>Dịch vụ</label>
+                      <InputText id="service" type="text" v-model="registerServiceUpdate.serviceName" style="text-align: center"/>
+                    </div>
+                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <label>Yêu cầu</label>
+                      <InputText id="message" type="text" v-model="registerServiceUpdate.message" style="text-align: center"/>
+                    </div>
+                    <div class="p-field p-col-12 p-sm p-md-6">
+                      <label for="dateselect">Chọn thời gian khám:</label>
+                      <Calendar
+                          id="dateselect"
+                          v-model="registerServiceUpdate.timeBooking"
+                          selectionMode="single"
+                          dateFormat="dd/mm/yy"
+                          :showButtonBar="true"
+                          :showIcon="true"
+                          :manualInput="false"
+                          :monthNavigator="true"
+                          :yearNavigator="true"
+                          yearRange="1900:2050"
+                          :minDate="minDate"
+                          :showTime="true"
+                      >
+                        <template #body="{data}">
+                          {{formatDateTime(data.timeBooking)}}
+                        </template>
+                      </Calendar>
+                    </div>
+                    <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+                    </div>
+                    <div class="card p-col p-col-12 p-md-12 p-lg-12">
+                      <div class="p-grid">
+                        <div class="p-offset-4 p-col-4 p-sm-4 p-md-4">
+                          <Button label="Cập nhật" icon="pi pi-check" :disabled="!valid()" @click="update()"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Panel>
+              </Dialog>
+            </div>
+            <div class="p-field p-col-12 p-sm-12 p-md-12">
+              <Dialog header="Đang xử lý" v-model:visible="loadingBar" >
+                <div id="loading">
+                  <label>Đang xử lý xuất biên bản...</label>
+                  <ProgressBar mode="indeterminate" style="height: .3em" />
+                </div>
+              </Dialog>
+              <ConfirmDialog></ConfirmDialog>
+            </div>
     </div>
         </div>
       </div>
@@ -117,6 +189,7 @@
   import ZaloRepository from "@/services/ZaloRepository";
   import {ListService} from "@/models/listService";
   import {useRouter} from "vue-router";
+  import {RegisterServiceUpdate} from "@/models/registerServiceUpdate";
 
   export default {
     setup() {
@@ -129,6 +202,60 @@
       const service = ref("");
       const router = useRouter();
       const kind = ref(0);
+      const updateReg = ref(false);
+      const registerServiceUpdate = ref({} as RegisterServiceUpdate);
+      const minDate = ref(new Date());
+
+      const toTimestamp = (strDate) => {
+        const dt = Date.parse(strDate);
+        return dt / 1000;
+      }
+      const loadData = (id) => {
+        updateReg.value = true;
+        ZaloRepository.registerServiceById(id)
+            .then((response) => {
+              registerServiceUpdate.value = response.data;
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              })});
+      }
+
+
+      const update = () => {
+        console.log("#######$$$$$$$$$$$$$$$$$ update: ");
+        console.log("#######$$$$$$$$$$$$$$$$$ update registerServiceUpdate.value.timeBooking: " + registerServiceUpdate.value.timeBooking);
+        console.log("#######$$$$$$$$$$$$$$$$$ update registerServiceUpdate.value.timeBooking formatDate: " + formatDate(registerServiceUpdate.value.timeBooking));
+        registerServiceUpdate.value.timeBooking = formatDate(registerServiceUpdate.value.timeBooking);
+        ZaloRepository.updateRegisterService(registerServiceUpdate.value)
+            .then((response) => {
+              toast.add({
+                severity: 'success',
+                summary: 'Thành công',
+                detail:'Chỉnh sửa khám thành công',
+                life: 2500
+              });
+              selectCalendar();
+              updateReg.value = false;
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              })});
+      }
+      const valid = () => {
+        return registerServiceUpdate.value.timeBooking;
+      }
+      const formatDate = (date) => {
+        return moment(String(date)).format('YYYY-MM-DDTHH:mm:ss');
+      };
 
       if(!(!!store.state.token)){
         router.push({
@@ -215,7 +342,12 @@
         getFilter,
         validDate,
         kind,
-        clearDate
+        clearDate,
+        updateReg,
+        valid,
+        loadData,
+        registerServiceUpdate,
+        update
       }
     }
 

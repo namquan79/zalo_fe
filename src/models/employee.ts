@@ -3,4 +3,6 @@ export interface Employee{
     fullName: string;
     zaloId: string;
     teamCode: string;
+    imageUrl: string;
+    phoneNumber: string;
 }

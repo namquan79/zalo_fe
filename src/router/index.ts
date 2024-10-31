@@ -11,12 +11,27 @@ import ketQuaCLS from "@/pages/KetQuaCLS.vue";
 import AddEmployeePage from "@/pages/AddEmployeePage.vue";
 import showListEmployee from "@/pages/ShowListEmployee.vue";
 import updateEmployeePage from "@/pages/UpdateEmployeePage.vue";
+import reLoginPage from "@/pages/ReLoginPage.vue";
+import userList from "@/pages/UserList.vue";
+import userUpdatePage from "@/pages/UserUpdatePage.vue";
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: '',
+    component: Home,
+    props: true
+  },
   {
     path: '/login',
     name: 'login',
     component: LoginPage,
+    props: true
+  },
+  {
+    path: '/relogin',
+    name: 'relogin',
+    component: reLoginPage,
     props: true
   },
   // {
@@ -44,9 +59,21 @@ const routes: Array<RouteRecordRaw> = [
   //   props: true
   // },
   {
-    path: '/registeruser',
-    name: 'registeruser',
+    path: '/registerUser',
+    name: 'registerUser',
     component: RegisterUserPage,
+    props: true
+  },
+  {
+    path: '/userUpdate',
+    name: 'userUpdate',
+    component: userUpdatePage,
+    props: true
+  },
+  {
+    path: '/userList',
+    name: 'userList',
+    component: userList,
     props: true
   },
   {

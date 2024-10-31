@@ -7,9 +7,10 @@
             <div class="img_lg">
               <img src="../assets/logoUB.png" width="70" class="img_l" alt="logo cong ty">
 <!--              <img src="../assets/logo_kcl.jpg" width="70" class="img_r" alt="logo don vi">-->
-            </div>    
+            </div>
               <h4>Bệnh Viện Ung Bướu Đà Nẵng</h4>
               <h5>Đăng nhập hệ thống</h5>
+          <h6 style="font: initial; color: red">Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.</h6>
               <div class="it_lg">
                 <InputText id="firstname" type="text" v-model="userName" placeholder="Tên đăng nhập"/>
               </div>

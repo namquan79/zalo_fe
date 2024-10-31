@@ -25,7 +25,13 @@
             </div>
             <div class="it_3 it_ccc" v-if="action == 'customer'">
               <label>Chọn khách hàng gởi</label>
-              <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
+              <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true" style="height: 35px" >
+                <template #option="slotProps">
+                  <div class="flex align-items-center" style="width: 40px; alignment: center">
+                    <img v-if="slotProps.option.imageUrl" :src=slotProps.option.imageUrl style="width: 40px; margin-right: 3px" />
+                    <label style="width: 40px; alignment: top">{{ slotProps.option.name }}</label>
+                  </div>
+                </template>
               </MultiSelect>
               <small id="id-note1" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
             </div> 
@@ -70,8 +76,14 @@
             </div>
             <div class="it_3 it_ccc" v-if="action2 == 'customer'">
               <label>Chọn khách hàng gởi</label>
-                <MultiSelect v-model="listId" :options="listCustomer" optionLabel="name" placeholder="Chọn khách hàng" :filter="true">
-                </MultiSelect>
+              <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true" style="height: 35px" >
+                <template #option="slotProps">
+                  <div class="flex align-items-center" style="width: 40px; alignment: center">
+                    <img v-if="slotProps.option.imageUrl" :src=slotProps.option.imageUrl style="width: 40px; margin-right: 3px" />
+                    <label style="width: 40px; alignment: top">{{ slotProps.option.name }}</label>
+                  </div>
+                </template>
+              </MultiSelect>
                 <small id="id-note2" class="p-error">* Vui lòng chọn danh sách khách hàng gởi</small>
             </div> 
             <div class="it_3 it_ccc" v-if="action2 == 'age'">

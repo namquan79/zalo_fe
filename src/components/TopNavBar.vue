@@ -1,17 +1,38 @@
 <template>
 
-  <div v-if="isLoggedIn" id="header">
+  <div v-if="isLoggedIn" id="header" :model="appMenu">
     
     <div class="wrap_header">
-      <div class="menubar">
+      <div class="menubar" v-if="!permission">
           <ul>
-            <li><RouterLink to ='/sendmessage'><span class="p-menuitem-icon pi pi-fw pi-send" data-pc-section="icon"></span>Gởi tin nhắn</RouterLink></li>
-            <li><RouterLink to ='/uploadImage'><span class="p-menuitem-icon pi pi-fw pi-upload" data-pc-section="icon"></span>Đăng hình ảnh</RouterLink></li>
+<!--            <li><RouterLink to ='/sendmessage'><span class="p-menuitem-icon pi pi-fw pi-send" data-pc-section="icon"></span>Gởi tin nhắn</RouterLink></li>-->
+<!--            <li><RouterLink to ='/uploadImage'><span class="p-menuitem-icon pi pi-fw pi-upload" data-pc-section="icon"></span>Đăng hình ảnh</RouterLink></li>-->
             <li><RouterLink to ='/listRegisterService'><span class="p-menuitem-icon pi pi-fw pi-list" data-pc-section="icon"></span>Danh sách đăng ký</RouterLink></li>
             <li><RouterLink to ='/addemployee'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Thêm nhân viên</RouterLink></li>
             <li><RouterLink to ='/showlistemployee'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Danh sách nhân viên</RouterLink></li>
           </ul>
       </div>
+      <div class="menubar" v-else>
+        <ul>
+          <li><RouterLink to ='/sendmessage'><span class="p-menuitem-icon pi pi-fw pi-send" data-pc-section="icon"></span>Gởi tin nhắn</RouterLink></li>
+          <li><RouterLink to ='/uploadImage'><span class="p-menuitem-icon pi pi-fw pi-upload" data-pc-section="icon"></span>Đăng hình ảnh</RouterLink></li>
+          <li><RouterLink to ='/listRegisterService'><span class="p-menuitem-icon pi pi-fw pi-list" data-pc-section="icon"></span>Danh sách đăng ký</RouterLink></li>
+          <li><RouterLink to ='/addemployee'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Thêm nhân viên</RouterLink></li>
+          <li><RouterLink to ='/showlistemployee'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Danh sách nhân viên</RouterLink></li>
+          <li><RouterLink to ='/registerUser'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Đăng ký tài khoản</RouterLink></li>
+          <li><RouterLink to ='/userList'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Quản lý tài khoản</RouterLink></li>
+        </ul>
+      </div>
+<!--      {-->
+<!--      label:'Đăng ký tài khoản',-->
+<!--      icon:'pi pi-fw pi-user-plus',-->
+<!--      to: '/register'-->
+<!--      },-->
+<!--      {-->
+<!--      label:'Quản lý tài khoản',-->
+<!--      icon:'pi pi-fw pi-users',-->
+<!--      to: '/userlist'-->
+<!--      },-->
       <div class="logouts">
         <Button label="Đăng xuất" @click="logout" icon="pi pi-sign-out" iconPos="right" class="p-button-secondary"/>
       </div>
@@ -20,7 +41,7 @@
   <div v-if="isLoggedIn" id="fotter">
     
     <div class="wrap_header">
-      <p class="coppyi">© Copyright 2024 - Bệnh viện Ung Bướu Đà Nẵng- Designed by KCL Group</p>
+      <p class="coppyi">© Copyright 2024 - Bệnh viện Ung Bướu Đà Nẵng- Designed by voontv@gmail.com</p>
     </div>
   </div>
 </template>
@@ -41,18 +62,20 @@ export default {
   setup(props) {
     const store = useStore();
     const toast = useToast();
+    const permission = ref(false);
     const appMenu = computed(() => {
+      console.log("@@@@@#############$$$$$$$$$$$$$ check appMenu: ");
       const menu = ref([
-        {
-          label:'Gởii tin nhắn',
-          icon:'pi pi-fw pi-send',
-          href: '/sendmessage'
-        },
-        {
-          label:'Đăng hình ảnh',
-          icon:'pi pi-fw pi-upload',
-          to: '/uploadImage'
-        },
+        // {
+        //   label:'Gởii tin nhắn',
+        //   icon:'pi pi-fw pi-send',
+        //   href: '/sendmessage'
+        // },
+        // {
+        //   label:'Đăng hình ảnh',
+        //   icon:'pi pi-fw pi-upload',
+        //   to: '/uploadImage'
+        // },
         {
           label:'Danh sách bệnh nhân đăng ký khám bệnh',
           icon:'pi pi-fw pi-list',
@@ -71,10 +94,24 @@ export default {
       ]);
       const menuDefault = ref([
       ]);
-      if(!!store.state.token)
-        return menu.value;
+      console.log("@@@@@#############$$$$$$$$$$$$$ check appMenu 222222222: ");
+      // if(!!store.state.token)
+      //   return menu.value;
+      // else
+      //   return menuDefault.value;
+      console.log("@@@@@#############$$$$$$$$$$$$$ check appMenu 333333333333: ");
+console.log("@@@@@#############$$$$$$$$$$$$$ check permission: " + permission.value);
+
+      if(store.state.permission == "admin")
+      {
+        console.log("@@@@@#############$$$$$$$$$$$$$ check permission admin: " );
+        permission.value = true;
+      }
       else
-        return menuDefault.value;
+      {
+        console.log("@@@@@#############$$$$$$$$$$$$$ check permission user: " );
+        permission.value = false;
+      }
     });
     const logout = () => {
       store.dispatch('clearToken');
@@ -98,7 +135,8 @@ export default {
     return {
       appMenu,
       logout,
-      gotoLoginPage
+      gotoLoginPage,
+      permission
     }
   }
 }

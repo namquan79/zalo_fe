@@ -9,17 +9,26 @@
               :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               :globalFilterFields="['fullName','zaloId','teamCode']"
-              currentPageReportTemplate="Có tất cả {totalRecords} người lấy mẫu"
+              currentPageReportTemplate="Có tất cả {totalRecords} nhân viên hỗ trợ"
               v-model:filters="filters"
       >
+        <Column field="imageLink" header="Ảnh đại diện" sortable>
+          <template #body="slotProps">
+            <div class="p-fluid p-formgrid p-grid">
+              <div class="p-field p-col-5 p-md-5">
+                <img :src=slotProps.data.imageUrl style="width: 60px" />
+              </div>
+            </div>
+          </template>
+        </Column>
         <Column field="fullName" header="Họ và tên" sortable></Column>
-        <Column field="zaloId" header="Zalo Id"></Column>
+        <Column field="phoneNumber" header="Số điện thoại"></Column>
         <Column field="teamCode" header="Khoa/Phòng " sortable></Column>
         <Column header="Tuỳ chọn">
           <template #body="slotProps">
             <!--            <router-link style="text-decoration: none !important;" :to="{ name: 'registerpage'}" >-->
             <div class="p-fluid p-formgrid p-grid">
-              <div class="p-field p-col-5 p-md-5">
+              <div class="p-field p-col-7 p-md-7">
                 <Button type="button" class="p-button-secondary" label="Cập nhật"  icon="pi pi-user-edit" @click="openLink(slotProps.data.id)"></Button>
               </div>
               <div class="p-field p-col-5 p-md-5">

@@ -230,10 +230,9 @@ div#login_page {
     margin-top: 0;
     margin-bottom: 20px;
 }
-img.img_l {
-    float: left;
-    margin-left: 44px;
-}
+/*img.img_l {*/
+/*    margin-left: 44px;*/
+/*}*/
 
 img.img_r {
     float: right;
