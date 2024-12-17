@@ -42,7 +42,7 @@
             </div> 
             <div class="it_full">
               <label>Nội dung tin nhắn</label>
-              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>  
+              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>
             </div>
             <div class="it_bt">
               <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>
@@ -76,7 +76,7 @@
             </div>
             <div class="it_3 it_ccc" v-if="action2 == 'customer'">
               <label>Chọn khách hàng gởi</label>
-              <MultiSelect v-model="listIdMessage" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true" style="height: 35px" >
+              <MultiSelect v-model="listId" :options="listCustomer" optionLabel="name" placeholder="Chọn tài khoản" :filter="true" style="height: 35px" >
                 <template #option="slotProps">
                   <div class="flex align-items-center" style="width: 40px; alignment: center">
                     <img v-if="slotProps.option.imageUrl" :src=slotProps.option.imageUrl style="width: 40px; margin-right: 3px" />
@@ -91,46 +91,39 @@
               <h5></h5>
               <Slider v-model="age2" :range="true" />   
             </div> 
-            <div class="it_full">
-              <label>Nội dung tin nhắn</label>
-              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>  
-            </div>
-            <div class="it_bt">
-              <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>
-            </div>
+<!--            <div class="it_full">-->
+<!--              <label>Nội dung tin nhắn</label>-->
+<!--              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>  -->
+<!--            </div>-->
+<!--            <div class="it_bt">-->
+<!--              <Button label="Gởi tin nhắn" icon="pi pi-plus-circle" iconPos="left" @click="doSendMessage()" :disabled="!valid()"/>-->
+<!--            </div>-->
             </div>
             <div class="pannel_tk">
               <Panel header="Thiết kế khung chính của tin nhắn">
                 <div class="p-fluid p-formgrid p-grid">
-                  <div class="it_6">
-                    <label>Tiêu đề của khung chính</label>
-                    <div class="on_it6">
-                      <Textarea id="titleMain" type="text" v-model="element1.title" />
+                  <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+                    <div class="p-fluid p-formgrid p-grid">
+                      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                        <label>Tiêu đề của khung chính</label>
+                        <Textarea id="titleMain" type="text" v-model="element1.title" />
+                        <small v-if="element1.title?.length > 0" class="p-error">Tiêu đề đang có độ dài {{element1.title?.length}} ký tự (tối đa 100 ký tự).</small>
+                      </div>
+                      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                        <label>Nội dung khung chính</label>
+                        <Textarea id="subtitleMain" type="text" v-model="element1.subtitle" />
+                        <small v-if="element1.subtitle?.length > 0" class="p-error">Nội dung đang có độ dài {{element1.subtitle?.length}} ký tự (tối đa 500 ký tự).</small>
+                      </div>
+                      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                        <label>Đường dẫn hình ảnh chính</label>
+                        <Textarea id="imageUrlMain" type="text" v-model="element1.image_url" />
+                        <Button label="chọn hình" @click="showListImage(1)"/>
+                      </div>
+                      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                        <label>Đường dẫn khung chính</label>
+                        <Textarea id="defaultUrl" type="text" v-model="element1.url" />
+                      </div>
                     </div>
-                  </div>
-                  <div class="it_6">
-                    <label>Nội dung khung chính</label>
-                    <div class="on_it6">
-                      <Textarea id="subtitleMain" type="text" v-model="element1.subtitle" />
-                    </div>
-                    
-                  </div>
-                  <div class="it_6">
-                    <label>Đường dẫn hình ảnh chính</label>
-                    <div class="on_it6 ">
-                      <div class="p-on_it6s">
-                      <Textarea id="imageUrlMain" type="text" v-model="element1.image_url" />
-                      <Button label="chọn hình" @click="showListImage(1)"/>
-                    </div>
-                    </div>
-                    
-                  </div>
-                  <div class="it_6">
-                    <label>Đường dẫn khung chính</label>
-                    <div class="on_it6">
-                      <Textarea id="defaultUrl" type="text" v-model="element1.url" />
-                    </div>
-                    
                   </div>
                 </div>
               </Panel>
@@ -143,6 +136,7 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Tiêu đề của tham số 1</label>
                           <InputText id="title1" type="text" v-model="element2.title" />
+                          <small v-if="element2.title?.length > 0" class="p-error">Tiêu đề đang có độ dài {{element2.title?.length}} ký tự (tối đa 100 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Đường dẫn hình ảnh của tham số 1</label>
@@ -162,10 +156,12 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 2)||(element2.type == 3)">
                           <label>Nội dung tin nhắn của tham số 1</label>
                           <InputText id="automessage" type="text" v-model="element2.payload" />
+                          <small v-if="element2.payload?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{element2.payload?.length}} ký tự (tối đa 1000 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element2.type == 4">
                           <label>Nội dung tin nhắn sms 1</label>
                           <InputText id="smscontent" type="text" v-model="payload1.content" />
+                          <small v-if="payload1.content?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{payload1.content?.length}} ký tự (tối đa 160 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element2.type == 4)||(element2.type == 5)">
                           <label>Thông tin số điện thoại 1</label>
@@ -179,6 +175,7 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Tiêu đề của tham số 2</label>
                           <InputText id="title2" type="text" v-model="element3.title" />
+                          <small v-if="element3.title?.length > 0" class="p-error">Tiêu đề đang có độ dài {{element3.title?.length}} ký tự (tối đa 100 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Đường dẫn hình ảnh của tham số 2</label>
@@ -198,10 +195,12 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 2)||(element3.type == 3)">
                           <label>Nội dung tin nhắn của tham số 2</label>
                           <InputText id="automessage2" type="text" v-model="element3.payload" />
+                          <small v-if="element3.payload?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{element3.payload?.length}} ký tự (tối đa 1000 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element3.type == 4">
                           <label>Nội dung tin nhắn sms 2</label>
                           <InputText id="smscontent2" type="text" v-model="payload2.content" />
+                          <small v-if="payload2.content?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{payload2.content?.length}} ký tự (tối đa 160 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element3.type == 4)||(element3.type == 5)">
                           <label>Thông tin số điện thoại 2</label>
@@ -214,6 +213,7 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Tiêu đề của tham số 3</label>
                           <InputText id="title3" type="text" v-model="element4.title" />
+                          <small v-if="element4.title?.length > 0" class="p-error">Tiêu đề đang có độ dài {{element4.title?.length}} ký tự (tối đa 100 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Đường dẫn hình ảnh của tham số 3</label>
@@ -233,10 +233,12 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 2)||(element4.type == 3)">
                           <label>Nội dung tin nhắn của tham số 3</label>
                           <InputText id="automessage3" type="text" v-model="element4.payload" />
+                          <small v-if="element4.payload?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{element4.payload?.length}} ký tự (tối đa 1000 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element4.type == 4">
                           <label>Nội dung tin nhắn sms 3</label>
                           <InputText id="smscontent3" type="text" v-model="payload3.content" />
+                          <small v-if="payload3.content?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{payload3.content?.length}} ký tự (tối đa 160 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element4.type == 4)||(element4.type == 5)">
                           <label>Thông tin số điện thoại 3</label>
@@ -249,6 +251,7 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Tiêu đề của tham số 4</label>
                           <InputText id="title4" type="text" v-model="element5.title" />
+                          <small v-if="element5.title?.length > 0" class="p-error">Tiêu đề đang có độ dài {{element5.title?.length}} ký tự (tối đa 100 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                           <label>Đường dẫn hình ảnh của tham số 4</label>
@@ -268,10 +271,12 @@
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 2)||(element5.type == 3)">
                           <label>Nội dung tin nhắn của tham số 4</label>
                           <InputText id="automessage4" type="text" v-model="element5.payload" />
+                          <small v-if="element5.payload?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{element5.payload?.length}} ký tự (tối đa 1000 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="element5.type == 4">
                           <label>Nội dung tin nhắn sms 4</label>
                           <InputText id="smscontent4" type="text" v-model="payload4.content" />
+                          <small v-if="payload4.content?.length > 0" class="p-error">Nội dung tin nhắn có độ dài {{payload4.content?.length}} ký tự (tối đa 160 ký tự).</small>
                         </div>
                         <div class="p-field p-col p-col-12 p-md-6 p-lg-6" v-if="(element5.type == 4)||(element5.type == 5)">
                           <label>Thông tin số điện thoại 4</label>
@@ -607,29 +612,42 @@ export default {
         console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment elementstemp: " + JSON.stringify(elementstemp.value));
         messageWithAttachment.value.elements = elementstemp.value;
         console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachment: " + JSON.stringify(messageWithAttachment.value));
-        ZaloRepository.sendMessageWithAttachmentList(messageWithAttachment.value)
-            .then((response) => {
-              loadingBar.value = false;
-              const temp = ref({} as MessageWithAttachment);
-              messageWithAttachment.value = temp.value;
-              toast.add({
-                severity: 'success',
-                summary: 'Gởi tin',
-                detail: 'Gởi tin nhắn thành công',
-                life: 2000
+        if(element1.value.subtitle.length > 500)
+        {
+          loadingBar.value = false;
+          toast.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail:'Nội dung khung chính vượt quá 500 ký tự, vui lòng rút gọn lại',
+            life: 3000
+          });
+        }
+        else
+        {
+          ZaloRepository.sendMessageWithAttachmentList(messageWithAttachment.value)
+              .then((response) => {
+                loadingBar.value = false;
+                const temp = ref({} as MessageWithAttachment);
+                messageWithAttachment.value = temp.value;
+                toast.add({
+                  severity: 'success',
+                  summary: 'Gởi tin',
+                  detail: 'Gởi tin nhắn thành công',
+                  life: 2000
+                });
+                console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentaaaaaa: " + JSON.stringify(messageWithAttachment.value));
+              })
+              .catch(err => {
+                loadingBar.value = false;
+                toast.add({
+                  severity: 'error',
+                  summary: 'Lỗi',
+                  detail: err.response.data,
+                  life: 2000
+                });
+                console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentbbbbbb: " + JSON.stringify(messageWithAttachment.value));
               });
-              console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentaaaaaa: " + JSON.stringify(messageWithAttachment.value));
-            })
-            .catch(err => {
-              loadingBar.value = false;
-              toast.add({
-                severity: 'error',
-                summary: 'Lỗi',
-                detail:err.response.data,
-                life: 2000
-              });
-              console.log("@@@@@@@@@@@@@@@@#################### doSendMessageWithAttachment messageWithAttachmentbbbbbb: " + JSON.stringify(messageWithAttachment.value));
-            });
+        }
       }
 
     };
