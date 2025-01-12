@@ -39,7 +39,12 @@
               <label>Chọn phạm vi độ tuổi: {{age}}</label>
               <h5></h5>
               <Slider v-model="age" :range="true" />    
-            </div> 
+            </div>
+            <div class="it_3 it_ccc"  v-if="action == 'group'">
+              <label>Lựa chọn nhóm gởi tin</label>
+              <Dropdown id="group" v-model="idGroup" :options="listGroup" optionLabel="groupName" optionValue="id" :filter="true" :showClear="true">
+              </Dropdown>
+            </div>
             <div class="it_full">
               <label>Nội dung tin nhắn</label>
               <Textarea id="message" type="text" v-model="message.mess" style="height: 100px"/>
@@ -63,6 +68,11 @@
             <div class="it_3 it_ccc" v-if="action == 'location'">
               <label>Lựa chọn khu vực gởi tin</label>
               <Dropdown id="location2" v-model="province2" :options="listProvince" optionLabel="provinceName" optionValue="provinceCode" :filter="true" :showClear="true">
+              </Dropdown>
+            </div>
+            <div class="it_3 it_ccc" v-if="action2 == 'group'">
+              <label>Lựa chọn nhóm gởi tin</label>
+              <Dropdown id="group2" v-model="idGroup2" :options="listGroup" optionLabel="groupName" optionValue="id" :filter="true" :showClear="true">
               </Dropdown>
             </div>
             <div class="it_3 it_ccc" v-if="action2 == 'gender'">
@@ -104,20 +114,23 @@
                 <div class="p-fluid p-formgrid p-grid">
                   <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
                     <div class="p-fluid p-formgrid p-grid">
-                      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
                         <label>Tiêu đề của khung chính</label>
                         <Textarea id="titleMain" type="text" v-model="element1.title" />
                         <small v-if="element1.title?.length > 0" class="p-error">Tiêu đề đang có độ dài {{element1.title?.length}} ký tự (tối đa 100 ký tự).</small>
                       </div>
-                      <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                      <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
                         <label>Nội dung khung chính</label>
-                        <Textarea id="subtitleMain" type="text" v-model="element1.subtitle" />
+                        <Textarea id="subtitleMain" type="text" v-model="element1.subtitle" autoResize rows="10"/>
+<!--                        <Editor v-model="element1.subtitle" editorStyle="height: 320px" />-->
                         <small v-if="element1.subtitle?.length > 0" class="p-error">Nội dung đang có độ dài {{element1.subtitle?.length}} ký tự (tối đa 500 ký tự).</small>
                       </div>
                       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                         <label>Đường dẫn hình ảnh chính</label>
-                        <Textarea id="imageUrlMain" type="text" v-model="element1.image_url" />
-                        <Button label="chọn hình" @click="showListImage(1)"/>
+                        <div class="p-inputgroup">
+                          <Textarea id="imageUrlMain" type="text" v-model="element1.image_url" />
+                          <Button label="chọn hình" @click="showListImage(1)"/>
+                        </div>
                       </div>
                       <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
                         <label>Đường dẫn khung chính</label>
@@ -372,6 +385,7 @@ import { ListCustomer } from '@/models/listCustomer';
 import Province from "@/models/province.models";
 import {ListImage} from "@/models/listImage";
 import {ListImageFull} from "@/models/listImageFull";
+import {Group} from "@/models/group";
 
 export default {
 
@@ -404,6 +418,7 @@ export default {
         {label: 'Gởi tin nhắn theo giới tính', value: 'gender'},
         {label: 'Gởi tin nhắn theo độ tuổi', value: 'age'},
         {label: 'Gởi tin nhắn theo khu vực', value: 'location'},
+        {label: 'Gởi tin nhắn theo nhóm', value: 'group'},
     ])
     const list = ref([
       { label: 'mở 1 đường dẫn', value: 'oa.open.url' , param: 1},
@@ -425,6 +440,9 @@ export default {
     const province2 = ref();
     const listImageFull = ref([] as ListImageFull[]);
     const listImageFullTemp = ref([] as ListImageFull[]);
+    const listGroup = ref([] as Group[]);
+    const idGroup = ref(0);
+    const idGroup2 = ref(0);
 
     if(!(!!store.state.token)){
       console.log("@@@@@@@@@@@@@@@@#################### send message: ");
@@ -441,6 +459,18 @@ export default {
     };
     element1.value.type = '1';
 
+    ZaloRepository.listGroup()
+        .then((response) => {
+          listGroup.value = response.data;
+        })
+        .catch(err => {
+          toast.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail:'Lỗi không tìm thấy group',
+            life: 2000
+          });
+        });
     // const returnValue = (st: any) => {
     //   const value = ref();
     //   value.value = list.value.filter(x => x.param == st);
@@ -510,6 +540,10 @@ export default {
         {
           message.value.userid = "location," + province.value;
         }
+        else if(action.value == "group")
+        {
+          message.value.userid = "group," + idGroup.value;
+        }
         loadingBar.value = true;
         ZaloRepository.sendMessage(message.value)
             .then((response) => {
@@ -576,6 +610,10 @@ export default {
         else if(action2.value == "location")
         {
           messageWithAttachment.value.userid = "location," + province2.value;
+        }
+        else if(action2.value == "group")
+        {
+          messageWithAttachment.value.userid = "group," + idGroup2.value;
         }
         loadingBar.value = true;
         const elements = ref([] as ElementParamater[]);
@@ -806,7 +844,10 @@ export default {
       find,
       search,
       validImageSelect,
-      deleteImage
+      deleteImage,
+      listGroup,
+      idGroup,
+      idGroup2,
     }
   }
 }

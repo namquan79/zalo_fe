@@ -654,6 +654,10 @@ li.p-tabview-header.p-highlight a {
     width: calc(100% - 190px);
     float: left;
 }
+.on_full {
+    width: calc(100%);
+    float: left;
+}
 
 .p-accordion-header-action {
     font-family: 'Be Vietnam Pro';

@@ -45,6 +45,7 @@ import DataView from 'primevue/dataview';
 import Badge from 'primevue/badge';
 import Galleria from 'primevue/galleria';
 import TabMenu from "primevue/tabmenu";
+import Editor from 'primevue/editor';
 import cors from 'cors';
 
 const app = createApp(App)
@@ -131,6 +132,7 @@ app.component('DataView', DataView);
 app.component('Badge', Badge);
 app.component('Galleria', Galleria);
 app.component('TabMenu', TabMenu);
+app.component('Editor', Editor);
 app.use(quillEditor)
 app.mount('#app');
 

@@ -16,6 +16,7 @@
         <ul>
           <li><RouterLink to ='/sendmessage'><span class="p-menuitem-icon pi pi-fw pi-send" data-pc-section="icon"></span>Gởi tin nhắn</RouterLink></li>
           <li><RouterLink to ='/uploadImage'><span class="p-menuitem-icon pi pi-fw pi-upload" data-pc-section="icon"></span>Đăng hình ảnh</RouterLink></li>
+          <li><RouterLink to ='/managerGroup'><span class="p-menuitem-icon pi pi-fw pi-sitemap" data-pc-section="icon"></span>Quản lý nhóm</RouterLink></li>
           <li><RouterLink to ='/listRegisterService'><span class="p-menuitem-icon pi pi-fw pi-list" data-pc-section="icon"></span>Danh sách đăng ký</RouterLink></li>
           <li><RouterLink to ='/addemployee'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Thêm nhân viên</RouterLink></li>
           <li><RouterLink to ='/showlistemployee'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Danh sách nhân viên</RouterLink></li>

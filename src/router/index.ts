@@ -14,6 +14,8 @@ import updateEmployeePage from "@/pages/UpdateEmployeePage.vue";
 import reLoginPage from "@/pages/ReLoginPage.vue";
 import userList from "@/pages/UserList.vue";
 import userUpdatePage from "@/pages/UserUpdatePage.vue";
+import ManagerGroupPage from "@/pages/ManagerGroupPage.vue";
+import showListStatistical from "@/pages/ShowListStatistical.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -129,6 +131,18 @@ const routes: Array<RouteRecordRaw> = [
     name: 'updateemployee',
     component: updateEmployeePage,
     props: true
+  },
+  {
+    path: '/managerGroup',
+    name: 'managerGroup',
+    component: ManagerGroupPage,
+    props: true,
+  },
+  {
+    path: '/showListStatistical',
+    name: 'showListStatistical',
+    component: showListStatistical,
+    props: true,
   },
 ]
 

@@ -7,6 +7,10 @@ import {ListImage} from "@/models/listImage";
 import {RegisterServiceUpdate} from "@/models/registerServiceUpdate";
 import {EmployeeCreate} from "@/models/employeeCreate";
 import {EmployeeUpdate} from "@/models/employeeUpdate";
+import {GroupCreate} from "@/models/groupCreate";
+import {MemberInGroupCreate} from "@/models/memberInGroupCreate";
+import {ManagerOfGroupCreate} from "@/models/managerOfGroupCreate";
+import {CustomerUpdate} from "@/models/customerUpdate";
 
 const resource = '/webhook'
 
@@ -58,5 +62,41 @@ export default new class {
   }
   getListCustomerWithOutEmployee(): Promise<AxiosResponse<any>>{
     return Repository.get<any>(`${resource}/listCustomerWithOutEmployee`);
+  }
+  createGroup(groupCreate: GroupCreate): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/createGroup`, groupCreate);
+  }
+  deleteGroup(id: number): Promise<AxiosResponse<any>>{
+    return Repository.delete<any>(`${resource}/deleteGroup/${id}`);
+  }
+  listGroup(): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/listGroup`);
+  }
+  createMemberInGroup(memberInGroupCreate: MemberInGroupCreate): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/createMemberInGroup`, memberInGroupCreate);
+  }
+  deleteMemberInGroup(id: number): Promise<AxiosResponse<any>>{
+    return Repository.delete<any>(`${resource}/deleteMemberInGroup/${id}`);
+  }
+  listMemberInGroup(id: number): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/listMemberInGroup/${id}`);
+  }
+  createManagerOfGroup(managerOfGroupCreate: ManagerOfGroupCreate): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/createManagerOfGroup`, managerOfGroupCreate);
+  }
+  deleteManagerOfGroup(id: number): Promise<AxiosResponse<any>>{
+    return Repository.delete<any>(`${resource}/deleteManagerOfGroup/${id}`);
+  }
+  listManagerOfGroup(id: number): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/listManagerOfGroup/${id}`);
+  }
+  getListCustomerWithTime(timeStart: any, timeEnd: any): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/getListCustomerWithTime/${timeStart}/${timeEnd}`);
+  }
+  getListReturnResult(timeStart: any, timeEnd: any): Promise<AxiosResponse<any>>{
+    return Repository.get<any>(`${resource}/getListReturnResult/${timeStart}/${timeEnd}`);
+  }
+  customerUpdate(customerUpdate: CustomerUpdate): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/customerUpdate`, customerUpdate);
   }
 }
