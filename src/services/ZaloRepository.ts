@@ -11,6 +11,8 @@ import {GroupCreate} from "@/models/groupCreate";
 import {MemberInGroupCreate} from "@/models/memberInGroupCreate";
 import {ManagerOfGroupCreate} from "@/models/managerOfGroupCreate";
 import {CustomerUpdate} from "@/models/customerUpdate";
+import {Customer} from "@/models/customer";
+import {ReturnResult} from "@/models/returnResult";
 
 const resource = '/webhook'
 
@@ -98,5 +100,11 @@ export default new class {
   }
   customerUpdate(customerUpdate: CustomerUpdate): Promise<AxiosResponse<any>>{
     return Repository.post<any>(`${resource}/customerUpdate`, customerUpdate);
+  }
+  createExcelFileRegisterInfo(customer: Customer[]): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/createExcelFileRegisterInfo`, customer);
+  }
+  createExcelFileResult(returnResult: ReturnResult[]): Promise<AxiosResponse<any>>{
+    return Repository.post<any>(`${resource}/createExcelFileResult`, returnResult);
   }
 }

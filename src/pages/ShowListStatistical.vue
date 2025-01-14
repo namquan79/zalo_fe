@@ -1,17 +1,17 @@
 <template>
 <TabView>
     <TabPanel header="KH đã cung cấp thông tin">
-      <div id="tabs_tn1" class="tabs_tn">
-           <div class="on_pn">
-            <h2 class="tt_page"><span>Danh sách khách hàng cung cấp thông tin cá nhân</span></h2>
-          <div class="on_dskb">
-          <div class="wrap">
-            <div class="on_choose">
+   <div class="on_pn">
+    <h2 class="tt_page"><span>Danh sách khách hàng cung cấp thông tin cá nhân</span></h2>
+    <div class="on_dskb">
+      <div class="wrap">
+        <div class="on_choose">
           <div class="on_it">
-          <div class="it_3 it_ccc">
-            <label>Chọn thời gian tìm kiếm: </label>
-            <div class="on_cals">
-              <Calendar
+          <div class="p-fluid">
+            <div class="p-fluid p-formgrid p-grid">
+             <div class="p-field p-col-12 p-md-6">
+            <label>Chọn thời gian</label>
+            <Calendar
               id="date"
               v-model="dateRegisterInfo"
               selectionMode="range"
@@ -23,11 +23,19 @@
               :yearNavigator="true"
               yearRange="2000:2100"
               @date-select="selectCalendarRegister()"
-              @clear-click="clearCalendar()"
-          />
+              @clear-click="clearCalendar()"/>
+          </div>
+             <div class="p-field p-col-12 p-md-3">
+            <label>Xuất biên bản:</label>
+              <Button label="Xử lý" icon="pi pi-spinner" iconPos="left" @click="createExcelFileRegisterInfo" :disabled="!validCustomer"/>
+          </div>
+             <div class="p-field p-col-12 p-md-3">
+            <label>Tải biên bản</label>
+              <Button label="Tải" severity="warning"  icon="pi pi-download" iconPos="left" @click="downLoadFileExport(file, 0)" :disabled="!file"/>
+          </div>
             </div>
-          </div>
-          </div>
+            </div>
+        </div>
         </div>
           <div class="on_tables">
           <div class="p-fluid">
@@ -124,7 +132,7 @@
           <div class="p-field p-col-12 p-sm-12 p-md-12">
               <Dialog header="Đang xử lý" v-model:visible="loadingBar" >
                 <div id="loading">
-                  <label>Đang cập nhật dữ liệu...</label>
+                  <label>Đang xử lý dữ liệu...</label>
                   <ProgressBar mode="indeterminate" style="height: .3em" />
                 </div>
               </Dialog>
@@ -136,7 +144,6 @@
       
     </div>
         </div>
-      </div>
     </TabPanel>
     <TabPanel header="KH nhận kết quả CLS">
       <div id="tabs_tn1" class="tabs_tn">
@@ -146,9 +153,10 @@
           <div class="wrap">
             <div class="on_choose">
           <div class="on_it">
-          <div class="it_3 it_ccc">
+           <div class="p-fluid">
+            <div class="p-fluid p-formgrid p-grid">
+             <div class="p-field p-col-12 p-md-6">
             <label>Chọn thời gian tìm kiếm: </label>
-            <div class="on_cals">
               <Calendar
               id="date"
               v-model="dateReturnResult"
@@ -163,8 +171,17 @@
               @date-select="selectCalendarResult()"
               @clear-click="clearCalendar()"
           />
-            </div>
           </div>
+             <div class="p-field p-col-12 p-md-3">
+            <label>Xuất biên bản:</label>
+              <Button label="Xử lý" icon="pi pi-spinner" iconPos="left" @click="createExcelFileResult" :disabled="!validResult"/>
+          </div>
+             <div class="p-field p-col-12 p-md-3">
+            <label>Tải biên bản</label>
+              <Button label="Tải" severity="warning"  icon="pi pi-download" iconPos="left" @click="downLoadFileExport(file2, 1)" :disabled="!file2"/>
+          </div>
+            </div>
+            </div>
           </div>
         </div>
           <div class="on_tables">
@@ -230,6 +247,7 @@
   import {ReturnResult} from "@/models/returnResult";
   import {CustomerUpdate} from "@/models/customerUpdate";
   import {forEach} from "lodash";
+  import axios from "axios";
 
   export default {
     setup() {
@@ -250,6 +268,8 @@
       const listCustomer = ref([] as Customer[]);
       const listReturnResult = ref([] as ReturnResult[]);
       const customerUpdate = ref({} as CustomerUpdate);
+      const file = ref("");
+      const file2 = ref("");
 
       const toTimestamp = (strDate) => {
         const dt = Date.parse(strDate);
@@ -266,6 +286,50 @@
             customerUpdate.value.phoneNumber = x.phoneNumber;
           }
         })
+      }
+
+      const createExcelFileRegisterInfo = () => {
+        loadingBar.value = true;
+        ZaloRepository.createExcelFileRegisterInfo(listCustomer.value)
+            .then((response) => {
+              loadingBar.value = false;
+              file.value = response.data;
+              toast.add({
+                severity: 'success',
+                summary: 'Thành công',
+                detail:'Xuất dữ liệu thành công',
+                life: 2500
+              });
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              })});
+      }
+
+      const createExcelFileResult = () => {
+        loadingBar.value = true;
+        ZaloRepository.createExcelFileResult(listReturnResult.value)
+            .then((response) => {
+              loadingBar.value = false;
+              file2.value = response.data;
+              toast.add({
+                severity: 'success',
+                summary: 'Thành công',
+                detail:'Xuất dữ liệu thành công',
+                life: 2500
+              });
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              })});
       }
 
       const update = () => {
@@ -394,6 +458,37 @@
         }
       };
 
+      const downLoadFileExport = (file, kind) => {
+        axios({
+          url: '../api/webhook/downloadFileExport/' + file,
+          method: 'GET',
+          responseType: 'blob',
+        })
+            .then((response) => {
+              const url = window.URL.createObjectURL(new Blob([response.data], {type: response.data.type}));
+              const link = document.createElement('a');
+              link.href = url;
+              if(kind == 0) {
+                link.setAttribute('download', "DanhSachBenhNhanCungCapThongTin" + ".xlsx");
+              }
+              else{
+                link.setAttribute('download', "DanhSachNhanKetQuaCLS" + ".xlsx");
+              }
+              document.body.appendChild(link);
+              link.click();
+            })
+            .catch(err => {
+              toast.add({
+                severity: 'error',
+                summary: 'Lỗi',
+                detail:err.response.data,
+                life: 2500
+              })});
+      };
+
+      const validCustomer = computed(()=> listCustomer.value.length > 0);
+      const validResult = computed(()=> listReturnResult.value.length > 0);
+
       return {
         formatDateTime,
         list,
@@ -420,6 +515,13 @@
         clearFilter,
         filters,
         loadingBar,
+        downLoadFileExport,
+        createExcelFileRegisterInfo,
+        createExcelFileResult,
+        file,
+        file2,
+        validCustomer,
+        validResult,
         // update
       }
     }
