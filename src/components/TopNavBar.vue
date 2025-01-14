@@ -10,6 +10,7 @@
             <li><RouterLink to ='/listRegisterService'><span class="p-menuitem-icon pi pi-fw pi-list" data-pc-section="icon"></span>Danh sách đăng ký</RouterLink></li>
             <li><RouterLink to ='/addemployee'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Thêm nhân viên</RouterLink></li>
             <li><RouterLink to ='/showlistemployee'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Danh sách nhân viên</RouterLink></li>
+            <li><RouterLink to ='/showListStatistical'><span class="p-menuitem-icon pi pi-fw pi-ellipsis-h" data-pc-section="icon"></span>Thống kê thông tin</RouterLink></li>
           </ul>
       </div>
       <div class="menubar" v-else>
@@ -20,6 +21,7 @@
           <li><RouterLink to ='/listRegisterService'><span class="p-menuitem-icon pi pi-fw pi-list" data-pc-section="icon"></span>Danh sách đăng ký</RouterLink></li>
           <li><RouterLink to ='/addemployee'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Thêm nhân viên</RouterLink></li>
           <li><RouterLink to ='/showlistemployee'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Danh sách nhân viên</RouterLink></li>
+          <li><RouterLink to ='/showListStatistical'><span class="p-menuitem-icon pi pi-fw pi-ellipsis-h" data-pc-section="icon"></span>Thống kê thông tin</RouterLink></li>
           <li><RouterLink to ='/registerUser'><span class="p-menuitem-icon pi pi-fw pi-user-plus" data-pc-section="icon"></span>Đăng ký tài khoản</RouterLink></li>
           <li><RouterLink to ='/userList'><span class="p-menuitem-icon pi pi-fw pi-users" data-pc-section="icon"></span>Quản lý tài khoản</RouterLink></li>
         </ul>

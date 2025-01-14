@@ -1,9 +1,12 @@
 <template>
-   <div class="on_pn">
-    <h2 class="tt_page"><span>Danh sách khách hàng cung cấp thông tin cá nhân</span></h2>
-    <div class="on_dskb">
-      <div class="wrap">
-        <div class="on_choose">
+<TabView>
+    <TabPanel header="KH đã cung cấp thông tin">
+      <div id="tabs_tn1" class="tabs_tn">
+           <div class="on_pn">
+            <h2 class="tt_page"><span>Danh sách khách hàng cung cấp thông tin cá nhân</span></h2>
+          <div class="on_dskb">
+          <div class="wrap">
+            <div class="on_choose">
           <div class="on_it">
           <div class="it_3 it_ccc">
             <label>Chọn thời gian tìm kiếm: </label>
@@ -26,102 +29,99 @@
           </div>
           </div>
         </div>
-        <div class="on_tables">
+          <div class="on_tables">
           <div class="p-fluid">
-      
-      <DataTable
-              :value="listCustomer" :paginator="true" stripedRows
-              :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
-              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              :globalFilterFields="['fullName','phoneNumber']"
-              currentPageReportTemplate="Có tất cả {totalRecords} người đăng ký"
-              v-model:filters="filters" style="font-size: 13px">
-        <template #header>
-          <div class="p-d-flex p-jc-between p-ai-center">
-            <Button type="button" icon="pi pi-filter-slash" label="Xoá" class="p-button-outlined" @click="clearFilter()" style="width: 6em"/>
-            <span class="p-input-icon-left" style="width: 18em">
-                    <i class="pi pi-search" />
-                    <InputText v-model="filters['global'].value" placeholder="Tìm theo tên hoặc số điện thoại" />
-                  </span>
+          <DataTable
+            :value="listCustomer" :paginator="true" stripedRows
+            :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            :globalFilterFields="['fullName','phoneNumber']"
+            currentPageReportTemplate="Có tất cả {totalRecords} người đăng ký"
+            v-model:filters="filters" style="font-size: 13px">
+      <template #header>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          <Button type="button" icon="pi pi-filter-slash" label="Xoá" class="p-button-outlined" @click="clearFilter()" style="width: 6em"/>
+          <span class="p-input-icon-left" style="width: 18em">
+<!--                     <i class="pi pi-search" />-->
+                  <InputText v-model="filters['global'].value" placeholder="Tìm theo tên hoặc số điện thoại" />
+                </span>
+        </div>
+      </template>
+      <Column field="imageLink" header="Ảnh đại diện" sortable>
+        <template #body="slotProps">
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-5 p-md-5">
+              <img :src=slotProps.data.avatar style="width: 60px" />
+            </div>
           </div>
         </template>
-        <Column field="imageLink" header="Ảnh đại diện" sortable>
-          <template #body="slotProps">
-            <div class="p-fluid p-formgrid p-grid">
-              <div class="p-field p-col-5 p-md-5">
-                <img :src=slotProps.data.avatar style="width: 60px" />
-              </div>
-            </div>
-          </template>
-        </Column>
-        <Column field="fullName" header="Họ và tên" sortable></Column>
-        <Column field="phoneNumber" header="Số điện thoại"></Column>
-        <Column field="address" header="Địa chỉ" sortable></Column>
-        <Column field="timeContact" dataType="date" header="Thời gian quan tâm" sortable>
-          <template #body="{data}">
-            {{formatDateTime(data.timeFollow)}}
-          </template>
-        </Column>
-        <Column field="timeBooking" dataType="date" header="Thời gian cung cấp thông tin" sortable>
-          <template #body="{data}">
-            {{formatDateTime(data.timeRegisterInfo)}}
-          </template>->
-        </Column>
-        <Column header="">
-          <template #body="slotProps">
-              <Button type="button" label="Cập nhật thông tin" icon="pi pi-user-edit" @click="selectCustomer(slotProps.data.id)" severity="warn" raised ></Button>
-          </template>
-        </Column>
-        <template #empty>
-          Không có thông tin người bệnh.
+      </Column>
+      <Column field="fullName" header="Họ và tên" sortable></Column>
+      <Column field="phoneNumber" header="Số điện thoại"></Column>
+      <Column field="address" header="Địa chỉ" sortable></Column>
+      <Column field="timeFollow" dataType="date" header="Thời gian quan tâm" sortable>
+        <template #body="{data}">
+          {{formatDateTime(data.timeFollow)}}
         </template>
-      </DataTable>
-            <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
-              <Dialog v-model:visible="updateReg" :style="{ width: '90vw'}" :breakpoints="{ '1500px': '70vw', '1150px': '80vw' }">
-                <Panel header="Đổi thông tin khách hàng">
-                  <div class="p-fluid p-formgrid p-grid">
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Họ và tên</label>
-                      <InputText id="fullname" type="text" v-model="customerUpdate.fullName" style="text-align: center"/>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
-                      <label>Số điện thoại</label>
-                      <InputNumber inputId="minmax" :min="0" :useGrouping="false"  v-model="customerUpdate.phoneNumber"/>
-                    </div>
-                    <div class="p-field p-col-12 p-sm p-md-6">
-                      <label for="dateselect">Ngày sinh:</label>
-                      <Calendar
-                          id="dateselect"
-                          v-model="customerUpdate.birthday"
-                          selectionMode="single"
-                          dateFormat="dd/mm/yy"
-                          :showButtonBar="true"
-                          :showIcon="true"
-                          :manualInput="false"
-                          :monthNavigator="true"
-                          :yearNavigator="true"
-                          yearRange="1900:2050"
-                          :showTime="true"
-                      >
-                        <template #body="{data}">
-                          {{formatDateTime(data.birthday)}}
-                        </template>
-                      </Calendar>
-                    </div>
-                    <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
-                    </div>
-                    <div class="card p-col p-col-12 p-md-12 p-lg-12">
-                      <div class="p-grid">
-                        <div class="p-offset-4 p-col-4 p-sm-4 p-md-4">
-                          <Button label="Cập nhật" icon="pi pi-save" :disabled="!(customerUpdate.fullName && (customerUpdate.phoneNumber?.length >= 10))" @click="update()" severity="warn" raised />
-                        </div>
+      </Column>
+      <Column field="timeRegisterInfo" dataType="date" header="Thời gian cung cấp thông tin" sortable>
+        <template #body="{data}">
+          {{formatDateTime(data.timeRegisterInfo)}}
+        </template>->
+      </Column>
+      <Column header="">
+        <template #body="slotProps">
+            <Button label="Cập nhật thông tin" icon="pi pi-user-edit" @click="selectCustomer(slotProps.data.id)" severity="warning" raised ></Button>
+        </template>
+      </Column>
+      <template #empty>
+        Không có thông tin.
+      </template>
+    </DataTable>
+          <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+            <Dialog v-model:visible="updateReg" :style="{ width: '90vw'}" :breakpoints="{ '1500px': '70vw', '1150px': '80vw' }">
+              <Panel header="Đổi thông tin khách hàng">
+                <div class="p-fluid p-formgrid p-grid">
+                  <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                    <label>Họ và tên</label>
+                    <InputText id="fullname" type="text" v-model="customerUpdate.fullName" style="text-align: center"/>
+                  </div>
+                  <div class="p-field p-col p-col-12 p-md-6 p-lg-6">
+                    <label>Số điện thoại</label>
+                    <InputNumber inputId="minmax" :min="0" :useGrouping="false"  v-model="customerUpdate.phoneNumber" prefix="84" :disabled="true"/>
+                  </div>
+                  <div class="p-field p-col-12 p-sm p-md-6">
+                    <label for="dateselect">Ngày sinh:</label>
+                    <Calendar
+                        id="dateselect"
+                        v-model="customerUpdate.birthday"
+                        selectionMode="single"
+                        dateFormat="dd/mm/yy"
+                        :showButtonBar="true"
+                        :showIcon="true"
+                        :manualInput="false"
+                        :monthNavigator="true"
+                        :yearNavigator="true"
+                        yearRange="1900:2050"
+                        :showTime="true"
+                    >
+                    </Calendar>
+                  </div>
+                  <div class="p-field p-col p-col-12 p-md-12 p-lg-12">
+                  </div>
+                  <div class="card p-col p-col-12 p-md-12 p-lg-12">
+                    <div class="p-grid">
+                      <div class="p-offset-4 p-col-4 p-sm-4 p-md-4">
+                        <Button v-if="!valid" label="Cập nhật" icon="pi pi-save" :disabled="true" severity="warning" raised />
+                        <Button v-else label="Cập nhật" icon="pi pi-save" @click="update()" severity="warning" raised />
                       </div>
                     </div>
                   </div>
-                </Panel>
-              </Dialog>
-            </div>
-            <div class="p-field p-col-12 p-sm-12 p-md-12">
+                </div>
+              </Panel>
+            </Dialog>
+          </div>
+          <div class="p-field p-col-12 p-sm-12 p-md-12">
               <Dialog header="Đang xử lý" v-model:visible="loadingBar" >
                 <div id="loading">
                   <label>Đang cập nhật dữ liệu...</label>
@@ -130,12 +130,82 @@
               </Dialog>
               <ConfirmDialog></ConfirmDialog>
             </div>
-    </div>
+        </div>
         </div>
       </div>
       
     </div>
-  </div>  
+        </div>
+      </div>
+    </TabPanel>
+    <TabPanel header="KH nhận kết quả CLS">
+      <div id="tabs_tn1" class="tabs_tn">
+           <div class="on_pn">
+            <h2 class="tt_page"><span>Danh sách khách hàng nhận kết quả CLS</span></h2>
+          <div class="on_dskb">
+          <div class="wrap">
+            <div class="on_choose">
+          <div class="on_it">
+          <div class="it_3 it_ccc">
+            <label>Chọn thời gian tìm kiếm: </label>
+            <div class="on_cals">
+              <Calendar
+              id="date"
+              v-model="dateReturnResult"
+              selectionMode="range"
+              dateFormat="dd/mm/yy"
+              :showButtonBar="true"
+              :showIcon="true"
+              :manualInput="false"
+              :monthNavigator="true"
+              :yearNavigator="true"
+              yearRange="2000:2100"
+              @date-select="selectCalendarResult()"
+              @clear-click="clearCalendar()"
+          />
+            </div>
+          </div>
+          </div>
+        </div>
+          <div class="on_tables">
+          <div class="p-fluid">
+          <DataTable
+            :value="listReturnResult" :paginator="true" stripedRows
+            :rows="10" :rowsPerPageOptions="[10,25,50]" :rowHover="true"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            :globalFilterFields="['fullName','phoneNumber']"
+            currentPageReportTemplate="Có tất cả {totalRecords} người đăng ký"
+            v-model:filters="filters" style="font-size: 13px">
+      <template #header>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          <Button type="button" icon="pi pi-filter-slash" label="Xoá" class="p-button-outlined" @click="clearFilter()" style="width: 6em"/>
+          <span class="p-input-icon-left" style="width: 18em">
+<!--                  <i class="pi pi-search" />-->
+                  <InputText v-model="filters['global'].value" placeholder="Tìm theo tên hoặc số điện thoại" />
+                </span>
+        </div>
+      </template>
+      <Column field="fullName" header="Họ và tên" sortable></Column>
+      <Column field="phoneNumber" header="Số điện thoại"></Column>
+      <Column field="time" dataType="date" header="Thời gian trả kết quả" sortable>
+        <template #body="{data}">
+          {{formatDateTime(data.time)}}
+        </template>
+      </Column>
+      <template #empty>
+        Không có thông tin.
+      </template>
+    </DataTable>
+
+        </div>
+        </div>
+      </div>
+
+    </div>
+        </div>
+      </div>
+    </TabPanel>
+  </TabView>
   <!--  </TabPanel>-->
 
 </template>
@@ -220,9 +290,14 @@
                 life: 2500
               })});
       }
-      const valid = () => {
-        return customerUpdate.value.fullName && (customerUpdate.value.phoneNumber.length >= 10);
-      }
+      const valid = computed(() => {
+        console.log("@@@@@@############ valid customerUpdate.value.fullName: " + customerUpdate.value.fullName);
+        console.log("@@@@@@############ valid customerUpdate.value.phoneNumber: " + customerUpdate.value.phoneNumber);
+        console.log("@@@@@@############ valid leng: " + customerUpdate.value.phoneNumber?.toString().length);
+        console.log("@@@@@@############ valid check: " + (customerUpdate.value.fullName && (customerUpdate.value.phoneNumber?.toString().length >= 10)));
+
+        return customerUpdate.value.fullName && (customerUpdate.value.phoneNumber?.toString().length >= 10);
+      })
       const formatDate = (date) => {
         return moment(String(date)).format('YYYY-MM-DDTHH:mm:ss');
       };
