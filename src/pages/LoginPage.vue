@@ -5,10 +5,10 @@
     <div class="wraplogin">
         <div class="main_login">
             <div class="img_lg">
-              <img src="../assets/logoUB.png" width="70" class="img_l" alt="logo cong ty">
+              <img src="../assets/logo_vinh.png" width="70" class="img_l" alt="logo cong ty">
 <!--              <img src="../assets/logo_kcl.jpg" width="70" class="img_r" alt="logo don vi">-->
             </div>    
-              <h4>Bệnh Viện Ung Bướu Đà Nẵng</h4>
+              <h4>Bệnh viện Đa khoa Thành phố Vinh</h4>
               <h5>Đăng nhập hệ thống</h5>
               <div class="it_lg">
                 <InputText id="firstname" type="text" v-model="userName" placeholder="Tên đăng nhập"/>
@@ -28,81 +28,58 @@
 
 </template>
 
-<script lang="ts">
 
-import { Login } from '../models/login'
-import { computed} from 'vue'
-import { ref } from 'vue'
-import AuthRepository from '../services/AuthRepository'
+<script lang="ts">
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useToast } from 'primevue/usetoast'
 import { useRouter } from 'vue-router'
 
 export default {
+  setup () {
+    const router = useRouter()
+    const store = useStore()
+    const toast = useToast()
 
-  setup (props) {
-    const router = useRouter();
-    const login = ref({} as Login);
-    const store = useStore();
-    const toast = useToast();
-    const userName = ref("");
-    const password = ref("");
+    const userName = ref('')
+    const password = ref('')
 
-    const valid = computed(() => password.value && userName.value)
+    // vẫn kiểm tra có nhập user & pass thì mới cho bấm login
+    const valid = computed(() => !!userName.value && !!password.value)
 
-      console.log('############################## loginpage 11111');
     const doLogin = () => {
-      console.log('############################## loginpage');
-        var md5 = require("md5");
-        login.value.username = userName.value;
-        login.value.password = md5(password.value);
-        console.log('############################## loginpage login: ' + JSON.stringify(login));
-        AuthRepository.auth(login.value)
-        .then((response) => {
-          store.dispatch('setToken', response.data.token)
-          toast.add({
-            severity: 'success',
-            summary: 'Đăng nhập',
-            detail: 'Đăng nhập thành công vào hệ thống',
-            life: 1000
-          });
-          AuthRepository.userPermission(login.value)
-                  .then((response) => {
-                    store.dispatch('setPermission', response.data.permission);
-                  })
-                  .catch(() => {
-                    toast.add({
-                      severity: 'error',
-                      summary: 'Đăng nhập',
-                      detail: 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập',
-                      life: 1000
-                    })
-                  })
-          router.push({
-            name: 'home'
-          });
-        })
-        .catch(() => {
-          toast.add({
-            severity: 'error',
-            summary: 'Đăng nhập',
-            detail: 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập',
-            life: 1000
-          })
-        })
+      console.log('######## FAKE LOGIN – bỏ qua backend ########')
+      console.log('userName =', userName.value)
+
+      // === FAKE TOKEN & PERMISSION ===
+      // Sau này nối backend thật thì bỏ đoạn này, dùng lại AuthRepository như cũ
+      store.dispatch('setToken', 'dummy-token')
+      store.dispatch('setPermission', 'admin') // hoặc 'user' tùy bạn muốn test quyền gì
+      // ================================
+
+      toast.add({
+        severity: 'success',
+        summary: 'Đăng nhập',
+        detail: 'Đăng nhập giả để test giao diện (không gọi backend)',
+        life: 1000
+      })
+
+      router.push({
+        name: 'home'   // route sau khi đăng nhập
+      })
     }
 
     return {
-      login,
       doLogin,
       valid,
       password,
-      userName,
+      userName
     }
   }
 }
-
 </script>
+
+
 <style lang="scss">
   #template {
     background-color: #2196F3;

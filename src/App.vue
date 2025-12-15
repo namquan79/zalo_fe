@@ -1,12 +1,19 @@
 <template>
   <div class="on_page">
     <Toast />
-     <TopNavBar :isLoggedIn="isLoggedIn"/>
-    <div class="main-content">
-      <router-view/>
+
+    <div class="layout">
+      <TopNavBar class="layout-sidebar" :isLoggedIn="isLoggedIn" />
+
+      <div class="layout-main">
+        <div class="main-content">
+          <router-view />
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
 
 <style lang="scss">
 .app-container {

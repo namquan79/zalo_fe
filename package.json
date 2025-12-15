@@ -2,10 +2,13 @@
   "name": "zalo-fe",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://namquan79.github.io/zalo-fe/",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "axios": "^1.7.7",
@@ -18,7 +21,7 @@
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
     "primeflex": "^2.0.0",
-    "primeicons": "^4.1.0",
+    "primeicons": "^5.0.0",
     "primevue": "^3.12.6",
     "register-service-worker": "^1.7.2",
     "typeface-roboto": "^1.1.13",
@@ -46,6 +49,7 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "chai": "^4.1.2",
+    "gh-pages": "^6.3.0",
     "sass": "^1.79.5",
     "sass-loader": "^8.0.2",
     "typescript": "~4.3.5"

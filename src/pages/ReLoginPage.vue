@@ -5,10 +5,10 @@
     <div class="wraplogin">
         <div class="main_login">
             <div class="img_lg">
-              <img src="../assets/logoUB.png" width="70" class="img_l" alt="logo cong ty">
+              <img src="../assets/logo_vinh.png" width="70" class="img_l" alt="logo cong ty">
 <!--              <img src="../assets/logo_kcl.jpg" width="70" class="img_r" alt="logo don vi">-->
             </div>
-              <h4>Bệnh Viện Ung Bướu Đà Nẵng</h4>
+              <h4>Bệnh viện Đa khoa Thành phố Vinh</h4>
               <h5>Đăng nhập hệ thống</h5>
           <h6 style="font: initial; color: red">Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.</h6>
               <div class="it_lg">

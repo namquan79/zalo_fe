@@ -1,0 +1,20 @@
+{
+    "buttons": {
+        "send": {
+            "label": "Gởi tin nhắn",
+            "icon": "pi pi-plus-circle",
+            "class": "btn-primary"
+        },
+        "search": {
+            "label": "Tìm kiếm",
+            "icon": "pi pi-search",
+            "class": "btn-outline-primary"
+        }
+    },
+    "checkboxes": {
+        "selectAll": {
+            "binary": true,
+            "class": "cb-select-all"
+        }
+    }
+}

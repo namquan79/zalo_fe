@@ -1,5 +1,5 @@
 <template>
-  <showListRegisterService v-if="isLoggedIn" />
+  <sendMessagePage v-if="isLoggedIn" />
   <LoginPage v-else />
 </template>
 
@@ -7,6 +7,7 @@
 import LoginPage from "@/pages/LoginPage.vue";
 import SendMessagePage from "@/pages/SendMessagePage.vue";
 import showListRegisterService from "@/pages/ShowListRegisterService.vue";
+import sendMessagePage from "@/pages/SendMessagePage.vue";
 
 import { useStore } from 'vuex'
 import { computed } from 'vue'
@@ -15,7 +16,7 @@ import {useRouter} from "vue-router";
 export default {
   components: {
     LoginPage,
-    showListRegisterService
+    sendMessagePage
   },
   setup(){
     const store = useStore();
