@@ -17,6 +17,7 @@ import userUpdatePage from "@/pages/UserUpdatePage.vue";
 import ManagerGroupPage from "@/pages/ManagerGroupPage.vue";
 import showListStatistical from "@/pages/ShowListStatistical.vue";
 
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -146,9 +147,9 @@ const routes: Array<RouteRecordRaw> = [
   },
 ]
 
-const router = createRouter({
+export default createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
-
-export default router
+  routes: [
+    // ...
+  ],
+});
