@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import LoginPage from '../pages/LoginPage.vue';
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+
+import LoginPage from "../pages/LoginPage.vue";
 import Home from "@/pages/Home.vue";
 import SendMessagePage from "@/pages/SendMessagePage.vue";
 import UploadImage from "@/pages/UploadImage.vue";
@@ -17,139 +18,31 @@ import userUpdatePage from "@/pages/UserUpdatePage.vue";
 import ManagerGroupPage from "@/pages/ManagerGroupPage.vue";
 import showListStatistical from "@/pages/ShowListStatistical.vue";
 
-
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: '',
-    component: Home,
-    props: true
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: LoginPage,
-    props: true
-  },
-  {
-    path: '/relogin',
-    name: 'relogin',
-    component: reLoginPage,
-    props: true
-  },
-  // {
-  //   path: '/register',
-  //   name: 'register',
-  //   component: RegisterPage,
-  //   props: true
-  // },
-  {
-    path: '/home',
-    name: 'home',
-    component: Home,
-    props: true
-  },
-  {
-    path: '/updateinfo/:id',
-    name: 'updateinfo',
-    component: UpdateInfo,
-    props: true
-  },
-  // {
-  //   path: '/downloadinfo',
-  //   name: 'downloadinfo',
-  //   component: DownloadInfo,
-  //   props: true
-  // },
-  {
-    path: '/registerUser',
-    name: 'registerUser',
-    component: RegisterUserPage,
-    props: true
-  },
-  {
-    path: '/userUpdate',
-    name: 'userUpdate',
-    component: userUpdatePage,
-    props: true
-  },
-  {
-    path: '/userList',
-    name: 'userList',
-    component: userList,
-    props: true
-  },
-  {
-    path: '/ketQuaCLS/:svv/:sdt',
-    name: 'ketQuaCLS',
-    component: ketQuaCLS,
-    props: true
-  },
-  // {
-  //   path: '/addpersioninfo',
-  //   name: 'addpersioninfo',
-  //   component: AddPersionInfo,
-  //   props: true
-  // },
-  {
-    path: '/sendmessage',
-    name: 'sendmessage',
-    component: SendMessagePage,
-    props: true
-  },
-  {
-    path: '/uploadImage',
-    name: 'uploadImage',
-    component: UploadImage,
-    props: true
-  },
-  {
-    path: '/listRegisterService',
-    name: 'listRegisterService',
-    component: ShowListRegisterService,
-    props: true
-  },
-  {
-    path: '/updateregisterservice/:id',
-    name: 'updateregisterservice',
-    component: UpdateRegisterService,
-    props: true
-  },
-  {
-    path: '/addemployee',
-    name: 'addemployee',
-    component: AddEmployeePage,
-    props: true
-  },
-  {
-    path: '/showlistemployee',
-    name: 'showlistemployee',
-    component: showListEmployee,
-    props: true
-  },
-  {
-    path: '/updateemployee/:id',
-    name: 'updateemployee',
-    component: updateEmployeePage,
-    props: true
-  },
-  {
-    path: '/managerGroup',
-    name: 'managerGroup',
-    component: ManagerGroupPage,
-    props: true,
-  },
-  {
-    path: '/showListStatistical',
-    name: 'showListStatistical',
-    component: showListStatistical,
-    props: true,
-  },
-]
+  { path: "/", name: "root", component: Home, props: true },
+  { path: "/login", name: "login", component: LoginPage, props: true },
+  { path: "/relogin", name: "relogin", component: reLoginPage, props: true },
+  { path: "/home", name: "home", component: Home, props: true },
+  { path: "/updateinfo/:id", name: "updateinfo", component: UpdateInfo, props: true },
+  { path: "/registerUser", name: "registerUser", component: RegisterUserPage, props: true },
+  { path: "/userUpdate", name: "userUpdate", component: userUpdatePage, props: true },
+  { path: "/userList", name: "userList", component: userList, props: true },
+  { path: "/ketQuaCLS/:svv/:sdt", name: "ketQuaCLS", component: ketQuaCLS, props: true },
+  { path: "/sendmessage", name: "sendmessage", component: SendMessagePage, props: true },
+  { path: "/uploadImage", name: "uploadImage", component: UploadImage, props: true },
+  { path: "/listRegisterService", name: "listRegisterService", component: ShowListRegisterService, props: true },
+  { path: "/updateregisterservice/:id", name: "updateregisterservice", component: UpdateRegisterService, props: true },
+  { path: "/addemployee", name: "addemployee", component: AddEmployeePage, props: true },
+  { path: "/showlistemployee", name: "showlistemployee", component: showListEmployee, props: true },
+  { path: "/updateemployee/:id", name: "updateemployee", component: updateEmployeePage, props: true },
+  { path: "/managerGroup", name: "managerGroup", component: ManagerGroupPage, props: true },
+  { path: "/showListStatistical", name: "showListStatistical", component: showListStatistical, props: true },
+];
 
-export default createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes: [
-    // ...
-  ],
+const router = createRouter({
+  history: createWebHashHistory(), // ✅ dùng Hash cho GitHub Pages
+  routes,                          // ✅ dùng đúng routes ở trên
+  scrollBehavior: () => ({ top: 0 }),
 });
+
+export default router;
