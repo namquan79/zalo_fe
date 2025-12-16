@@ -6,6 +6,24 @@ body {
     font-size: 15px;
 }
 
+html,
+body,
+#app,
+.p-component {
+    font-family: "Inter", sans-serif !important;
+}
+
+
+/* Ví dụ: dùng Roboto */
+:root {
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+body {
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+
 .app-container {
     margin: 0 auto;
     max-width: 1600px;
@@ -344,8 +362,9 @@ div#header {
 .menubar ul li a {
     display: block;
     padding: 10px 20px;
-    font-size: 18px;
-    font-family: Oswald, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: sans-serif;
     color: #ffffff;
 }
 
