@@ -43,8 +43,7 @@
             </div>
 
             <div class="it_bt">
-              <Button label="gửi tin nhắn" icon="pi pi-plus-circle" iconPos="left" class="btn-send"
-                @click="doSendMessage" :disabled="!valid()" />
+              <BaseButton label="Gửi tin nhắn" icon="pi pi-plus-circle" @click="doSendMessage" :disabled="!valid()" />
             </div>
           </div>
         </div>
@@ -381,8 +380,7 @@
           </div>
 
           <div class="bt_gtn">
-            <Button label="gửi tin nhắn" icon="pi pi-plus-circle" iconPos="left" class="btn-send"
-              @click="doSendMessageWithAttachment" :disabled="!valid2()" />
+            <BaseButton label="Gởi tin nhắn" icon="pi pi-plus-circle" @click="doSendMessage" :disabled="!valid()" />
           </div>
         </div>
       </div>
@@ -453,6 +451,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
+import BaseButton from "@/components/base/BaseButton.vue";
 
 import ZaloRepository from "@/services/ZaloRepository";
 import { Message } from "@/models/message";
@@ -467,6 +466,7 @@ import { Group } from "@/models/group";
 type ActionScope = "customer" | "all" | "gender" | "age" | "location" | "group" | "";
 
 export default {
+  components: { BaseButton }, // ✅ BẮT BUỘC
   setup() {
     // ================= Core
     const router = useRouter();

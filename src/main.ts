@@ -47,53 +47,56 @@ import Galleria from 'primevue/galleria';
 import TabMenu from "primevue/tabmenu";
 import Editor from 'primevue/editor';
 import cors from 'cors';
+import BaseButton from "@/components/base/BaseButton.vue";
 
 const app = createApp(App)
   .use(store)
   .use(router)
-    .use(PrimeVue, {locale: {
-            startsWith: 'Starts with',
-            contains: 'Contains',
-            notContains: 'Not contains',
-            endsWith: 'Ends with',
-            equals: 'Equals',
-            notEquals: 'Not equals',
-            noFilter: 'No Filter',
-            lt: 'Less than',
-            lte: 'Less than or equal to',
-            gt: 'Greater than',
-            gte: 'Greater than or equal to',
-            dateIs: 'Date is',
-            dateIsNot: 'Date is not',
-            dateBefore: 'Date is before',
-            dateAfter: 'Date is after',
-            clear: 'Xoá',
-            apply: 'Apply',
-            matchAll: 'Match All',
-            matchAny: 'Match Any',
-            addRule: 'Add Rule',
-            removeRule: 'Remove Rule',
-            accept: 'Yes',
-            reject: 'No',
-            choose: 'Choose',
-            upload: 'Upload',
-            cancel: 'Cancel',
-            dayNames: ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
-            dayNamesShort: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-            dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-            monthNames: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
-            monthNamesShort: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
-            today: 'Hôm nay',
-            weekHeader: 'Wk',
-            firstDayOfWeek: 0,
-            dateFormat: 'mm/dd/yy',
-            weak: 'Weak',
-            medium: 'Medium',
-            strong: 'Strong',
-            passwordPrompt: 'Enter a password',
-            emptyFilterMessage: 'No results found',
-            emptyMessage: 'No available options'
-        }})
+  .use(PrimeVue, {
+    locale: {
+      startsWith: 'Starts with',
+      contains: 'Contains',
+      notContains: 'Not contains',
+      endsWith: 'Ends with',
+      equals: 'Equals',
+      notEquals: 'Not equals',
+      noFilter: 'No Filter',
+      lt: 'Less than',
+      lte: 'Less than or equal to',
+      gt: 'Greater than',
+      gte: 'Greater than or equal to',
+      dateIs: 'Date is',
+      dateIsNot: 'Date is not',
+      dateBefore: 'Date is before',
+      dateAfter: 'Date is after',
+      clear: 'Xoá',
+      apply: 'Apply',
+      matchAll: 'Match All',
+      matchAny: 'Match Any',
+      addRule: 'Add Rule',
+      removeRule: 'Remove Rule',
+      accept: 'Yes',
+      reject: 'No',
+      choose: 'Choose',
+      upload: 'Upload',
+      cancel: 'Cancel',
+      dayNames: ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
+      dayNamesShort: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+      dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+      monthNames: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+      monthNamesShort: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+      today: 'Hôm nay',
+      weekHeader: 'Wk',
+      firstDayOfWeek: 0,
+      dateFormat: 'mm/dd/yy',
+      weak: 'Weak',
+      medium: 'Medium',
+      strong: 'Strong',
+      passwordPrompt: 'Enter a password',
+      emptyFilterMessage: 'No results found',
+      emptyMessage: 'No available options'
+    }
+  })
   .use(ConfirmationService)
   .use(ToastService);
 
@@ -135,4 +138,5 @@ app.component('TabMenu', TabMenu);
 app.component('Editor', Editor);
 app.use(quillEditor)
 app.mount('#app');
+app.component("BaseButton", BaseButton);
 
