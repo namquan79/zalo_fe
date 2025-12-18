@@ -224,7 +224,7 @@ export default {
         store.state.avatarUrl ||
         "https://ui-avatars.com/api/?name=" +
         encodeURIComponent(userDisplayName.value) +
-        "&background=ffffff&color=06b649"
+        "&background=ffffff&color=1f2a44"
     );
 
     const logout = () => {
@@ -246,7 +246,7 @@ export default {
 
     // Demo state (bạn có thể nối vào store nếu muốn lưu)
     const themeColors = ref(["#4a8cff", "#5a6b7a", "#00c2d1", "#4cd964", "#ff4d4f", "#ffa940"]);
-    const themeColor = ref("#06b649");
+    const themeColor = ref("#1f2a44");
 
     const isLightMode = ref(false);
     const isRTL = ref(false);
@@ -294,7 +294,7 @@ export default {
 
 <style scoped lang="scss">
 :global(:root) {
-  --brand: #06b649;
+  --brand: #1f2a44;
 }
 
 a {
@@ -306,7 +306,7 @@ a {
   position: fixed;
   inset: 0 auto 0 0;
   width: 220px;
-  background: var(--brand);
+  background: #1f2a44;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   padding: 10px 8px;
   transition: width 0.2s ease;
