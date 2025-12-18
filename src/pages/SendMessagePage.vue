@@ -1025,18 +1025,8 @@ TabPanel {
 }
 
 /* ===== TabView header style: xanh #06b649 ===== */
-.p-tabview .p-tabview-nav {
-  border-bottom: 2px solid #06b649;
-}
 
-.p-tabview .p-tabview-nav li .p-tabview-nav-link {
-  background: #fff !important;
-  color: #06b649 !important;
-  border: 0 !important;
-  border-bottom: 3px solid #06b649 !important;
-  border-radius: 8px 8px 0 0;
-  transition: background 0.15s ease, color 0.15s ease;
-}
+
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
   background: #06b649 !important;
