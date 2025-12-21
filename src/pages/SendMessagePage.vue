@@ -39,7 +39,8 @@
 
             <div class="it_full">
               <label>Nội dung tin nhắn</label>
-              <Textarea id="message" type="text" v-model="message.mess" style="height: 100px" />
+              <Textarea id="message" type="text" v-model="message.mess"
+                style="height: 100px; background-color: #334059;border: none; color: white;" />
             </div>
 
             <div class="it_bt">
@@ -67,7 +68,7 @@
             </div>
 
             <div class="customer-avatar">
-              <img src="https://via.placeholder.com/100" alt="avatar" />
+              <img src="https://nhakhoaanna.com/hinh-anh-khach-hang/" alt="avatar" />
             </div>
 
             <div class="customer-info">
@@ -891,7 +892,7 @@ TabPanel {
 /* ===== Buttons (reuse) ===== */
 .btn-send,
 .btn-pick-image {
-  background: #06b649 !important;
+  background: #ff0000 !important;
   border: 1px solid #06b649 !important;
   color: #fff !important;
 }
@@ -916,7 +917,7 @@ TabPanel {
 .customer-list,
 .customer-list-fluid-right {
   max-width: 400px;
-  background: #fff;
+  background: #1a2745;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   max-height: 480px;
@@ -937,10 +938,10 @@ TabPanel {
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #1a2745;
   position: sticky;
   top: 0;
-  background: #fff;
+  background: #1a2745;
   z-index: 1;
 }
 
@@ -965,7 +966,7 @@ TabPanel {
   display: flex;
   align-items: center;
   padding: 10px 16px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #334059;
 }
 
 .customer-item:last-child {
@@ -1017,7 +1018,9 @@ TabPanel {
   margin-right: 4%;
 }
 
+
 #tabs_tn1 {
+  color: #ffffff7a;
   height: 500px;
   width: 70%;
   float: left;
@@ -1026,17 +1029,29 @@ TabPanel {
 
 /* ===== TabView header style: xanh #06b649 ===== */
 
+.p-tabview .p-tabview-nav {
+  background: #1f2a44;
 
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background-color: #1f2a44;
+}
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
-  background: #06b649 !important;
-  color: #fff !important;
+  color: #ff4800 !important;
+  background-color: #ff6600;
 }
 
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  background: #06b649 !important;
-  color: #fff !important;
-  border-bottom-color: #06b649 !important;
+  background-color: #1f2a44;
+  color: #bdd1f8 !important;
+  border-bottom: 3px solid #35466d !important;
+}
+
+.p-tabview-nav .p-tabview-nav-link:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .p-tabview .p-tabview-ink-bar {
@@ -1046,7 +1061,7 @@ TabPanel {
 .p-tabview .p-tabview-nav li .p-tabview-nav-link .p-tabview-title,
 .p-tabview .p-tabview-nav li .p-tabview-nav-link .p-tabview-left-icon,
 .p-tabview .p-tabview-nav li .p-tabview-nav-link .p-tabview-right-icon {
-  color: inherit !important;
+  color: #bdd1f8 !important;
 }
 
 /* ===== PrimeVue Checkbox: đổi sang xanh #06b649 ===== */
@@ -1055,27 +1070,6 @@ TabPanel {
   --primary-color-text: #ffffff;
 }
 
-
-/* ô vuông */
-.p-checkbox .p-checkbox-box {
-  border: 2px solid var(--tn-green) !important;
-}
-
-/* hover */
-.p-checkbox:not(.p-disabled) .p-checkbox-box:hover {
-  border-color: var(--tn-green) !important;
-}
-
-/* khi checked */
-.p-checkbox.p-highlight .p-checkbox-box {
-  background: var(--tn-green) !important;
-  border-color: var(--tn-green) !important;
-}
-
-/* icon dấu check */
-.p-checkbox.p-highlight .p-checkbox-box .p-checkbox-icon {
-  color: #fff !important;
-}
 
 /* focus ring (tuỳ theme) */
 .p-checkbox:not(.p-disabled) .p-checkbox-box.p-focus {

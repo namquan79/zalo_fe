@@ -48,9 +48,9 @@ export default defineComponent({
 
 /* BUTTON 1: nền xanh + chữ trắng */
 .base-btn--solid {
-    background: #06b649 !important;
-    border: 1px solid #06b649 !important;
-    color: #fff !important;
+    background: #334059 !important;
+    border: 1px solid #42598b !important;
+    color: #bdd1f8 !important;
 }
 
 /* BUTTON 2: nền trắng + chữ xanh + viền xanh 1px */

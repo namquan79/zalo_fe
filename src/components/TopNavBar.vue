@@ -78,24 +78,28 @@
     <!-- HEADER -->
     <header class="topbar" :class="{ 'topbar-expanded': !isSidebarCollapsed }">
       <div class="topbar-left">
-        <div class="hospital-title">Bệnh viện đa khoa thành phố Vinh</div>
       </div>
 
       <div class="topbar-right">
-        <button class="icon-btn" type="button" title="Tìm kiếm" aria-label="Search">
+        <!-- ô search dài -->
+        <button class="icon-btn icon-btn-search" type="button" title="Tìm kiếm" aria-label="Search">
           <i class="pi pi-search"></i>
         </button>
-        <button class="icon-btn" type="button" title="Thông báo" aria-label="Notifications">
+
+        <!-- chuông -->
+        <button class="icon-btn icon-btn-bell" type="button" title="Thông báo" aria-label="Notifications">
           <i class="pi pi-bell"></i>
         </button>
 
-        <!-- ✅ NEW: SETTINGS (gear) -->
+        <!-- bánh răng -->
         <button class="icon-btn gear-btn" type="button" title="Cài đặt giao diện" aria-label="Settings"
           @click="toggleSettings">
-          <i class="pi pi-cog" :class="{ 'spin': isSettingsOpen }"></i>
+          <!-- vẫn giữ :class cũ, nhưng CSS sẽ cho xoay luôn -->
+          <i class="pi pi-cog" :class="{ spin: isSettingsOpen }"></i>
         </button>
       </div>
     </header>
+
 
     <!-- ✅ SETTINGS OVERLAY -->
     <div v-if="isSettingsOpen" class="settings-overlay" @click="closeSettings"></div>
@@ -264,6 +268,16 @@ export default {
       { immediate: true }
     );
 
+    watch(
+      isLightMode,
+      (v) => {
+        // v = true -> Light, v = false -> Dark
+        document.documentElement.setAttribute("data-theme", v ? "light" : "dark");
+      },
+      { immediate: true }
+    );
+
+
     // Optional: apply RTL
     watch(isRTL, (v) => {
       document.documentElement.dir = v ? "rtl" : "ltr";
@@ -299,6 +313,64 @@ export default {
 
 a {
   text-decoration: none;
+}
+
+/* ===== Chỉ custom 3 icon ở topbar-right ===== */
+
+/* làm đẹp riêng cho icon trong topbar, không ảnh hưởng nơi khác */
+.topbar-right .icon-btn {
+  border-radius: 999px;
+  border: 1px solid #1f2a44;
+  background: #1f2a44;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* nút search dạng pill dài */
+.topbar-right .icon-btn-search {
+  width: 90px;
+  justify-content: flex-end;
+  padding-right: 14px;
+  background: #141e36;
+}
+
+/* chuông + bánh răng là nút tròn nhỏ */
+.topbar-right .icon-btn-bell,
+.topbar-right .gear-btn {
+  width: 40px;
+  height: 40px;
+}
+
+/* hover chỉ áp dụng cho 3 nút này */
+.topbar-right .icon-btn:hover {
+  background: #1f2a44;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* bỏ viền focus xanh khi click */
+.topbar-right .icon-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* bánh răng luôn xoay (dù có / không class spin) */
+.topbar-right .gear-btn i {
+  animation: spin 1.4s linear infinite;
+}
+
+/* Gear animation */
+.gear-btn .spin {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* SIDEBAR */
@@ -424,7 +496,7 @@ a {
   left: 60px;
   right: 0;
   height: 56px;
-  background: #fff;
+  background: #1f2a44;
   border-bottom: 2px solid var(--brand);
   display: flex;
   align-items: center;
@@ -440,7 +512,7 @@ a {
 
 .hospital-title {
   font-weight: 800;
-  color: #0b2b1b;
+  color: #ffffff;
   font-size: 16px;
 }
 
@@ -644,7 +716,7 @@ a {
   left: 60px;
   right: 0;
   height: 44px;
-  background: #fff;
+  background: #1f2a44;
   border-top: 1px solid rgba(6, 182, 73, 0.25);
   display: flex;
   align-items: center;
@@ -657,15 +729,9 @@ a {
   left: 220px;
 }
 
-copyright {
-  margin: 0;
-  font-size: 13px;
-  color: #3a3a3a;
-}
-
 .copyright {
   margin: 0;
   font-size: 13px;
-  color: #3a3a3a;
+  color: #4e6082;
 }
 </style>

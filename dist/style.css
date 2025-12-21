@@ -453,7 +453,7 @@ div#fotter p {
     float: left;
     margin-left: 4%;
     min-height: calc(100vh - 75px);
-    background: #fff;
+    background: #1a233a;
     position: relative;
 }
 
@@ -485,7 +485,6 @@ nav.p-paginator-bottom button {
     width: 40%;
     padding-bottom: 38%;
     position: absolute;
-    background: url(./img/logo_vinh.png);
     left: 30%;
     top: 10%;
     left: 30%;
@@ -503,10 +502,6 @@ h2.tt_page:after {
     background: url(./img/line.png);
     background-size: 100% 100%;
     top: 55px;
-}
-
-.main-content:after {
-    content: "";
 }
 
 .main-content>div {

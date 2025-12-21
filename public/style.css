@@ -472,7 +472,7 @@ div#fotter p {
     float: left;
     margin-left: 4%;
     min-height: calc(100vh - 75px);
-    background: #fff;
+    background: #1f2a44;
     position: relative;
 }
 
@@ -504,7 +504,6 @@ nav.p-paginator-bottom button {
     width: 40%;
     padding-bottom: 38%;
     position: absolute;
-    background: url(./img/logo_vinh.png);
     left: 30%;
     top: 10%;
     left: 30%;
@@ -606,8 +605,21 @@ div#dichvu {
 }
 
 .it_3 .p-dropdown {
+    color: white;
+    background-color: #334059;
+    border: none;
     width: 100%;
     text-align: left;
+}
+
+.p-dropdown .p-dropdown-label {
+    color: #ffffff;
+    /* chữ trắng */
+}
+
+/* Placeholder (khi chưa chọn gì) – nếu muốn trắng luôn */
+.p-dropdown .p-dropdown-label.p-placeholder {
+    color: #ffffff;
 }
 
 .it_3 span.p-inputtext {
@@ -682,10 +694,7 @@ li.p-tabview-header a {
     font-weight: 600;
 }
 
-li.p-tabview-header.p-highlight a {
-    background: #06b649;
-    color: #ff0000;
-}
+
 
 .p-tabview-title {
     color: #06b649;
@@ -704,7 +713,13 @@ li.p-tabview-header.p-highlight a {
 }
 
 .p-panel .p-panel-header {
-    background: #06b649;
+    background: #1f2a44;
+    border: none;
+}
+
+.p-fluid .p-inputtextarea {
+    background-color: #334059;
+    border: none;
 }
 
 .p-panel .p-panel-header .p-panel-title {
@@ -723,6 +738,7 @@ li.p-tabview-header.p-highlight a {
 .pannel_tk .p-panel-content {
     padding: 20px;
     box-sizing: border-box;
+    border: none;
 }
 
 .pannel_tk .p-panel-content>.p-fluid {
@@ -794,4 +810,157 @@ li.p-tabview-header.p-highlight a {
     height: 460px;
     width: 20%;
     float: left;
+}
+
+#tabs_tn2 {
+    background-color: #1f2a44;
+}
+
+.p-accordion p-component {
+    background-color: red;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+    background-color: #1f2a44;
+}
+
+.p-accordion .p-accordion-content {
+    background-color: #1f2a44;
+}
+
+.p-inputtext {
+    background-color: #1f2a44;
+    color: #334059;
+}
+
+.p-fluid .p-dropdown {
+    background-color: #1f2a44;
+}
+
+.p-accordion .p-accordion-tab:first-child .p-accordion-header .p-accordion-header-link {
+    background-color: #1f2a44;
+
+}
+
+
+/* nền sáng tối */
+/* ================= THEME LIGHT / DARK ================= */
+/* Mặc định: theme tối là code hiện tại => không cần đổi gì.
+   Chỉ override khi html[data-theme='light'] */
+
+/* Nền tổng thể + màu chữ chính / phụ */
+html[data-theme='light'] body {
+    background: #f9fafb;
+    color: #111827;
+}
+
+html[data-theme='light'] label,
+html[data-theme='light'] .customer-list__toolbar .hint {
+    color: #6b7280;
+}
+
+html[data-theme='light'] .customer-name,
+html[data-theme='light'] .customer-list__toolbar .title {
+    color: #111827;
+}
+
+/* TabView – header, tab active */
+html[data-theme='light'] .p-tabview .p-tabview-nav {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+html[data-theme='light'] .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    background-color: transparent;
+    color: #6b7280;
+    border: 1px solid transparent;
+}
+
+/* tab active */
+html[data-theme='light'] .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background-color: #ffffff;
+    color: #111827 !important;
+    border-color: #e5e7eb;
+    border-bottom: 3px solid #16a34a !important;
+    /* button chính, tab active */
+}
+
+/* hover tab */
+html[data-theme='light'] .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
+    background-color: #22c55e;
+    color: #ffffff !important;
+}
+
+/* ink bar xanh lá */
+html[data-theme='light'] .p-tabview .p-tabview-ink-bar {
+    background: #16a34a !important;
+}
+
+/* Nền khu nội dung TabPanel */
+html[data-theme='light'] TabPanel {
+    background: #f9fafb;
+}
+
+/* Customer list, khung bên phải/bên trái */
+html[data-theme='light'] .customer-list,
+html[data-theme='light'] .customer-list-fluid-right {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+
+html[data-theme='light'] .customer-list__toolbar {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+html[data-theme='light'] .customer-item {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Ô nội dung tin nhắn bên trái (textarea) – nếu muốn sáng hơn */
+html[data-theme='light'] #message {
+    background-color: #f9fafb !important;
+    color: #111827 !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+/* Button chính, button PrimeVue (BaseButton cũng thường là .p-button) */
+html[data-theme='light'] .p-button {
+    background: #16a34a !important;
+    border-color: #16a34a !important;
+    color: #ffffff !important;
+}
+
+html[data-theme='light'] .p-button:hover:not(:disabled),
+html[data-theme='light'] .p-button:active:not(:disabled) {
+    background: #22c55e !important;
+    /* hover, active */
+    border-color: #22c55e !important;
+}
+
+/* Các button "chọn hình" dùng class .btn-pick-image cũ vẫn chạy tốt,
+   nhưng nếu muốn cho chúng theo theme mới: */
+html[data-theme='light'] .btn-pick-image {
+    background: #16a34a !important;
+    border-color: #16a34a !important;
+}
+
+html[data-theme='light'] .btn-pick-image:hover:not(:disabled) {
+    background: #22c55e !important;
+    border-color: #22c55e !important;
+}
+
+/* Border chung */
+html[data-theme='light'] .p-inputtext,
+html[data-theme='light'] .p-dropdown,
+html[data-theme='light'] .p-inputmask,
+html[data-theme='light'] .p-inputtextarea,
+html[data-theme='light'] .p-inputgroup,
+html[data-theme='light'] .p-panel {
+    border-color: #e5e7eb;
+}
+
+/* Panel "Thiết kế khung chính / thành phần" nền sáng */
+html[data-theme='light'] .p-panel-content {
+    background: #f9fafb;
 }
