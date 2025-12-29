@@ -468,11 +468,10 @@ div#fotter p {
 }
 
 .main-content {
-    width: 96%;
+    width: 100%;
     float: left;
-    margin-left: 4%;
     min-height: calc(100vh - 75px);
-    background: #1f2a44;
+    background: #fff;
     position: relative;
 }
 
@@ -605,9 +604,9 @@ div#dichvu {
 }
 
 .it_3 .p-dropdown {
-    color: white;
-    background-color: #334059;
-    border: none;
+    color: #111827;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
     width: 100%;
     text-align: left;
 }
@@ -713,13 +712,13 @@ li.p-tabview-header a {
 }
 
 .p-panel .p-panel-header {
-    background: #1f2a44;
+    background: #fff;
     border: none;
 }
 
 .p-fluid .p-inputtextarea {
-    background-color: #334059;
-    border: none;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
 }
 
 .p-panel .p-panel-header .p-panel-title {
@@ -813,32 +812,32 @@ li.p-tabview-header a {
 }
 
 #tabs_tn2 {
-    background-color: #1f2a44;
+    background-color: #fff;
 }
 
 .p-accordion p-component {
-    background-color: red;
+    background-color: rgb(0, 0, 0);
 }
 
 .p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
-    background-color: #1f2a44;
+    background-color: #fff;
 }
 
 .p-accordion .p-accordion-content {
-    background-color: #1f2a44;
+    background-color: #fff;
 }
 
 .p-inputtext {
-    background-color: #1f2a44;
+    background-color: #fff;
     color: #334059;
 }
 
 .p-fluid .p-dropdown {
-    background-color: #1f2a44;
+    background-color: #fff;
 }
 
 .p-accordion .p-accordion-tab:first-child .p-accordion-header .p-accordion-header-link {
-    background-color: #1f2a44;
+    background-color: #fff;
 
 }
 
@@ -881,14 +880,14 @@ html[data-theme='light'] .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav
     background-color: #ffffff;
     color: #111827 !important;
     border-color: #e5e7eb;
-    border-bottom: 3px solid #16a34a !important;
+    border-bottom: 3px solid #e5e7eb !important;
     /* button chính, tab active */
 }
 
 /* hover tab */
 html[data-theme='light'] .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
     background-color: #22c55e;
-    color: #ffffff !important;
+    color: #111827 !important;
 }
 
 /* ink bar xanh lá */

@@ -3,6 +3,7 @@ import 'typeface-roboto/index.css';
 import 'primevue/resources/primevue.min.css';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primeicons/primeicons.css';
+import '@/styles/global.scss';
 
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -48,6 +49,8 @@ import TabMenu from "primevue/tabmenu";
 import Editor from 'primevue/editor';
 import cors from 'cors';
 import BaseButton from "@/components/base/BaseButton.vue";
+import Tree from 'primevue/tree';
+import InputSwitch from 'primevue/inputswitch';
 
 const app = createApp(App)
   .use(store)
@@ -139,4 +142,6 @@ app.component('Editor', Editor);
 app.use(quillEditor)
 app.mount('#app');
 app.component("BaseButton", BaseButton);
+app.component('Tree', Tree);
+app.component('InputSwitch', InputSwitch);
 

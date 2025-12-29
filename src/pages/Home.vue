@@ -11,14 +11,14 @@ import sendMessagePage from "@/pages/SendMessagePage.vue";
 
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
     LoginPage,
     sendMessagePage
   },
-  setup(){
+  setup() {
     const store = useStore();
     const isLoggedIn = computed(() => !!store.state.token);
     const router = useRouter();

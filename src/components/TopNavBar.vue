@@ -1,71 +1,65 @@
 <template>
   <div v-if="isLoggedIn" class="layout">
-    <!-- SIDEBAR -->
+    <!-- =========================
+     * SIDEBAR
+     * ========================= -->
     <aside class="sidebar" :class="{ 'sidebar-collapsed': isSidebarCollapsed }">
+      <!-- Toggle sidebar -->
       <button class="sidebar-toggle" type="button" @click="toggleSidebar" aria-label="Toggle sidebar">
         <i class="pi pi-bars"></i>
       </button>
 
+      <!-- User profile -->
       <div v-if="!isSidebarCollapsed" class="sidebar-profile">
         <img class="avatar" :src="avatarUrl" alt="avatar" />
         <div class="profile-name">{{ userDisplayName }}</div>
       </div>
 
+      <!-- Menu -->
       <nav class="sidebar-body">
-        <ul v-if="!isAdmin">
-          <li>
-            <RouterLink to="/listRegisterService">
-              <i class="pi pi-list"></i>
-              <span class="sidebar-text">Danh sách đăng ký</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/addemployee">
-              <i class="pi pi-user-plus"></i>
-              <span class="sidebar-text">Thêm nhân viên</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/showlistemployee">
-              <i class="pi pi-users"></i>
-              <span class="sidebar-text">Danh sách nhân viên</span>
+        <ul class="menu-list">
+          <li v-for="item in visibleMenuItems" :key="item.id" class="menu-item">
+            <!-- Parent -->
+            <template v-if="item.children?.length">
+              <button class="menu-parent" type="button"
+                :class="{ active: isParentActive(item), open: isGroupOpen(item) }" @click="toggleGroup(item)">
+                <div class="menu-left">
+                  <!-- Fallback: render inline clipboard SVG for m_register to avoid missing-font issues -->
+                  <svg v-if="item.id === 'm_register'" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path
+                      d="M9 2H15V4H19C20.1 4 21 4.9 21 6V20C21 21.1 20.1 22 19 22H5C3.9 22 3 21.1 3 20V6C3 4.9 3.9 4 5 4H9V2Z"
+                      stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                    <rect x="8" y="8" width="8" height="10" rx="1" stroke="currentColor" stroke-width="1.2" />
+                  </svg>
+                  <i v-else-if="item.icon" :class="item.icon"></i>
+                  <span class="sidebar-text">{{ item.label }}</span>
+                </div>
+
+                <i v-if="!isSidebarCollapsed" class="pi pi-chevron-down" :class="{ rotated: isGroupOpen(item) }"></i>
+              </button>
+
+              <Transition name="submenu">
+                <ul v-if="!isSidebarCollapsed && isGroupOpen(item)" class="submenu">
+                  <li v-for="child in activeChildren(item)" :key="child.id">
+                    <RouterLink :to="child.to || ''" class="submenu-link">
+                      <i v-if="child.icon" :class="child.icon"></i>
+                      <span class="sidebar-text">{{ child.label }}</span>
+                    </RouterLink>
+                  </li>
+                </ul>
+              </Transition>
+            </template>
+
+            <!-- Leaf -->
+            <RouterLink v-else :to="item.to || ''" class="menu-link">
+              <i v-if="item.icon" :class="item.icon"></i>
+              <span class="sidebar-text">{{ item.label }}</span>
             </RouterLink>
           </li>
         </ul>
 
-        <ul v-else>
-          <li>
-            <RouterLink to="/sendmessage">
-              <i class="pi pi-send"></i>
-              <span class="sidebar-text">Gửi tin nhắn</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/uploadImage">
-              <i class="pi pi-upload"></i>
-              <span class="sidebar-text">Đăng hình ảnh</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/managerGroup">
-              <i class="pi pi-sitemap"></i>
-              <span class="sidebar-text">Quản lý nhóm</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/registerUser">
-              <i class="pi pi-user-plus"></i>
-              <span class="sidebar-text">Đăng ký tài khoản</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/userList">
-              <i class="pi pi-users"></i>
-              <span class="sidebar-text">Quản lý tài khoản</span>
-            </RouterLink>
-          </li>
-        </ul>
-
+        <!-- Logout -->
         <div class="sidebar-footer">
           <button class="sidebar-logout" type="button" @click="logout">
             <i class="pi pi-sign-out"></i>
@@ -75,69 +69,62 @@
       </nav>
     </aside>
 
-    <!-- HEADER -->
+    <!-- =========================
+     * TOPBAR
+     * ========================= -->
     <header class="topbar" :class="{ 'topbar-expanded': !isSidebarCollapsed }">
       <div class="topbar-left">
+        <div class="hospital-title">Bệnh viện đa khoa thành phố Vinh</div>
       </div>
 
       <div class="topbar-right">
-        <!-- ô search dài -->
-        <button class="icon-btn icon-btn-search" type="button" title="Tìm kiếm" aria-label="Search">
+        <button class="icon-btn" type="button" title="Tìm kiếm" aria-label="Search">
           <i class="pi pi-search"></i>
         </button>
 
-        <!-- chuông -->
-        <button class="icon-btn icon-btn-bell" type="button" title="Thông báo" aria-label="Notifications">
+        <button class="icon-btn" type="button" title="Thông báo" aria-label="Notifications">
           <i class="pi pi-bell"></i>
         </button>
 
-        <!-- bánh răng -->
-        <button class="icon-btn gear-btn" type="button" title="Cài đặt giao diện" aria-label="Settings"
-          @click="toggleSettings">
-          <!-- vẫn giữ :class cũ, nhưng CSS sẽ cho xoay luôn -->
-          <i class="pi pi-cog" :class="{ spin: isSettingsOpen }"></i>
+        <button class="icon-btn" type="button" title="Cài đặt giao diện" aria-label="Settings" @click="toggleSettings">
+          <i class="pi pi-cog"></i>
         </button>
       </div>
     </header>
 
-
-    <!-- ✅ SETTINGS OVERLAY -->
+    <!-- =========================
+     * SETTINGS (gọn)
+     * ========================= -->
     <div v-if="isSettingsOpen" class="settings-overlay" @click="closeSettings"></div>
 
-    <!-- ✅ SETTINGS PANEL (slide from right) -->
-    <aside class="settings-panel" :class="{ open: isSettingsOpen }" aria-label="Settings panel">
+    <aside class="settings-panel" :class="{ open: isSettingsOpen }">
       <div class="settings-header">
-        <div class="settings-tabs">
-          <button class="tab-btn active" type="button" title="Settings">
-            <i class="pi pi-cog"></i>
-          </button>
-          <button class="tab-btn" type="button" title="Chat">
-            <i class="pi pi-comment"></i>
-          </button>
-          <button class="tab-btn" type="button" title="Checklist">
-            <i class="pi pi-check-square"></i>
-          </button>
+        <div class="settings-title">
+          <i class="pi pi-cog"></i>
+          <span>Cài đặt</span>
         </div>
 
-        <button class="close-btn" type="button" aria-label="Close settings" @click="closeSettings">
+        <button class="close-btn" type="button" @click="closeSettings" aria-label="Close settings">
           <i class="pi pi-times"></i>
         </button>
       </div>
 
       <div class="settings-body">
+        <!-- Theme color -->
         <div class="section">
-          <div class="section-title">Theme Colors</div>
+          <div class="section-title">Màu chủ đạo</div>
           <div class="colors">
             <button v-for="c in themeColors" :key="c" class="color-dot" :style="{ background: c }" type="button"
-              @click="setThemeColor(c)" :aria-label="'Theme color ' + c" />
+              @click="setThemeColor(c)" />
           </div>
         </div>
 
+        <!-- Light mode -->
         <div class="section">
           <div class="row">
             <div class="row-left">
-              <div class="row-title">Dark or Light Skin</div>
-              <div class="row-sub">Light On/Off</div>
+              <div class="row-title">Light Mode</div>
+              <div class="row-sub">On/Off</div>
             </div>
             <label class="switch">
               <input type="checkbox" v-model="isLightMode" />
@@ -146,48 +133,12 @@
           </div>
         </div>
 
+        <!-- Toggle sidebar -->
         <div class="section">
           <div class="row">
             <div class="row-left">
-              <div class="row-title">RTL or LTR</div>
-              <div class="row-sub">Turn RTL/LTR</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" v-model="isRTL" />
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Layout Options</div>
-
-          <div class="row">
-            <div class="row-left">
-              <div class="row-title">Fixed layout</div>
-              <div class="row-sub"></div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" v-model="isFixedLayout" />
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="row">
-            <div class="row-left">
-              <div class="row-title">Boxed Layout</div>
-              <div class="row-sub"></div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" v-model="isBoxed" />
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="row">
-            <div class="row-left">
-              <div class="row-title">Toggle Sidebar</div>
-              <div class="row-sub"></div>
+              <div class="row-title">Sidebar</div>
+              <div class="row-sub">Thu gọn / Mở rộng</div>
             </div>
             <label class="switch">
               <input type="checkbox" :checked="!isSidebarCollapsed" @change="toggleSidebar" />
@@ -198,7 +149,9 @@
       </div>
     </aside>
 
-    <!-- FOOTER -->
+    <!-- =========================
+     * FOOTER
+     * ========================= -->
     <footer class="footer" :class="{ 'footer-expanded': !isSidebarCollapsed }">
       <p class="copyright">© Copyright 2025 - Bệnh viện Đa khoa Thành phố Vinh</p>
     </footer>
@@ -206,185 +159,217 @@
 </template>
 
 <script lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import router from "@/router";
 
+/**
+ * ✅ menuStore.ts export:
+ *  - menuData (Ref<{ admin: MenuItem[]; user?: MenuItem[] }>)
+ *  - loadMenu(): void
+ */
+import { menuData, loadMenu, saveMenu, applyDefaultIcons } from "@/config/menuStore";
+import type { MenuItem } from "@/config/menuStore";
+
 export default {
   props: { isLoggedIn: { type: Boolean, required: true } },
   setup() {
+    /** =========================
+     * CORE
+     * ========================= */
     const store = useStore();
     const toast = useToast();
+    const route = useRoute();
 
-    // Sidebar
+    /** =========================
+     * LOAD MENU (1 lần) and ensure icons exist
+     * ========================= */
+    onMounted(() => {
+      loadMenu();
+      try {
+        applyDefaultIcons(menuData.value.admin);
+        applyDefaultIcons(menuData.value.user);
+        saveMenu(menuData.value);
+      } catch (e) {
+        // non-fatal
+      }
+      // ensure initial root class reflects sidebar state
+      const root = document.querySelector('.on_page');
+      if (root) root.classList.toggle('sidebar-collapsed', isSidebarCollapsed.value);
+    });
+
+    /** =========================
+     * SIDEBAR UI
+     * ========================= */
     const isSidebarCollapsed = ref(false);
-    const toggleSidebar = () => (isSidebarCollapsed.value = !isSidebarCollapsed.value);
-
-    const isAdmin = computed(() => store.state.permission === "admin");
-    const userDisplayName = computed(() => store.state.fullname || store.state.username || "Người dùng");
-    const avatarUrl = computed(
-      () =>
-        store.state.avatarUrl ||
-        "https://ui-avatars.com/api/?name=" +
-        encodeURIComponent(userDisplayName.value) +
-        "&background=ffffff&color=1f2a44"
-    );
-
-    const logout = () => {
-      store.dispatch("clearToken");
-      store.dispatch("clearPermission");
-      router.push({ name: "login" });
-      toast.add({
-        severity: "success",
-        summary: "Đăng xuất",
-        detail: "Đã xóa thông tin đăng nhập thành công",
-        life: 1200,
-      });
+    const toggleSidebar = () => {
+      isSidebarCollapsed.value = !isSidebarCollapsed.value;
+      const root = document.querySelector('.on_page');
+      if (root) root.classList.toggle('sidebar-collapsed', isSidebarCollapsed.value);
     };
 
-    // Settings panel
+    /** =========================
+     * USER DISPLAY
+     * ========================= */
+    const userDisplayName = computed(() => store.state.fullname || store.state.username || "Người dùng");
+    const avatarUrl = computed(() => {
+      const fallback =
+        "https://ui-avatars.com/api/?name=" +
+        encodeURIComponent(userDisplayName.value) +
+        "&background=ffffff&color=111827";
+      return store.state.avatarUrl || fallback;
+    });
+
+    /** =========================
+     * MENU (LUÔN DÙNG ADMIN UI)
+     * ========================= */
+    const rawMenuItems = computed<MenuItem[]>(() => (menuData.value?.admin || []) as MenuItem[]);
+
+    const visibleMenuItems = computed<MenuItem[]>(() =>
+      (rawMenuItems.value || []).filter((x) => x.isActive !== false)
+    );
+
+    const activeChildren = (parent: MenuItem) =>
+      (parent.children || []).filter((x) => x.isActive !== false);
+
+    /** =========================
+     * SUBMENU OPEN STATE
+     * ========================= */
+    const openGroups = ref<Record<string, boolean>>({});
+
+    const isGroupOpen = (item: MenuItem) => !!openGroups.value[item.id];
+
+    const toggleGroup = (item: MenuItem) => {
+      if (isSidebarCollapsed.value) return;
+      openGroups.value[item.id] = !openGroups.value[item.id];
+    };
+
+    const isRouteMatch = (to?: string) => (to ? route.path.startsWith(to) : false);
+
+    const isParentActive = (item: MenuItem) => {
+      if (!item.children?.length) return false;
+      return activeChildren(item).some((c) => isRouteMatch(c.to));
+    };
+
+    const syncOpenByRoute = () => {
+      for (const it of visibleMenuItems.value) {
+        if (it.children?.length && isParentActive(it)) openGroups.value[it.id] = true;
+      }
+    };
+
+    watch(() => route.path, syncOpenByRoute, { immediate: true });
+    watch(visibleMenuItems, syncOpenByRoute, { deep: true });
+    watch(isSidebarCollapsed, (v) => {
+      if (v) openGroups.value = {};
+      const root = document.querySelector('.on_page');
+      if (root) root.classList.toggle('sidebar-collapsed', v);
+    });
+
+    /** =========================
+     * LOGOUT
+     * ========================= */
+    const logout = () => {
+      const s: any = store;
+
+      // dự án bạn có thể có action/mutation khác nhau → gọi mềm để không crash
+      try { s.dispatch?.("clearToken"); } catch (_) { }
+      try { s.dispatch?.("clearPermission"); } catch (_) { }
+      try { s.commit?.("clearAuth"); } catch (_) { }
+
+      router.push({ name: "login" }).catch(() => { });
+      toast.add({ severity: "success", summary: "Đăng xuất", detail: "Đã đăng xuất", life: 1200 });
+    };
+
+    /** =========================
+     * SETTINGS (gọn)
+     * ========================= */
     const isSettingsOpen = ref(false);
     const toggleSettings = () => (isSettingsOpen.value = !isSettingsOpen.value);
     const closeSettings = () => (isSettingsOpen.value = false);
 
-    // Demo state (bạn có thể nối vào store nếu muốn lưu)
-    const themeColors = ref(["#4a8cff", "#5a6b7a", "#00c2d1", "#4cd964", "#ff4d4f", "#ffa940"]);
-    const themeColor = ref("#1f2a44");
+    const themeColors = ref(["#16A34A", "#4a8cff", "#00c2d1", "#ff4d4f", "#ffa940", "#5a6b7a"]);
+    const setThemeColor = (c: string) => document.documentElement.style.setProperty("--brand", c);
 
     const isLightMode = ref(false);
-    const isRTL = ref(false);
-    const isFixedLayout = ref(true);
-    const isBoxed = ref(false);
-
-    const setThemeColor = (c: string) => (themeColor.value = c);
-
-    // Apply theme color -> dùng CSS variable
-    watch(
-      themeColor,
-      (c) => {
-        document.documentElement.style.setProperty("--brand", c);
-      },
-      { immediate: true }
-    );
-
     watch(
       isLightMode,
-      (v) => {
-        // v = true -> Light, v = false -> Dark
-        document.documentElement.setAttribute("data-theme", v ? "light" : "dark");
-      },
+      (v) => document.documentElement.setAttribute("data-theme", v ? "light" : "dark"),
       { immediate: true }
     );
 
-
-    // Optional: apply RTL
-    watch(isRTL, (v) => {
-      document.documentElement.dir = v ? "rtl" : "ltr";
-    });
-
     return {
+      // sidebar
       isSidebarCollapsed,
       toggleSidebar,
-      isAdmin,
+
+      // user
       userDisplayName,
       avatarUrl,
+
+      // menu
+      visibleMenuItems,
+      activeChildren,
+      openGroups,
+      toggleGroup,
+      isGroupOpen,
+      isParentActive,
+
+      // logout
       logout,
 
+      // settings
       isSettingsOpen,
       toggleSettings,
       closeSettings,
-
       themeColors,
       setThemeColor,
       isLightMode,
-      isRTL,
-      isFixedLayout,
-      isBoxed,
     };
   },
 };
 </script>
 
 <style scoped lang="scss">
+/* ================= THEME VARS ================= */
 :global(:root) {
-  --brand: #1f2a44;
+  --brand: #16a34a;
+  --hover: #22c55e;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --page: #ffffff;
+}
+
+:global(:root[data-theme="light"]) {
+  --page: #f9fafb;
+}
+
+/* ================= BASE ================= */
+.layout {
+  background: var(--page);
 }
 
 a {
   text-decoration: none;
 }
 
-/* ===== Chỉ custom 3 icon ở topbar-right ===== */
-
-/* làm đẹp riêng cho icon trong topbar, không ảnh hưởng nơi khác */
-.topbar-right .icon-btn {
-  border-radius: 999px;
-  border: 1px solid #1f2a44;
-  background: #1f2a44;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* nút search dạng pill dài */
-.topbar-right .icon-btn-search {
-  width: 90px;
-  justify-content: flex-end;
-  padding-right: 14px;
-  background: #141e36;
-}
-
-/* chuông + bánh răng là nút tròn nhỏ */
-.topbar-right .icon-btn-bell,
-.topbar-right .gear-btn {
-  width: 40px;
-  height: 40px;
-}
-
-/* hover chỉ áp dụng cho 3 nút này */
-.topbar-right .icon-btn:hover {
-  background: #1f2a44;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-}
-
-/* bỏ viền focus xanh khi click */
-.topbar-right .icon-btn:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-/* bánh răng luôn xoay (dù có / không class spin) */
-.topbar-right .gear-btn i {
-  animation: spin 1.4s linear infinite;
-}
-
-/* Gear animation */
-.gear-btn .spin {
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
 .sidebar {
   position: fixed;
-  inset: 0 auto 0 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
   width: 220px;
-  background: #1f2a44;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  background: #fff;
+  border-right: 1px solid var(--border);
   padding: 10px 8px;
   transition: width 0.2s ease;
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .sidebar-collapsed {
@@ -395,7 +380,7 @@ a {
   border: none;
   background: transparent;
   cursor: pointer;
-  color: #fff;
+  color: var(--text);
   font-size: 18px;
   margin-bottom: 12px;
 }
@@ -405,7 +390,7 @@ a {
   align-items: center;
   gap: 10px;
   padding: 10px 8px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid var(--border);
   margin-bottom: 12px;
 }
 
@@ -414,12 +399,12 @@ a {
   height: 38px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  border: 2px solid var(--border);
 }
 
 .profile-name {
-  color: #fff;
-  font-weight: 700;
+  color: var(--text);
+  font-weight: 800;
   font-size: 14px;
 }
 
@@ -429,33 +414,14 @@ a {
   height: 100%;
 }
 
-.sidebar ul {
+.menu-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sidebar li {
-  margin-bottom: 8px;
-}
-
-.sidebar a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 6px;
-  color: #fff;
-}
-
-.sidebar a:hover {
-  background: #fff;
-  color: var(--brand);
-}
-
-.sidebar a.router-link-active {
-  background: #fff;
-  color: var(--brand);
+.menu-item {
+  margin: 6px 0;
 }
 
 .sidebar-text {
@@ -466,6 +432,102 @@ a {
   display: none;
 }
 
+/* leaf */
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+.menu-link:hover {
+  background: var(--hover);
+  color: #fff;
+}
+
+.menu-link.router-link-active {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* parent */
+.menu-parent {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-parent:hover {
+  background: var(--hover);
+  color: #fff;
+}
+
+.menu-parent.active {
+  background: transparent;
+  color: var(--brand);
+  border: 1px solid var(--brand);
+}
+
+/* submenu */
+.submenu {
+  list-style: none;
+  padding: 6px 0 0 0;
+  margin: 0;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 32px;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+.submenu-link:hover {
+  background: var(--hover);
+  color: #fff;
+}
+
+.submenu-link.router-link-active {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* arrow */
+.rotated {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+/* submenu animation */
+.submenu-enter-active,
+.submenu-leave-active {
+  transition: all 0.18s ease;
+}
+
+.submenu-enter-from,
+.submenu-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* logout */
 .sidebar-footer {
   margin-top: auto;
   padding-top: 10px;
@@ -473,10 +535,10 @@ a {
 
 .sidebar-logout {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
   background: transparent;
-  color: #fff;
-  border-radius: 8px;
+  color: var(--text);
+  border-radius: 10px;
   padding: 10px 10px;
   cursor: pointer;
   display: flex;
@@ -485,19 +547,19 @@ a {
 }
 
 .sidebar-logout:hover {
-  background: #fff;
-  color: var(--brand);
+  background: var(--hover);
+  color: #fff;
 }
 
-/* TOPBAR */
+/* ================= TOPBAR ================= */
 .topbar {
   position: fixed;
   top: 0;
   left: 60px;
   right: 0;
   height: 56px;
-  background: #1f2a44;
-  border-bottom: 2px solid var(--brand);
+  background: #fff;
+  border-bottom: 2px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -511,8 +573,8 @@ a {
 }
 
 .hospital-title {
-  font-weight: 800;
-  color: #ffffff;
+  font-weight: 900;
+  color: var(--text);
   font-size: 16px;
 }
 
@@ -523,32 +585,25 @@ a {
 }
 
 .icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(6, 182, 73, 0.35);
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
   background: #fff;
-  color: var(--brand);
-  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .icon-btn:hover {
-  background: var(--brand);
+  background: var(--hover);
   color: #fff;
+  transform: translateY(-1px);
 }
 
-/* Gear animation */
-.gear-btn .spin {
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* SETTINGS PANEL */
+/* ================= SETTINGS ================= */
 .settings-overlay {
   position: fixed;
   inset: 0;
@@ -580,28 +635,16 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.settings-tabs {
+.settings-title {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.tab-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: transparent;
-  color: #d7deea;
-  cursor: pointer;
-}
-
-.tab-btn.active {
-  background: rgba(255, 255, 255, 0.12);
+  font-weight: 900;
+  color: #cfe0ff;
 }
 
 .close-btn {
@@ -625,7 +668,7 @@ a {
 }
 
 .section-title {
-  font-weight: 800;
+  font-weight: 900;
   color: #cfe0ff;
   margin-bottom: 12px;
 }
@@ -658,15 +701,15 @@ a {
 }
 
 .row-title {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .row-sub {
   font-size: 12px;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-/* Switch */
+/* switch */
 .switch {
   position: relative;
   display: inline-block;
@@ -682,8 +725,8 @@ a {
 
 .slider {
   position: absolute;
-  cursor: pointer;
   inset: 0;
+  cursor: pointer;
   background-color: rgba(255, 255, 255, 0.25);
   transition: 0.2s;
   border-radius: 999px;
@@ -709,20 +752,25 @@ a {
   transform: translateX(22px);
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
 .footer {
   position: fixed;
   bottom: 0;
-  left: 60px;
+  left: 220px;
   right: 0;
   height: 44px;
-  background: #1f2a44;
-  border-top: 1px solid rgba(6, 182, 73, 0.25);
+  background: #fff;
+  border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   padding: 0 16px;
   transition: left 0.2s ease;
   z-index: 800;
+}
+
+.sidebar-collapsed~.footer,
+.sidebar-collapsed+.footer {
+  left: 60px;
 }
 
 .footer-expanded {

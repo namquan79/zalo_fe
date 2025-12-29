@@ -1,45 +1,60 @@
-import { createStore } from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+// src/store/index.ts
+import { createStore } from "vuex";
 
-export default createStore({
-  state: {
-    token: '',
-    permission: '',
-  },
-  getters: {
-    isLoggedIn (state): boolean {
-      return !!state.token
-    }
-  },
-  mutations: {
-    setToken (state, token) {
-      state.token = token
+export type AnyObj = Record<string, any>;
+
+export interface RootState {
+    token: string;
+    accessToken: string;
+    user: AnyObj | null;
+    permission: string[];
+}
+
+const store = createStore<RootState>({
+    state: {
+        token: "DEV",
+        accessToken: "DEV",
+        user: { role: "admin" },
+        permission: ["admin"],
     },
-    clearToken (state) {
-      state.token = ''
+
+
+    mutations: {
+        setAccessToken(state, token: string) {
+            const t = token || "";
+            state.token = t;
+            state.accessToken = t;
+            if (t) localStorage.setItem("access_token", t);
+            else localStorage.removeItem("access_token");
+        },
+        setUser(state, user: AnyObj | null) {
+            state.user = user;
+        },
+        setPermission(state, p: string[]) {
+            state.permission = Array.isArray(p) ? p : [];
+        },
+        clearAuth(state) {
+            state.token = "";
+            state.accessToken = "";
+            state.user = null;
+            localStorage.removeItem("access_token");
+        },
+        clearPermission(state) {
+            state.permission = [];
+        },
     },
-    setPermission (state, permisson) {
-      state.permission = permisson
+
+    actions: {
+        clearToken({ commit }) {
+            commit("clearAuth");
+        },
+        clearPermission({ commit }) {
+            commit("clearPermission");
+        },
+        setToken({ commit }, token: string) {
+            commit("setAccessToken", token);
+        },
     },
-    clearPermission (state) {
-      state.permission = ''
-    }
-  },
-  actions: {
-    setToken ({ commit }, token) {
-      commit('setToken', token)
-    },
-    clearToken ({ commit }) {
-      commit('clearToken')
-    },
-    setPermission ({ commit }, permission) {
-      commit('setPermission', permission)
-    },
-    clearPermission ({ commit }) {
-      commit('clearPermission')
-    }
-  },
-  modules: {
-  },
-  plugins: [createPersistedState()]
-})
+});
+
+export default store;

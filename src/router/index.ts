@@ -37,6 +37,16 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/updateemployee/:id", name: "updateemployee", component: updateEmployeePage, props: true },
   { path: "/managerGroup", name: "managerGroup", component: ManagerGroupPage, props: true },
   { path: "/showListStatistical", name: "showListStatistical", component: showListStatistical, props: true },
+  {
+    path: "/managerCategory",
+    name: "managerCategory",
+    component: () => import("@/pages/ManagerCategoryMenuPage.vue"),
+  },
+  {
+    path: "/allMenuCategory",
+    name: "allMenuCategory",
+    component: () => import("@/pages/AllMenuCategoryPage.vue"),
+  }
 ];
 
 const router = createRouter({
